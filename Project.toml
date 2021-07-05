@@ -1,0 +1,13 @@
+name = "EPEC_CarbonTax"
+uuid = "a246a0b4-1b25-4adb-ab0a-24646cbe06b6"
+authors = ["Brayam Valqui"]
+version = "0.1.0"
+
+[compat]
+julia = "1"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
