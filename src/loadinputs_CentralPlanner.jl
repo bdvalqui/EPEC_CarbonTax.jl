@@ -1,8 +1,9 @@
 function loadinputs_CentralPlanner(folder::String)
 
     #Congestion
-    Trans_Cap=100000
-
+    Trans_Cap=CSV.File(folder *"/congestion_parameter.csv") |> Tables.matrix
+#sce=CSV.File(folder *"/scenario.csv") |> Tables.matrix
+    sce=5
     #Sets
     #Investemnt Options
     set_opt_thermalgenerators_numbertechnologies=1:5
@@ -10,7 +11,7 @@ function loadinputs_CentralPlanner(folder::String)
     set_opt_thermalgenerators = 1:10
     set_opt_winds = 1:4
 
-    sce=5
+
 
     #Existing Units
     set_thermalgenerators = 1:8

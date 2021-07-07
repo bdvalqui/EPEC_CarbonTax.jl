@@ -7,7 +7,9 @@ using Gurobi
 
 println("*****************Central Planner Solution*****************")
 #OPF------------------------------------------------------#
-#@time (syscost_det,p_G_value,p_D_value,Dual_constraint6,f_value)=solver_OPF(Gurobi.Optimizer,"results/OPF_Solution.txt")
 
-@time (syscost_det,x_w_value,x_e_value)=Solver_CentralPlanner(Gurobi.Optimizer,"results/CentralPlanner_Solution.txt")
-#cd("C:\\Users\\braya\\.julia\\dev\\DTU_BrayamValqui_SP2021\\test")
+#@time (syscost_det,x_w_value,x_e_value,,set_opt_winds_numbertechnologies,set_opt_thermalgenerators_numbertechnologies)=Solver_CentralPlanner(Gurobi.Optimizer,"results/CentralPlanner_Solution.txt")
+
+@time (syscost_det_OPF)=Solver_OPF(Gurobi.Optimizer,"results/OPF_Solution.txt")
+
+#cd("C:\\Users\\braya\\.julia\\dev\\EPEC_CarbonTax\\test")
