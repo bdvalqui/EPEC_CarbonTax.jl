@@ -80,14 +80,16 @@ display(m)
 
 status = termination_status(m)
 println("The solution status is: $status")
-
+println("")
+println("Optimal Power Flow Solution")
+println("")
 syscost_det_OPF=objective_value(m)
 
 println("Total Cost:",syscost_det_OPF)
 
 p_G_e_value=zeros(length(set_thermalgenerators),length(set_times),length(set_scenarios))
 for t in set_times, s in set_scenarios, e in set_thermalgenerators
-println("Production level of existing thermal generator $e in time $t under scenario $s:",JuMP.value.(p_G_e[e,t,s]))
+#println("Production level of existing thermal generator $e in time $t under scenario $s:",JuMP.value.(p_G_e[e,t,s]))
   p_G_e_value[e,t,s]=JuMP.value.(p_G_e[e,t,s])
 end
 
@@ -121,7 +123,7 @@ end
 
 p_G_e_opt_value=zeros(length(set_opt_thermalgenerators),length(set_times),length(set_scenarios))
 for t in set_times, s in set_scenarios, e in set_opt_thermalgenerators
-println("Production level of candidate thermal generator $e in time $t under scenario $s:",JuMP.value.(p_G_e_opt[e,t,s]))
+#println("Production level of candidate thermal generator $e in time $t under scenario $s:",JuMP.value.(p_G_e_opt[e,t,s]))
   p_G_e_opt_value[e,t,s]=JuMP.value.(p_G_e_opt[e,t,s])
 end
 
@@ -156,19 +158,19 @@ end
 
 υ_SR_value=zeros(length(set_thermalgenerators),length(set_times),length(set_scenarios))
 for t in set_times, s in set_scenarios, e in set_thermalgenerators
-println("Spinning reserves of existing thermal generator $e in time $t under scenario $s:",JuMP.value.(υ_SR[e,t,s]))
+#println("Spinning reserves of existing thermal generator $e in time $t under scenario $s:",JuMP.value.(υ_SR[e,t,s]))
   υ_SR_value[e,t,s]=JuMP.value.(υ_SR[e,t,s])
 end
 
 υ_SR_opt_value=zeros(length(set_opt_thermalgenerators),length(set_times),length(set_scenarios))
 for t in set_times, s in set_scenarios, e in set_opt_thermalgenerators
-println("Spinning reserves of candidate thermal generator $e in time $t under scenario $s:",JuMP.value.(υ_SR_opt[e,t,s]))
+#println("Spinning reserves of candidate thermal generator $e in time $t under scenario $s:",JuMP.value.(υ_SR_opt[e,t,s]))
   υ_SR_opt_value[e,t,s]=JuMP.value.(υ_SR_opt[e,t,s])
 end
 
 p_G_w_value=zeros(length(set_winds),length(set_times),length(set_scenarios))
 for t in set_times, s in set_scenarios, w in set_winds
-println("Production level of renewable unit $w in time $t under scenario $s:",JuMP.value.(p_G_w[w,t,s]))
+#println("Production level of renewable unit $w in time $t under scenario $s:",JuMP.value.(p_G_w[w,t,s]))
   p_G_w_value[w,t,s]=JuMP.value.(p_G_w[w,t,s])
 end
 
@@ -198,7 +200,7 @@ end
 
 p_G_w_opt_value=zeros(length(set_opt_winds),length(set_times),length(set_scenarios))
 for t in set_times, s in set_scenarios, w in set_opt_winds
-println("Production level of candidate renewable unit $w in time $t under scenario $s: ",JuMP.value.(p_G_w_opt[w,t,s]))
+#println("Production level of candidate renewable unit $w in time $t under scenario $s: ",JuMP.value.(p_G_w_opt[w,t,s]))
   p_G_w_opt_value[w,t,s]=JuMP.value.(p_G_w_opt[w,t,s])
 end
 
@@ -234,21 +236,21 @@ end
 
 r_d_value=zeros(length(set_demands),length(set_times),length(set_scenarios))
 for t in set_times, s in set_scenarios, d in set_demands
-println("Unserved energy of demand $d in time $t under scenario $s:",JuMP.value.(r_d[d,t,s]))
+#println("Unserved energy of demand $d in time $t under scenario $s:",JuMP.value.(r_d[d,t,s]))
   r_d_value[d,t,s]=JuMP.value.(r_d[d,t,s])
 end
 
 r_w_value=zeros(length(set_winds),length(set_times),length(set_scenarios))
 
 for t in set_times, s in set_scenarios, w in set_winds
-println("Curtailment of renewable unit $w in time $t under scenario $s: ",JuMP.value.(r_w[w,t,s]))
+#println("Curtailment of renewable unit $w in time $t under scenario $s: ",JuMP.value.(r_w[w,t,s]))
   r_w_value[w,t,s]=JuMP.value.(r_w[w,t,s])
 end
 
 r_w_opt_value=zeros(length(set_opt_winds),length(set_times),length(set_scenarios))
 
 for t in set_times, s in set_scenarios, w in set_opt_winds
-println("Curtailment of candidate renewable unit $w in time $t under scenario $s: ",JuMP.value.(r_w_opt[w,t,s]))
+#println("Curtailment of candidate renewable unit $w in time $t under scenario $s: ",JuMP.value.(r_w_opt[w,t,s]))
   r_w_opt_value[w,t,s]=JuMP.value.(r_w_opt[w,t,s])
 end
 
@@ -256,13 +258,13 @@ Dual_constraint10=zeros(length(set_nodes),length(set_times),length(set_scenarios
 
 for   t in set_times, s in set_scenarios,n in set_nodes
    Dual_constraint10[n,t,s]= JuMP.dual(constraint10[n,t,s])/(Ns_H[t]*γ[s])
-println("Electricity Price in node $n in time $t under scenario $s: ", Dual_constraint10[n,t,s])
+#println("Electricity Price in node $n in time $t under scenario $s: ", Dual_constraint10[n,t,s])
 end
 
 Dual_constraint11=zeros(length(set_times),length(set_scenarios))
 for   t in set_times, s in set_scenarios,
    Dual_constraint11[t,s]= JuMP.dual(constraint11[t,s])/(Ns_H[t]*γ[s])
-println("Sprinning reserve Price in time $t under scenario $s: ", Dual_constraint11[t,s])
+#println("Sprinning reserve Price in time $t under scenario $s: ", Dual_constraint11[t,s])
 end
 
 
@@ -270,7 +272,7 @@ end
 
 for   t in set_times, s in set_scenarios,n in set_nodes
    θ_values[n,t,s]= JuMP.value.(θ[n,t,s])
-println("Angle in node $n in time $t under scenario $s: ", θ_values[n,t,s])
+#println("Angle in node $n in time $t under scenario $s: ", θ_values[n,t,s])
 end
 
 
@@ -279,7 +281,7 @@ global i=1
 for j in links
 for s in set_scenarios, t in set_times
 f_value[i,t,s]=B_dict[j]*(θ_values[j[1],t,s]-θ_values[j[2],t,s])
-println("Power Flow lines $j in time $t under scenario $s: ", f_value[i,t,s])
+#println("Power Flow lines $j in time $t under scenario $s: ", f_value[i,t,s])
 end
 global i=i+1
 end
@@ -378,6 +380,121 @@ TotalRevenue_demandblock[t]=sum((sum(Dual_constraint10[MapG[e][2],t,s]*p_G_e_val
                   +sum(Dual_constraint11[t,s]*υ_SR_opt_value[e,t,s]  for e in set_opt_thermalgenerators))*γ[s]*Ns_H[t] for s in set_scenarios)
 end
 
-return (syscost_det_OPF)
+revenue_cost_CP=zeros(6)
+revenue_cost_CP[1]=Totalrevenue*0.2
+revenue_cost_CP[2]=TotalOpecost*0.2
+revenue_cost_CP[3]=Totalrevenue*0.2
+revenue_cost_CP[4]=TotalOpecost*0.2
+revenue_cost_CP[3]=Totalrevenue*0.6
+revenue_cost_CP[4]=TotalOpecost*0.6
+
+#Thermal Generation
+p_G_e_value_CP=zeros(18,length(set_times),length(set_scenarios))
+p_G_e_value_node1_CP=zeros(18,length(set_times),length(set_scenarios))
+p_G_e_value_node2_CP=zeros(18,length(set_times),length(set_scenarios))
+p_G_e_value_node3_CP=zeros(18,length(set_times),length(set_scenarios))
+p_G_w_value_node1_CP=zeros(8,length(set_times),length(set_scenarios))
+p_G_w_value_node2_CP=zeros(8,length(set_times),length(set_scenarios))
+p_G_w_value_node3_CP=zeros(8,length(set_times),length(set_scenarios))
+υ_SR_value_CP=zeros(18,length(set_times),length(set_scenarios))
+
+for t in set_times, s in set_scenarios, e in 1:8
+p_G_e_value_CP[e,t,s]=p_G_e_value[e,t,s]
+υ_SR_value_CP[e,t,s]=υ_SR_value[e,t,s]
+p_G_e_value_node1_CP[e,t,s]=p_G_e_value_node1[e,t,s]
+p_G_e_value_node2_CP[e,t,s]=p_G_e_value_node2[e,t,s]
+p_G_e_value_node3_CP[e,t,s]=p_G_e_value_node3[e,t,s]
+end
+
+global j=1
+for e in 9:18
+for t in set_times
+for s in set_scenarios
+p_G_e_value_CP[e,t,s]=p_G_e_opt_value[j,t,s]
+υ_SR_value_CP[e,t,s]=υ_SR_opt_value[j,t,s]
+p_G_e_value_node1_CP[e,t,s]=p_G_e_opt_value_node1[j,t,s]
+p_G_e_value_node2_CP[e,t,s]=p_G_e_opt_value_node2[j,t,s]
+p_G_e_value_node3_CP[e,t,s]=p_G_e_opt_value_node3[j,t,s]
+end
+end
+global j=j+1
+end
+
+#Wind Generation
+p_G_w_value_CP=zeros(8,length(set_times),length(set_scenarios))
+
+for t in set_times, s in set_scenarios, w in 1:4
+p_G_w_value_CP[w,t,s]=p_G_w_value[w,t,s]
+p_G_w_value_node1_CP[w,t,s]=p_G_w_value_node1[w,t,s]
+p_G_w_value_node2_CP[w,t,s]=p_G_w_value_node2[w,t,s]
+p_G_w_value_node3_CP[w,t,s]=p_G_w_value_node3[w,t,s]
+end
+
+global j=1
+for w in 5:8
+for t in set_times
+for s in set_scenarios
+p_G_w_value_CP[w,t,s]=p_G_w_opt_value[j,t,s]
+p_G_w_value_node1_CP[w,t,s]=p_G_w_opt_value_node1[j,t,s]
+p_G_w_value_node2_CP[w,t,s]=p_G_w_opt_value_node2[j,t,s]
+p_G_w_value_node3_CP[w,t,s]=p_G_w_opt_value_node3[j,t,s]
+end
+end
+global j=j+1
+end
+
+#================================#
+Total_Generation_Technology_node1_CP=zeros(9,length(set_times))
+
+for i in 1:7
+for t in set_times
+Total_Generation_Technology_node1_CP[i,t]=sum(p_G_e_value_node1[e,t,1] for e in set_thermalgenerators if tech_thermal[e,Technology]==i;init=0)+sum(p_G_e_opt_value_node1[e,t,1] for e in set_opt_thermalgenerators if tech_thermal_opt[e,Technology]==i;init=0)
+end
+end
+
+global j=1
+for i in 8:9
+for t in set_times
+Total_Generation_Technology_node1_CP[i,t]=sum(p_G_w_value_node1[w,t,1] for w in set_winds if tech_wind[w,Technology]==j;init=0)+sum(p_G_w_opt_value_node1[w,t,1] for w in set_opt_winds if tech_wind_opt[w,Technology]==j;init=0)
+end
+global j=j+1
+end
+
+#================================#
+Total_Generation_Technology_node2_CP=zeros(9,length(set_times))
+
+for i in 1:7
+for t in set_times
+Total_Generation_Technology_node2_CP[i,t]=sum(p_G_e_value_node2[e,t,1] for e in set_thermalgenerators if tech_thermal[e,Technology]==i;init=0)+sum(p_G_e_opt_value_node2[e,t,1] for e in set_opt_thermalgenerators if tech_thermal_opt[e,Technology]==i;init=0)
+end
+end
+
+global j=1
+for i in 8:9
+for t in set_times
+Total_Generation_Technology_node2_CP[i,t]=sum(p_G_w_value_node2[w,t,1] for w in set_winds if tech_wind[w,Technology]==j;init=0)+sum(p_G_w_opt_value_node2[w,t,1] for w in set_opt_winds if tech_wind_opt[w,Technology]==j;init=0)
+end
+global j=j+1
+end
+
+#===================================#
+Total_Generation_Technology_node3_CP=zeros(9,length(set_times))
+
+for i in 1:7
+for t in set_times
+Total_Generation_Technology_node3_CP[i,t]=sum(p_G_e_value_node3[e,t,1] for e in set_thermalgenerators if tech_thermal[e,Technology]==i;init=0)+sum(p_G_e_opt_value_node3[e,t,1] for e in set_opt_thermalgenerators if tech_thermal_opt[e,Technology]==i;init=0)
+end
+end
+
+global j=1
+for i in 8:9
+for t in set_times
+Total_Generation_Technology_node3_CP[i,t]=sum(p_G_w_value_node3[w,t,1] for w in set_winds if tech_wind[w,Technology]==j;init=0)+sum(p_G_w_opt_value_node3[w,t,1] for w in set_opt_winds if tech_wind_opt[w,Technology]==j;init=0)
+end
+global j=j+1
+end
+
+
+return (syscost_det_OPF,TotalEmissions,TotalRevenue_demandblock,TotalOpecost_demandblock,revenue_cost_CP,TotalCapCost,TotalFixedCost,TotalEmissionsCost,TotalOpecost,TotalCurtailmentcost,p_G_e_value_CP,p_G_e_value_node1_CP,p_G_e_value_node2_CP,p_G_e_value_node3_CP,p_G_w_value_CP,p_G_w_value_node1_CP,p_G_w_value_node2_CP,p_G_w_value_node3_CP,υ_SR_value_CP,Dual_constraint10,Dual_constraint11,Total_Generation_Technology_CP,Total_Generation_Technology_Existing_CP,Total_Generation_Technology_Candidate_CP, Total_Generation_Technology_node1_CP, Total_Generation_Technology_node2_CP, Total_Generation_Technology_node3_CP)
 
 end

@@ -284,7 +284,9 @@ display(m)
 
 status= termination_status(m)
 println("The solution status is: $status")
-
+println("")
+println("The solution of firm $Leader's  problem")
+println("")
 profit_det_MPEC=objective_value(m)
 
 println("Total Cost:",profit_det_MPEC)
@@ -305,7 +307,7 @@ end
 
 p_G_e_value_MPEC=zeros(length(set_thermalgenerators),length(set_times),length(set_scenarios))
 for t in set_times, s in set_scenarios, e in set_thermalgenerators
-println("Production level of thermal generator $e in time $t under scenario $s:",JuMP.value.(p_G_e[e,t,s]))
+#println("Production level of thermal generator $e in time $t under scenario $s:",JuMP.value.(p_G_e[e,t,s]))
   p_G_e_value_MPEC[e,t,s]=JuMP.value.(p_G_e[e,t,s])
 end
 
@@ -338,7 +340,7 @@ end
 
 p_G_w_value_MPEC=zeros(length(set_winds),length(set_times),length(set_scenarios))
 for t in set_times, s in set_scenarios, w in set_winds
-println("Production level of wind unit $w in time $t under scenario $s:",JuMP.value.(p_G_w[w,t,s]))
+#println("Production level of wind unit $w in time $t under scenario $s:",JuMP.value.(p_G_w[w,t,s]))
   p_G_w_value_MPEC[w,t,s]=JuMP.value.(p_G_w[w,t,s])
 end
 
@@ -375,20 +377,20 @@ end
 
 υ_SR_value_MPEC=zeros(length(set_thermalgenerators),length(set_times),length(set_scenarios))
 for t in set_times, s in set_scenarios, e in set_thermalgenerators
-println("Spinning reserves of thermal generator $e in time $t under scenario $s:",JuMP.value.(υ_SR[e,t,s]))
+#println("Spinning reserves of thermal generator $e in time $t under scenario $s:",JuMP.value.(υ_SR[e,t,s]))
   υ_SR_value_MPEC[e,t,s]=JuMP.value.(υ_SR[e,t,s])
 end
 
 r_d_value_MPEC=zeros(length(set_demands),length(set_times),length(set_scenarios))
 for t in set_times, s in set_scenarios, d in set_demands
-println("Unserved energy of demand $d in time $t under scenario $s:",JuMP.value.(r_d[d,t,s]))
+#println("Unserved energy of demand $d in time $t under scenario $s:",JuMP.value.(r_d[d,t,s]))
   r_d_value_MPEC[d,t,s]=JuMP.value.(r_d[d,t,s])
 end
 
 r_w_value_MPEC=zeros(length(set_winds),length(set_times),length(set_scenarios))
 
 for t in set_times, s in set_scenarios, w in set_winds
-println("Curtailment of wind unit $w in time $t under scenario $s: ",JuMP.value.(r_w[w,t,s]))
+#println("Curtailment of wind unit $w in time $t under scenario $s: ",JuMP.value.(r_w[w,t,s]))
   r_w_value_MPEC[w,t,s]=JuMP.value.(r_w[w,t,s])
 end
 
@@ -411,7 +413,7 @@ end
 
 for   t in set_times, s in set_scenarios,n in set_nodes
    θ_values_MPEC[n,t,s]= JuMP.value.(θ[n,t,s])
-println("Angle in node $n in time $t under scenario $s: ", θ_values_MPEC[n,t,s])
+#println("Angle in node $n in time $t under scenario $s: ", θ_values_MPEC[n,t,s])
 end
 
 f_MPEC=zeros(n_link,length(set_times),length(set_scenarios))
@@ -700,6 +702,6 @@ for t in set_times, s in set_scenarios, e in set_thermalgenerators
   U_complementarity_9_MPEC[e,t,s]=JuMP.value.(U_complementarity_9[e,t,s])
 end
 
-return (profit_det_MPEC,x_w_value_MPEC,x_e_value_MPEC)
+return (profit_det_MPEC,x_w_value_MPEC,x_e_value_MPEC,Totalrevenue_MPEC_Firm1,TotalOperatingCost_MPEC_Firm1,Totalrevenue_MPEC_Firm2,TotalOperatingCost_MPEC_Firm2,Totalrevenue_MPEC_Firm3,TotalOperatingCost_MPEC_Firm3, Electricity_prices_MPEC, Spinning_prices_MPEC, υ_SR_value_MPEC,p_G_e_value_MPEC, p_G_w_value_MPEC, p_G_e_value_node1_MPEC, p_G_e_value_node2_MPEC, p_G_e_value_node3_MPEC, p_G_w_value_node1_MPEC, p_G_w_value_node2_MPEC, p_G_w_value_node3_MPEC, Electricity_prices_MPEC, TotalCost_MPEC,TotalEmissions_MPEC,Totalrevenue_demandblock_MPEC_Firm1, TotalOperatingCost_demandblock_MPEC_Firm1,Totalrevenue_demandblock_MPEC_Firm2, TotalOperatingCost_demandblock_MPEC_Firm2, Totalrevenue_demandblock_MPEC_Firm3, TotalOperatingCost_demandblock_MPEC_Firm3, TotalCapCost_EPEC, TotalFixedCost_EPEC, TotalEmissionsCost_EPEC, TotalOperatingCost_EPEC,TotalCurtailmentcost_EPEC, Total_Investments_Technology_Firm1_EPEC,Total_Investments_Technology_Firm2_EPEC,Total_Investments_Technology_EPEC,Total_Generation_Technology_EPEC,Total_Generation_Technology_Existing_EPEC,Total_Generation_Technology_Candidate_EPEC, Total_Generation_Technology_node1_EPEC, Total_Generation_Technology_node2_EPEC, Total_Generation_Technology_node3_EPEC)
 
 end

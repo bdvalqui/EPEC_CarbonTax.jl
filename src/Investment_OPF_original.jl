@@ -95,7 +95,11 @@ println("Number of variables and Constraints:")
 display(m)
 
 status = termination_status(m)
+
 println("The solution status is: $status")
+println("")
+println("Solution for the Central Planner Problem")
+println("")
 
 syscost_det=objective_value(m)
 
@@ -117,37 +121,37 @@ end
 
 p_G_e_value=zeros(length(set_thermalgenerators),length(set_times),length(set_scenarios))
 for t in set_times, s in set_scenarios, e in set_thermalgenerators
-println("Production level of existing thermal generator $e in time $t under scenario $s:",JuMP.value.(p_G_e[e,t,s]))
+#println("Production level of existing thermal generator $e in time $t under scenario $s:",JuMP.value.(p_G_e[e,t,s]))
   p_G_e_value[e,t,s]=JuMP.value.(p_G_e[e,t,s])
 end
 
 p_G_e_opt_value=zeros(length(set_opt_thermalgenerators),length(set_times),length(set_scenarios))
 for t in set_times, s in set_scenarios, e in set_opt_thermalgenerators
-println("Production level of candidate thermal generator $e in time $t under scenario $s:",JuMP.value.(p_G_e_opt[e,t,s]))
+#println("Production level of candidate thermal generator $e in time $t under scenario $s:",JuMP.value.(p_G_e_opt[e,t,s]))
   p_G_e_opt_value[e,t,s]=JuMP.value.(p_G_e_opt[e,t,s])
 end
 
 υ_SR_value=zeros(length(set_thermalgenerators),length(set_times),length(set_scenarios))
 for t in set_times, s in set_scenarios, e in set_thermalgenerators
-println("Spinning reserves of existing thermal generator $e in time $t under scenario $s:",JuMP.value.(υ_SR[e,t,s]))
+#println("Spinning reserves of existing thermal generator $e in time $t under scenario $s:",JuMP.value.(υ_SR[e,t,s]))
   υ_SR_value[e,t,s]=JuMP.value.(υ_SR[e,t,s])
 end
 
 υ_SR_opt_value=zeros(length(set_opt_thermalgenerators),length(set_times),length(set_scenarios))
 for t in set_times, s in set_scenarios, e in set_opt_thermalgenerators
-println("Spinning reserves of candidate thermal generator $e in time $t under scenario $s:",JuMP.value.(υ_SR_opt[e,t,s]))
+#println("Spinning reserves of candidate thermal generator $e in time $t under scenario $s:",JuMP.value.(υ_SR_opt[e,t,s]))
   υ_SR_opt_value[e,t,s]=JuMP.value.(p_G_e_opt[e,t,s])
 end
 
 p_G_w_value=zeros(length(set_winds),length(set_times),length(set_scenarios))
 for t in set_times, s in set_scenarios, w in set_winds
-println("Production level of renewable unit $w in time $t under scenario $s:",JuMP.value.(p_G_w[w,t,s]))
+#println("Production level of renewable unit $w in time $t under scenario $s:",JuMP.value.(p_G_w[w,t,s]))
   p_G_w_value[w,t,s]=JuMP.value.(p_G_w[w,t,s])
 end
 
 p_G_w_opt_value=zeros(length(set_opt_winds),length(set_times),length(set_scenarios))
 for t in set_times, s in set_scenarios, w in set_opt_winds
-println("Production level of candidate renewable unit $w in time $t under scenario $s: ",JuMP.value.(p_G_w_opt[w,t,s]))
+#println("Production level of candidate renewable unit $w in time $t under scenario $s: ",JuMP.value.(p_G_w_opt[w,t,s]))
   p_G_w_opt_value[w,t,s]=JuMP.value.(p_G_w_opt[w,t,s])
 end
 
@@ -159,14 +163,14 @@ end
 
 r_d_value=zeros(length(set_demands),length(set_times),length(set_scenarios))
 for t in set_times, s in set_scenarios, d in set_demands
-println("Unserved energy of demand $d in time $t under scenario $s:",JuMP.value.(r_d[d,t,s]))
+#println("Unserved energy of demand $d in time $t under scenario $s:",JuMP.value.(r_d[d,t,s]))
   r_d_value[d,t,s]=JuMP.value.(r_d[d,t,s])
 end
 
 r_w_value=zeros(length(set_winds),length(set_times),length(set_scenarios))
 
 for t in set_times, s in set_scenarios, w in set_winds
-println("Curtailment of renewable unit $w in time $t under scenario $s: ",JuMP.value.(r_w[w,t,s]))
+#println("Curtailment of renewable unit $w in time $t under scenario $s: ",JuMP.value.(r_w[w,t,s]))
   r_w_value[w,t,s]=JuMP.value.(r_w[w,t,s])
 end
 
@@ -181,7 +185,7 @@ end
 
 for   t in set_times, s in set_scenarios,n in set_nodes
    θ_values[n,t,s]= JuMP.value.(θ[n,t,s])
-println("Angle in node $n in time $t under scenario $s: ", θ_values[n,t,s])
+#println("Angle in node $n in time $t under scenario $s: ", θ_values[n,t,s])
 end
 
 
@@ -190,7 +194,7 @@ global i=1
 for j in links
 for s in set_scenarios, t in set_times
 f_value[i,t,s]=B_dict[j]*(θ_values[j[1],t,s]-θ_values[j[2],t,s])
-println("Power Flow lines $j in time $t under scenario $s: ", f_value[i,t,s])
+#println("Power Flow lines $j in time $t under scenario $s: ", f_value[i,t,s])
 end
 global i=i+1
 end
@@ -228,6 +232,6 @@ global j=j+1
 end
 
 
-return (syscost_det,x_w_value,x_e_value)
+return (syscost_det,x_w_value,x_e_value,Total_Investments_Technology_CP)
 
 end

@@ -6,6 +6,8 @@ using CSV
 using DataFrames
 using Distributed
 using SharedArrays
+using PyPlot
+using PyCall
 import MathOptInterface: AbstractOptimizer
 
 #Macros
@@ -21,9 +23,14 @@ include("OPF_original.jl")
 include("Investment_OPF_MPEC.jl")
 include("loadinputs_CentralPlanner.jl")
 include("loadinputs.jl")
+include("Plots_Prices.jl")
+include("Plots_CapacityMix.jl")
+include("Plots_Generation.jl")
+include("Plots_Rev_Ope.jl")
 
 
-export Solver_CentralPlanner,Solver_OPF,Solver_MPEC,Solver_EPEC,Investment_OPF_original,OPF_original,Investment_OPF_MPEC,loadinputs_CentralPlanner,loadinputs
+
+export Solver_CentralPlanner,Solver_OPF,Solver_MPEC,Solver_EPEC,Investment_OPF_original,OPF_original,Investment_OPF_MPEC,loadinputs_CentralPlanner,loadinputs,Plots_Prices,Plots_CapacityMix,Plots_Generation,Plots_Rev_Ope
 
 end
 #cd("C:\\Users\\braya\\.julia\\dev\\EPEC_CarbonTax\\src")

@@ -1,4 +1,4 @@
-*****************Central Planner Solution*****************
+*****************OPF Solution*****************
 
 Objective System Cost: 2.0760489356901283e10
 
