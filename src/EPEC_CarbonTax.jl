@@ -18,9 +18,11 @@ include("Solver_CentralPlanner.jl")
 include("Solver_OPF.jl")
 include("Solver_MPEC.jl")
 include("Solver_EPEC.jl")
+include("Solver_EPEC_SOS1.jl")
 include("Investment_OPF_original.jl")
 include("OPF_original.jl")
 include("Investment_OPF_MPEC.jl")
+include("Investment_OPF_MPEC_SOS1.jl")
 include("loadinputs_CentralPlanner.jl")
 include("loadinputs.jl")
 include("Plots_Prices.jl")
@@ -30,7 +32,7 @@ include("Plots_Rev_Ope.jl")
 
 
 
-export Solver_CentralPlanner,Solver_OPF,Solver_MPEC,Solver_EPEC,Investment_OPF_original,OPF_original,Investment_OPF_MPEC,loadinputs_CentralPlanner,loadinputs,Plots_Prices,Plots_CapacityMix,Plots_Generation,Plots_Rev_Ope
+export Solver_CentralPlanner,Solver_OPF,Solver_MPEC,Solver_EPEC,Solver_EPEC_SOS1,Investment_OPF_original,OPF_original,Investment_OPF_MPEC,Investment_OPF_MPEC_SOS1,loadinputs_CentralPlanner,loadinputs,Plots_Prices,Plots_CapacityMix,Plots_Generation,Plots_Rev_Ope
 
 end
 #cd("C:\\Users\\braya\\.julia\\dev\\EPEC_CarbonTax\\src")

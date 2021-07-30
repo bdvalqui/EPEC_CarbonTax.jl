@@ -1,4 +1,4 @@
-function Investment_OPF_MPEC(optimizer,set_thermalgenerators_options_numbertechnologies,set_wind_options_numbertechnologies,set_thermalgenerators_options,set_wind_options,set_thermalgenerators_existingunits,set_winds_existingunits,set_thermalgenerators,set_winds,set_demands,set_nodes,set_nodes_ref,set_nodes_noref,set_scenarios,set_times,P,V,thermal_ownership_options,wind_ownership_options,x_w_p,x_e_p,Leader, p_D,D,max_demand,Υ_SR,γ,Τ,p_lambda_upper,wind,Ns_H,n_link,links,links_rev,F_max_dict,B_dict,MapG,MapD,MapW,tech_thermal,tech_wind,capacity_per_unit,var_om,invcost,maxBuilds,ownership,capacity_existingunits,fixedcost,EmissionsRate,HeatRate,fuelprice,life,RamUP,Technology,WACC,varcost_thermal,varcost_wind,CRF_thermal,CRF_wind,set_opt_winds_numbertechnologies,set_opt_thermalgenerators_numbertechnologies)
+function Investment_OPF_MPEC_SOS1(optimizer,set_thermalgenerators_options_numbertechnologies,set_wind_options_numbertechnologies,set_thermalgenerators_options,set_wind_options,set_thermalgenerators_existingunits,set_winds_existingunits,set_thermalgenerators,set_winds,set_demands,set_nodes,set_nodes_ref,set_nodes_noref,set_scenarios,set_times,P,V,thermal_ownership_options,wind_ownership_options,x_w_p,x_e_p,Leader, p_D,D,max_demand,Υ_SR,γ,Τ,p_lambda_upper,wind,Ns_H,n_link,links,links_rev,F_max_dict,B_dict,MapG,MapD,MapW,tech_thermal,tech_wind,capacity_per_unit,var_om,invcost,maxBuilds,ownership,capacity_existingunits,fixedcost,EmissionsRate,HeatRate,fuelprice,life,RamUP,Technology,WACC,varcost_thermal,varcost_wind,CRF_thermal,CRF_wind,set_opt_winds_numbertechnologies,set_opt_thermalgenerators_numbertechnologies)
 
 #include("utils.jl")
 
@@ -54,17 +54,33 @@ set_optimizer_attribute(m, "MIPGap", 0.005)
 @variable(m, λ_SR[t in set_times,s in set_scenarios])
 @variable(m, μ_SR[e in set_thermalgenerators,t in set_times,s in set_scenarios]>= 0)
 
-#binary variables
-@variable(m, U_complementarity_1[e in set_thermalgenerators,t in set_times,s in set_scenarios], Bin)
-@variable(m, U_complementarity_2[e in set_thermalgenerators,t in set_times,s in set_scenarios], Bin)
-@variable(m, U_complementarity_3[link in links,t in set_times,s in set_scenarios], Bin)
-@variable(m, U_complementarity_4[link in links,t in set_times,s in set_scenarios], Bin)
-@variable(m, U_complementarity_5[w in set_winds,t in set_times,s in set_scenarios], Bin)
-@variable(m, U_complementarity_6[d in set_demands,t in set_times,s in set_scenarios], Bin)
-@variable(m, U_complementarity_7[w in set_winds,t in set_times,s in set_scenarios], Bin)
-@variable(m, U_complementarity_8[e in set_thermalgenerators,t in set_times,s in set_scenarios], Bin)
-@variable(m, U_complementarity_9[e in set_thermalgenerators,t in set_times,s in set_scenarios], Bin)
+#SOS1 variables
+@variable(m, U_SOS1_1[e in set_thermalgenerators,t in set_times,s in set_scenarios])
+@variable(m, V_SOS1_1[e in set_thermalgenerators,t in set_times,s in set_scenarios,sos in 1:2])
 
+@variable(m, U_SOS1_2[e in set_thermalgenerators,t in set_times,s in set_scenarios])
+@variable(m, V_SOS1_2[e in set_thermalgenerators,t in set_times,s in set_scenarios,sos in 1:2])
+
+@variable(m, U_SOS1_3[link in links,t in set_times,s in set_scenarios])
+@variable(m, V_SOS1_3[link in links,t in set_times,s in set_scenarios,sos in 1:2])
+
+@variable(m, U_SOS1_4[link in links,t in set_times,s in set_scenarios])
+@variable(m, V_SOS1_4[link in links,t in set_times,s in set_scenarios,sos in 1:2])
+
+@variable(m, U_SOS1_5[w in set_winds,t in set_times,s in set_scenarios])
+@variable(m, V_SOS1_5[w in set_winds,t in set_times,s in set_scenarios,sos in 1:2])
+
+@variable(m, U_SOS1_6[d in set_demands,t in set_times,s in set_scenarios])
+@variable(m, V_SOS1_6[d in set_demands,t in set_times,s in set_scenarios,sos in 1:2])
+
+@variable(m, U_SOS1_7[w in set_winds,t in set_times,s in set_scenarios])
+@variable(m, V_SOS1_7[w in set_winds,t in set_times,s in set_scenarios,sos in 1:2])
+
+@variable(m, U_SOS1_8[e in set_thermalgenerators,t in set_times,s in set_scenarios])
+@variable(m, V_SOS1_8[e in set_thermalgenerators,t in set_times,s in set_scenarios,sos in 1:2])
+
+@variable(m, U_SOS1_9[e in set_thermalgenerators,t in set_times,s in set_scenarios])
+@variable(m, V_SOS1_9[e in set_thermalgenerators,t in set_times,s in set_scenarios,sos in 1:2])
 #Warm Start
 #=
 for t in set_times, s in set_scenarios, e in set_thermalgenerators
@@ -166,57 +182,68 @@ end
 #Complementarity Constraints
 
 for e in set_thermalgenerators, t in set_times,s in set_scenarios
-    @complements(m, U_complementarity_1[e,t,s],
-                 tech_thermal[e,capacity_existingunits]+x_e[e]-p_G_e[e,t,s]-υ_SR[e,t,s], largeduallimit,
-                 -μ_G[e,t,s], largeprimallimit)
+
+    @constraint(m, V_SOS1_1[e,t,s,:].data in MOI.SOS1([1.0, 2.0]))
+    @sos1(m, U_SOS1_1[e,t,s],V_SOS1_1[e,t,s,1],V_SOS1_1[e,t,s,2],
+                 tech_thermal[e,capacity_existingunits]+x_e[e]-p_G_e[e,t,s]-υ_SR[e,t,s],
+                 -μ_G[e,t,s])
 end
 
 for e in set_thermalgenerators, t in set_times,s in set_scenarios
-    @complements(m, U_complementarity_2[e,t,s],
-                 p_G_e[e,t,s], largeduallimit,
-                 ψ_G[e,t,s], largeprimallimit)
+
+    @constraint(m, V_SOS1_2[e,t,s,:].data in MOI.SOS1([1.0, 2.0]))
+    @sos1(m, U_SOS1_2[e,t,s],V_SOS1_2[e,t,s,1],V_SOS1_2[e,t,s,2],
+                 p_G_e[e,t,s],ψ_G[e,t,s])
 end
 
 for j in links, t in set_times,s in set_scenarios
-    @complements(m, U_complementarity_3[j,t,s],
-                 F_max_dict[j]+B_dict[j]*(θ[j[1],t,s]-θ[j[2],t,s]), largeduallimit,
-                 -η_lower[j,t,s], largeprimallimit)
+
+    @constraint(m, V_SOS1_3[j,t,s,:].data in MOI.SOS1([1.0, 2.0]))
+    @sos1(m, U_SOS1_3[j,t,s],V_SOS1_3[j,t,s,1],V_SOS1_3[j,t,s,2],
+                 F_max_dict[j]+B_dict[j]*(θ[j[1],t,s]-θ[j[2],t,s]),-η_lower[j,t,s])
 end
 
 for j in links, t in set_times,s in set_scenarios
-    @complements(m, U_complementarity_4[j,t,s],
-                 F_max_dict[j]-B_dict[j]*(θ[j[1],t,s]-θ[j[2],t,s]), largeduallimit,
-                 -η_upper[j,t,s], largeprimallimit)
+
+    @constraint(m, V_SOS1_4[j,t,s,:].data in MOI.SOS1([1.0, 2.0]))
+    @sos1(m, U_SOS1_4[j,t,s],V_SOS1_4[j,t,s,1],V_SOS1_4[j,t,s,2],
+                 F_max_dict[j]-B_dict[j]*(θ[j[1],t,s]-θ[j[2],t,s]),
+                 -η_upper[j,t,s])
 end
 
 for w in set_winds, t in set_times,s in set_scenarios
-    @complements(m, U_complementarity_5[w,t,s],
-                 p_G_w[w,t,s], largeduallimit,
-                 ψ_G_w[w,t,s], largeprimallimit)
+
+    @constraint(m, V_SOS1_5[w,t,s,:].data in MOI.SOS1([1.0, 2.0]))
+    @sos1(m, U_SOS1_5[w,t,s],V_SOS1_5[w,t,s,1],V_SOS1_5[w,t,s,2],
+                 p_G_w[w,t,s], ψ_G_w[w,t,s])
 end
 
 for d in set_demands, t in set_times,s in set_scenarios
-    @complements(m, U_complementarity_6[d,t,s],
-                 r_d[d,t,s], largeduallimit,
-                 β_d[d,t,s], largeprimallimit)
+
+    @constraint(m, V_SOS1_6[d,t,s,:].data in MOI.SOS1([1.0, 2.0]))
+    @sos1(m, U_SOS1_6[d,t,s],V_SOS1_6[d,t,s,1],V_SOS1_6[d,t,s,2],
+                 r_d[d,t,s], β_d[d,t,s])
 end
 
 for w in set_winds, t in set_times,s in set_scenarios
-    @complements(m, U_complementarity_7[w,t,s],
-                 r_w[w,t,s], largeduallimit,
-                 β_w[w,t,s], largeprimallimit)
+
+    @constraint(m, V_SOS1_7[w,t,s,:].data in MOI.SOS1([1.0, 2.0]))
+    @sos1(m, U_SOS1_7[w,t,s],V_SOS1_7[w,t,s,1],V_SOS1_7[w,t,s,2],
+                 r_w[w,t,s], β_w[w,t,s])
 end
 
 for e in set_thermalgenerators, t in set_times,s in set_scenarios
-    @complements(m, U_complementarity_8[e,t,s],
-                 (tech_thermal[e,capacity_existingunits]+x_e[e])*tech_thermal[e,RamUP]/tech_thermal[e,capacity_per_unit]-υ_SR[e,t,s], largeduallimit,
-                 -μ_SR[e,t,s], largeprimallimit)
+
+    @constraint(m, V_SOS1_8[e,t,s,:].data in MOI.SOS1([1.0, 2.0]))
+    @sos1(m, U_SOS1_8[e,t,s],V_SOS1_8[e,t,s,1],V_SOS1_8[e,t,s,2],
+                 (tech_thermal[e,capacity_existingunits]+x_e[e])*tech_thermal[e,RamUP]/tech_thermal[e,capacity_per_unit]-υ_SR[e,t,s],-μ_SR[e,t,s])
 end
 
 for e in set_thermalgenerators, t in set_times,s in set_scenarios
-    @complements(m, U_complementarity_9[e,t,s],
-                 υ_SR[e,t,s], largeduallimit,
-                 ψ_SR[e,t,s], largeprimallimit)
+
+    @constraint(m, V_SOS1_9[e,t,s,:].data in MOI.SOS1([1.0, 2.0]))
+    @sos1(m, U_SOS1_9[e,t,s],V_SOS1_9[e,t,s,1],V_SOS1_9[e,t,s,2],
+                 υ_SR[e,t,s], ψ_SR[e,t,s])
 end
 
 
@@ -650,6 +677,7 @@ Totalrevenue_demandblock_MPEC_Firm3[t]= sum(sum((sum(Electricity_prices_MPEC[Map
 end
 
 
+#=
 U_complementarity_1_MPEC=zeros(length(set_thermalgenerators),length(set_times),length(set_scenarios))
 U_complementarity_2_MPEC=zeros(length(set_thermalgenerators),length(set_times),length(set_scenarios))
 
@@ -707,7 +735,7 @@ end
 for t in set_times, s in set_scenarios, e in set_thermalgenerators
   U_complementarity_9_MPEC[e,t,s]=JuMP.value.(U_complementarity_9[e,t,s])
 end
-
+=#
 return (profit_det_MPEC,x_w_value_MPEC,x_e_value_MPEC,Totalrevenue_MPEC_Firm1,TotalOperatingCost_MPEC_Firm1,Totalrevenue_MPEC_Firm2,TotalOperatingCost_MPEC_Firm2,Totalrevenue_MPEC_Firm3,TotalOperatingCost_MPEC_Firm3, Electricity_prices_MPEC, Spinning_prices_MPEC, υ_SR_value_MPEC,p_G_e_value_MPEC, p_G_w_value_MPEC, p_G_e_value_node1_MPEC, p_G_e_value_node2_MPEC, p_G_e_value_node3_MPEC, p_G_w_value_node1_MPEC, p_G_w_value_node2_MPEC, p_G_w_value_node3_MPEC, Electricity_prices_MPEC, TotalCost_MPEC,TotalEmissions_MPEC,Totalrevenue_demandblock_MPEC_Firm1, TotalOperatingCost_demandblock_MPEC_Firm1,Totalrevenue_demandblock_MPEC_Firm2, TotalOperatingCost_demandblock_MPEC_Firm2, Totalrevenue_demandblock_MPEC_Firm3, TotalOperatingCost_demandblock_MPEC_Firm3, TotalCapCost_EPEC, TotalFixedCost_EPEC, TotalEmissionsCost_EPEC, TotalOperatingCost_EPEC,TotalCurtailmentcost_EPEC, Total_Investments_Technology_Firm1_EPEC,Total_Investments_Technology_Firm2_EPEC,Total_Investments_Technology_EPEC,Total_Generation_Technology_EPEC,Total_Generation_Technology_Existing_EPEC,Total_Generation_Technology_Candidate_EPEC, Total_Generation_Technology_node1_EPEC, Total_Generation_Technology_node2_EPEC, Total_Generation_Technology_node3_EPEC)
 
 end
