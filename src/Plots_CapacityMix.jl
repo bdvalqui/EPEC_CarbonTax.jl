@@ -11,14 +11,14 @@ sizes = NaN*zeros(3)
 explode = zeros(length(sizes))
 #explode[2] = 0.0 # Move slice 2 out by 0.1
 sizes = [Total_Investments_Technology_CP[5],Total_Investments_Technology_CP[6],Total_Investments_Technology_CP[7]]
-font = Dict("fontname"=>"Sans","weight"=>"semibold","color"=>"white","size"=>25)
+font = Dict("fontname"=>"Sans","weight"=>"semibold","color"=>"black","size"=>10)
 
 ###############
 #  Pie Chart  #
 ###############
 fig = figure("pyplot_piechart",figsize=(10,10))
 patches, texts = pie(sizes,
-		labels=labels,
+		pctdistance=1.1,
 		shadow=false,
 		startangle=90,
 		explode=explode,
@@ -46,14 +46,14 @@ explode = zeros(length(sizes))
 #Change
 ##########
 sizes = [Total_Investments_Technology_EPEC[3],Total_Investments_Technology_EPEC[6],Total_Investments_Technology_EPEC[7]]
-font = Dict("fontname"=>"Sans","weight"=>"semibold","color"=>"white","size"=>25)
+font = Dict("fontname"=>"Sans","weight"=>"semibold","color"=>"black","size"=>10)
 
 ###############
 #  Pie Chart  #
 ###############
 fig = figure("pyplot_piechart",figsize=(10,10))
 patches, texts = pie(sizes,
-		labels=labels,
+		pctdistance=1.1,
 		shadow=false,
 		startangle=90,
 		explode=explode,
@@ -82,14 +82,14 @@ explode = zeros(length(sizes))
 #Change
 ##########
 sizes = [Total_Investments_Technology_Firm1_EPEC[3],Total_Investments_Technology_Firm1_EPEC[6],Total_Investments_Technology_Firm1_EPEC[7]]
-font = Dict("fontname"=>"Sans","weight"=>"semibold","color"=>"white","size"=>25)
+font = Dict("fontname"=>"Sans","weight"=>"semibold","color"=>"black","size"=>10)
 
 ###############
 #  Pie Chart  #
 ###############
 fig = figure("pyplot_piechart",figsize=(10,10))
 patches, texts = pie(sizes,
-		labels=labels,
+		pctdistance=1.1,
 		shadow=false,
 		startangle=90,
 		explode=explode,
@@ -117,14 +117,14 @@ explode = zeros(length(sizes))
 #Change
 ##########
 sizes = [Total_Investments_Technology_Firm2_EPEC[3],Total_Investments_Technology_Firm2_EPEC[6],Total_Investments_Technology_Firm2_EPEC[7]]
-font = Dict("fontname"=>"Sans","weight"=>"semibold","color"=>"white","size"=>25)
+font = Dict("fontname"=>"Sans","weight"=>"semibold","color"=>"black","size"=>10)
 
 ###############
 #  Pie Chart  #
 ###############
 fig = figure("pyplot_piechart",figsize=(10,10))
 patches, texts = pie(sizes,
-		labels=labels,
+		pctdistance=1.1,
 		shadow=false,
 		startangle=90,
 		explode=explode,
