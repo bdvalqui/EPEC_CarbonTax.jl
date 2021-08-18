@@ -70,7 +70,7 @@ for e in set_thermalgenerators_options if thermal_ownership_options[e]==Leader
 global x_e_p[e]=x_e_value_MPEC[e]
 global x_e_p_iter[e,iter]=x_e_value_MPEC[e]
 end
-
+end
 
 global Leader=3
 println("")
