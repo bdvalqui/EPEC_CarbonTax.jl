@@ -1,4 +1,4 @@
-function loadinputs(x_w_value,x_e_value,folder::String)
+function loadinputs_4firms(x_w_value,x_e_value,folder::String)
 
     #Congestion
     Trans_Cap=CSV.File(folder *"/congestion_parameter.csv") |> Tables.matrix
@@ -6,16 +6,16 @@ function loadinputs(x_w_value,x_e_value,folder::String)
 #Trans_Cap=100000
     sce=5
     #Sets
-    set_thermalgenerators_options_numbertechnologies=25:34
-    set_wind_options_numbertechnologies=13:16
-    set_thermalgenerators_options=25:44
-    set_wind_options=13:20
-    set_thermalgenerators_existingunits=1:24
-    set_winds_existingunits=1:12
+    set_thermalgenerators_options_numbertechnologies=33:47
+    set_wind_options_numbertechnologies=17:22
+    set_thermalgenerators_options=33:62
+    set_wind_options=17:28
+    set_thermalgenerators_existingunits=1:32
+    set_winds_existingunits=1:16
     #Investemnt Options
     #Existing Units
-    set_thermalgenerators = 1:44
-    set_winds = 1:20
+    set_thermalgenerators = 1:62
+    set_winds = 1:28
 
     set_demands = 1
     set_nodes = 1:3
@@ -27,15 +27,16 @@ function loadinputs(x_w_value,x_e_value,folder::String)
     #set_times= 1:3
     set_times= 1:24
     #Number of Firms (investors). There is also 1 competitive fringe
-    numberfirms=2
+    numberfirms=3
     nodes_th=2
     nodes_rn=2
     #Penalty
     P=100000
     V=1000000
 
-    thermal_ownership_options=[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 2 2 2 2 2 1 1 1 1 1 2 2 2 2 2]
-    wind_ownership_options=[0 0 0 0 0 0 0 0 0 0 0 0 1 1 2 2 1 1 2 2]
+    thermal_ownership_options=[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 2 2 2 2 2 3 3 3 3 3 1 1 1 1 1 2 2 2 2 2 3 3 3 3 3]
+
+    wind_ownership_options=[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 2 2 3 3 1 1 2 2 3 3]
 
     max_demand=1
     R=0.15
@@ -49,6 +50,11 @@ function loadinputs(x_w_value,x_e_value,folder::String)
     for w in set_wind_options if wind_ownership_options[w]!=Leader
     x_w_p[w]=x_w_value[j]*(1/(numberfirms))
     global j=j+1
+
+    if j==5
+    global j=1
+    end
+
     end
     end
 
@@ -57,6 +63,11 @@ function loadinputs(x_w_value,x_e_value,folder::String)
     for e in set_thermalgenerators_options if thermal_ownership_options[e]!=Leader
     x_e_p[e]=x_e_value[j]*(1/numberfirms)
     global j=j+1
+
+    if j==11
+    global j=1
+    end
+
     end
     end
 
@@ -89,7 +100,7 @@ function loadinputs(x_w_value,x_e_value,folder::String)
     Τ=[p_Carbprice_par[sce]]
     p_lambda_upper=[p_lambda_upper_par[sce]]
 
-    wind_rowdata= CSV.File(folder *"/wind.csv") |> Tables.matrix
+    wind_rowdata= CSV.File(folder *"/wind_4firms.csv") |> Tables.matrix
     wind=wind_rowdata'
 
     Ns_H= CSV.File(folder *"/weights.csv") |> Tables.matrix
@@ -131,12 +142,12 @@ function loadinputs(x_w_value,x_e_value,folder::String)
     end
 
 
-    MapG=[(1,1),(2,1),(3,1),(4,1),(5,1),(6,1),(7,1),(8,1),(9,1),(10,1),(11,1),(12,1),(13,2),(14,2),(15,2),(16,2),(17,2),(18,2),(19,2),(20,2),(21,2),(22,2),(23,2),(24,2),(25,1),(26,1),(27,1),(28,1),(29,1),(30,1),(31,1),(32,1),(33,1),(34,1),(35,2),(36,2),(37,2),(38,2),(39,2),(40,2),(41,2),(42,2),(43,2),(44,2)]
+    MapG=[(1,1),(2,1),(3,1),(4,1),(5,1),(6,1),(7,1),(8,1),(9,1),(10,1),(11,1),(12,1),(13,1),(14,1),(15,1),(16,1),(17,2),(18,2),(19,2),(20,2),(21,2),(22,2),(23,2),(24,2),(25,2),(26,2),(27,2),(28,2),(29,2),(30,2),(31,2),(32,2),(33,1),(34,1),(35,1),(36,1),(37,1),(38,1),(39,1),(40,1),(41,1),(42,1),(43,1),(44,1),(45,1),(46,1),(47,1),(48,2),(49,2),(50,2),(51,2),(52,2),(53,2),(54,2),(55,2),(56,2),(57,2),(58,2),(59,2),(60,2),(61,2),(62,2)]
 
     #Define this according to zones
     MapD=[(1,2)]
     #MapW=[(1,2),(2,2),(3,2),(4,2),(5,3),(6,3),(7,3),(8,3),(9,2),(10,2),(11,2),(12,2),(13,3),(14,3),(15,3),(16,3)]
-    MapW=[(1,2),(2,2),(3,2),(4,2),(5,2),(6,2),(7,3),(8,3),(9,3),(10,3),(11,3),(12,3),(13,2),(14,2),(15,2),(16,2),(17,3),(18,3),(19,3),(20,3)]
+    MapW=[(1,2),(2,2),(3,2),(4,2),(5,2),(6,2),(7,2),(8,2),(9,3),(10,3),(11,3),(12,3),(13,3),(14,3),(15,3),(16,3),(17,2),(18,2),(19,2),(20,2),(21,2),(22,2),(23,3),(24,3),(25,3),(26,3),(27,3),(28,3)]
 
 
     #NREL 2020 Data
@@ -146,13 +157,14 @@ function loadinputs(x_w_value,x_e_value,folder::String)
     C_Coal=8500
     C_Wind=12500
     C_Solar=1500
-    firm1_share=0.2
-    firm2_share=0.2
-    firm3_share=0.6
+    firm1_share=0.15
+    firm2_share=0.15
+    firm3_share=0.15
+    firm4_share=0.55
 
 
 
-    tech_thermal=[65          4.5        982962         10000000            1         C_GasCT*firm1_share/(nodes_th)          11395        0.0531            9.5145        2.81        55   600      3
+    tech_thermal=[65      4.5        982962         10000000            1         C_GasCT*firm1_share/(nodes_th)          11395        0.0531            9.5145        2.81        55   600      3
               440         2.2        1088328        10000000            1         C_GasCC*firm1_share/(nodes_th)          12863        0.0531            6.4005        2.81        55   425      4
               1500        2.3        7185655        10000000            1         C_Nuclear*firm1_share/(nodes_th)        118988       0                 10.461        0.66        60    0       6
               650         4.4        4149988        10000000            1         C_Coal*firm1_share/(nodes_th)           39695        0.0955             8.638        2.01        75    90      7
@@ -164,6 +176,10 @@ function loadinputs(x_w_value,x_e_value,folder::String)
               440         2.2        1088328        10000000            3         C_GasCC*firm3_share/(nodes_th)          12863        0.0531            6.4005        2.81        55   425      4
               1500        2.3        7185655        10000000            3         C_Nuclear*firm3_share/(nodes_th)        118988       0                 10.461        0.66        60    0       6
               650         4.4        4149988        10000000            3         C_Coal*firm3_share/(nodes_th)           39695        0.0955             8.638        2.01        75    90      7
+              65          4.5        982962         10000000            4         C_GasCT*firm4_share/(nodes_th)          11395        0.0531            9.5145        2.81        55   600      3
+              440         2.2        1088328        10000000            4         C_GasCC*firm4_share/(nodes_th)          12863        0.0531            6.4005        2.81        55   425      4
+              1500        2.3        7185655        10000000            4         C_Nuclear*firm4_share/(nodes_th)        118988       0                 10.461        0.66        60    0       6
+              650         4.4        4149988        10000000            4         C_Coal*firm4_share/(nodes_th)           39695        0.0955             8.638        2.01        75    90      7
               65          4.5        982962         10000000            1         C_GasCT*firm1_share/(nodes_th)          11395        0.0531            9.5145        2.81        55   600      3
               440         2.2        1088328        10000000            1         C_GasCC*firm1_share/(nodes_th)          12863        0.0531            6.4005        2.81        55   425      4
               1500        2.3        7185655        10000000            1         C_Nuclear*firm1_share/(nodes_th)        118988       0                 10.461        0.66        60    0       6
@@ -176,6 +192,10 @@ function loadinputs(x_w_value,x_e_value,folder::String)
               440         2.2        1088328        10000000            3         C_GasCC*firm3_share/(nodes_th)          12863        0.0531            6.4005        2.81        55   425      4
               1500        2.3        7185655        10000000            3         C_Nuclear*firm3_share/(nodes_th)        118988       0                 10.461        0.66        60    0       6
               650         4.4        4149988        10000000            3         C_Coal*firm3_share/(nodes_th)           39695        0.0955             8.638        2.01        75    90      7
+              65          4.5        982962         10000000            4         C_GasCT*firm4_share/(nodes_th)          11395        0.0531            9.5145        2.81        55   600      3
+              440         2.2        1088328        10000000            4         C_GasCC*firm4_share/(nodes_th)          12863        0.0531            6.4005        2.81        55   425      4
+              1500        2.3        7185655        10000000            4         C_Nuclear*firm4_share/(nodes_th)        118988       0                 10.461        0.66        60    0       6
+              650         4.4        4149988        10000000            4         C_Coal*firm4_share/(nodes_th)           39695        0.0955             8.638        2.01        75    90      7
               650         6.9        5299096        10000000            1              0                                  53114        0.0096            9.751         2.01        75    90      1
               650         10.7       6830748        10000000            1              0                                  58242        0.0096            12.507        2.01        75    90      2
               65          4.5        982962         10000000            1              0                                  11395        0.0531            9.5145        2.81        55   600      3
@@ -186,6 +206,11 @@ function loadinputs(x_w_value,x_e_value,folder::String)
               65          4.5        982962         10000000            2              0                                  11395        0.0531            9.5145        2.81        55   600      3
               440         2.2        1088328        10000000            2              0                                  12863        0.0531            6.4005        2.81        55   425      4
               440         5.7        2778138        10000000            2              0                                  26994        0.0053             7.525        2.81        55   425      5
+              650         6.9        5299096        10000000            3              0                                  53114        0.0096            9.751         2.01        75    90      1
+              650         10.7       6830748        10000000            3              0                                  58242        0.0096            12.507        2.01        75    90      2
+              65          4.5        982962         10000000            3              0                                  11395        0.0531            9.5145        2.81        55   600      3
+              440         2.2        1088328        10000000            3              0                                  12863        0.0531            6.4005        2.81        55   425      4
+              440         5.7        2778138        10000000            3              0                                  26994        0.0053             7.525        2.81        55   425      5
               650         6.9        5299096        10000000            1              0                                  53114        0.0096            9.751         2.01        75    90      1
               650         10.7       6830748        10000000            1              0                                  58242        0.0096            12.507        2.01        75    90      2
               65          4.5        982962         10000000            1              0                                  11395        0.0531            9.5145        2.81        55   600      3
@@ -195,7 +220,12 @@ function loadinputs(x_w_value,x_e_value,folder::String)
               650         10.7       6830748        10000000            2              0                                  58242        0.0096            12.507        2.01        75    90      2
               65          4.5        982962         10000000            2              0                                  11395        0.0531            9.5145        2.81        55   600      3
               440         2.2        1088328        10000000            2              0                                  12863        0.0531            6.4005        2.81        55   425      4
-              440         5.7        2778138        10000000            2              0                                  26994        0.0053             7.525        2.81        55   425      5]
+              440         5.7        2778138        10000000            2              0                                  26994        0.0053             7.525        2.81        55   425      5
+              650         6.9        5299096        10000000            3              0                                  53114        0.0096            9.751         2.01        75    90      1
+              650         10.7       6830748        10000000            3              0                                  58242        0.0096            12.507        2.01        75    90      2
+              65          4.5        982962         10000000            3              0                                  11395        0.0531            9.5145        2.81        55   600      3
+              440         2.2        1088328        10000000            3              0                                  12863        0.0531            6.4005        2.81        55   425      4
+              440         5.7        2778138        10000000            3              0                                  26994        0.0053             7.525        2.81        55   425      5]
 
 tech_wind=[    300         0.0              1604886        10000000             1       C_Wind*firm1_share/(nodes_th)         43205        0                    0          0.00        30    0   1
                300         0.0              1599902        10000000             1       C_Solar*firm1_share/(nodes_th)        18760        0                    0          0.00        30    0   2
@@ -203,20 +233,28 @@ tech_wind=[    300         0.0              1604886        10000000             
                300         0.0              1599902        10000000             2       C_Solar*firm2_share/(nodes_th)        18760        0                    0          0.00        30    0   2
                300         0.0              1604886        10000000             3       C_Wind*firm3_share/(nodes_th)         43205        0                    0          0.00        30    0   1
                300         0.0              1599902        10000000             3       C_Solar*firm3_share/(nodes_th)        18760        0                    0          0.00        30    0   2
+               300         0.0              1604886        10000000             4       C_Wind*firm4_share/(nodes_th)         43205        0                    0          0.00        30    0   1
+               300         0.0              1599902        10000000             4       C_Solar*firm4_share/(nodes_th)        18760        0                    0          0.00        30    0   2
                300         0.0              1604886        10000000             1       C_Wind*firm1_share/(nodes_th)         43205        0                    0          0.00        30    0   1
                300         0.0              1599902        10000000             1       C_Solar*firm1_share/(nodes_th)        18760        0                    0          0.00        30    0   2
                300         0.0              1604886        10000000             2       C_Wind*firm2_share/(nodes_th)         43205        0                    0          0.00        30    0   1
                300         0.0              1599902        10000000             2       C_Solar*firm2_share/(nodes_th)        18760        0                    0          0.00        30    0   2
                300         0.0              1604886        10000000             3       C_Wind*firm3_share/(nodes_th)         43205        0                    0          0.00        30    0   1
                300         0.0              1599902        10000000             3       C_Solar*firm3_share/(nodes_th)        18760        0                    0          0.00        30    0   2
+               300         0.0              1604886        10000000             4       C_Wind*firm4_share/(nodes_th)         43205        0                    0          0.00        30    0   1
+               300         0.0              1599902        10000000             4       C_Solar*firm4_share/(nodes_th)        18760        0                    0          0.00        30    0   2
                300         0.0              1604886        10000000             1             0                               43205        0                    0          0.00        30    0   1
                300         0.0              1599902        10000000             1             0                               18760        0                    0          0.00        30    0   2
                300         0.0              1604886        10000000             2             0                               43205        0                    0          0.00        30    0   1
                300         0.0              1599902        10000000             2             0                               18760        0                    0          0.00        30    0   2
+               300         0.0              1604886        10000000             3             0                               43205        0                    0          0.00        30    0   1
+               300         0.0              1599902        10000000             3             0                               18760        0                    0          0.00        30    0   2
                300         0.0              1604886        10000000             1             0                               43205        0                    0          0.00        30    0   1
                300         0.0              1599902        10000000             1             0                               18760        0                    0          0.00        30    0   2
                300         0.0              1604886        10000000             2             0                               43205        0                    0          0.00        30    0   1
-               300         0.0              1599902        10000000             2             0                               18760        0                    0          0.00        30    0   2]
+               300         0.0              1599902        10000000             2             0                               18760        0                    0          0.00        30    0   2
+               300         0.0              1604886        10000000             3             0                               43205        0                    0          0.00        30    0   1
+               300         0.0              1599902        10000000             3             0                               18760        0                    0          0.00        30    0   2]
 
  #Indices for set_tech
 capacity_per_unit=1
