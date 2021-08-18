@@ -91,8 +91,6 @@ global x_e_p_iter[e,iter]=x_e_value_MPEC[e]
 end
 end
 
-end
-
 global TotalCost_Emissions=zeros(4)
 global TotalCost_Emissions[3]=TotalCost_MPEC
 global TotalCost_Emissions[4]=TotalEmissions_MPEC
