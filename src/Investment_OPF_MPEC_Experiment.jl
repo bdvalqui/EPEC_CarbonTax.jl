@@ -244,6 +244,7 @@ end
 @constraint(m, constraint18[t in set_times,s in set_scenarios], sum(υ_SR[e,t,s] for e in set_thermalgenerators) == Υ_SR[t])
 
 #Additional constraints to ensure that the investments are distributed across 2 buses.
+#=
 if Leader==1
 global j=35
 elseif Leader==2
@@ -267,7 +268,7 @@ for w in set_wind_options_numbertechnologies if wind_ownership_options[w]==Leade
 global j=j+1
 end
 end
-
+=#
 # Compute Revenue to Compare
 @constraint(m,revenue_firm==sum(sum((-sum(varcost_thermal[e]*p_G_e[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]!=Leader)
           -sum(varcost_wind[w]*p_G_w[w,t,s]  for w in set_winds if tech_wind[w,ownership]!= Leader)

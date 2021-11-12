@@ -74,7 +74,7 @@ m=Model(optimizer)
 @constraint(m, constraint13[e in set_opt_thermalgenerators,t in set_times,s in set_scenarios], υ_SR_opt[e,t,s] <=x_e[e]*tech_thermal_opt[e,RamUP]/tech_thermal_opt[e,capacity_per_unit])
 
 #Additional constraints to ensure that the investments are distributed across 2 buses.
-
+#=
 global j=6
 for e in set_opt_thermalgenerators_numbertechnologies
 @constraint(m, x_e[e] == x_e[j])
@@ -86,7 +86,7 @@ for w in set_opt_winds_numbertechnologies
 @constraint(m, x_w[w] == x_w[j])
 global j=j+1
 end
-
+=#
 for i in set_opt_thermalgenerators_numbertechnologies
 @constraint(m,Total_Investments_Technology_variable_CP[i]==sum(x_e[e] for e in set_opt_thermalgenerators if tech_thermal_opt[e,Technology]== i))
 end
