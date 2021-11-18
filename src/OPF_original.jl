@@ -385,8 +385,8 @@ revenue_cost_CP[1]=Totalrevenue*0.2
 revenue_cost_CP[2]=TotalOpecost*0.2
 revenue_cost_CP[3]=Totalrevenue*0.2
 revenue_cost_CP[4]=TotalOpecost*0.2
-revenue_cost_CP[3]=Totalrevenue*0.6
-revenue_cost_CP[4]=TotalOpecost*0.6
+revenue_cost_CP[5]=Totalrevenue*0.6
+revenue_cost_CP[6]=TotalOpecost*0.6
 
 #Thermal Generation
 p_G_e_value_CP=zeros(18,length(set_times),length(set_scenarios))
