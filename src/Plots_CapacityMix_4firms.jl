@@ -23,7 +23,7 @@ patches, texts = pie(sizes,
 		startangle=90,
 		explode=explode,
 		colors=colors,
-		autopct="%1.1f%%",
+		autopct="%1.2f%%",
 		textprops=font)
 
 legend(patches, labels, loc="upper center",frameon=false,fontsize=25,bbox_to_anchor=(1, 0, 0.5, 1))
@@ -58,7 +58,7 @@ patches, texts = pie(sizes,
 		startangle=90,
 		explode=explode,
 		colors=colors,
-		autopct="%1.1f%%",
+		autopct="%1.2f%%",
 		textprops=font)
 
 legend(patches, labels, loc="upper center",frameon=false,fontsize=25,bbox_to_anchor=(1, 0, 0.5, 1))
@@ -94,7 +94,7 @@ patches, texts = pie(sizes,
 		startangle=90,
 		explode=explode,
 		colors=colors,
-		autopct="%1.1f%%",
+		autopct="%1.2f%%",
 		textprops=font)
 
 legend(patches, labels, loc="upper center",frameon=false,fontsize=25,bbox_to_anchor=(1, 0, 0.5, 1))
@@ -129,7 +129,7 @@ patches, texts = pie(sizes,
 		startangle=90,
 		explode=explode,
 		colors=colors,
-		autopct="%1.1f%%",
+		autopct="%1.2f%%",
 		textprops=font)
 
 legend(patches, labels, loc="upper center",frameon=false,fontsize=25,bbox_to_anchor=(1, 0, 0.5, 1))
@@ -165,7 +165,7 @@ patches, texts = pie(sizes,
 		startangle=90,
 		explode=explode,
 		colors=colors,
-		autopct="%1.1f%%",
+		autopct="%1.2f%%",
 		textprops=font)
 
 legend(patches, labels, loc="upper center",frameon=false,fontsize=25,bbox_to_anchor=(1, 0, 0.5, 1))
