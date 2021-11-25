@@ -25,7 +25,7 @@ function loadinputs_4firms(x_w_value,x_e_value,folder::String)
     #set_scenarios= 1:3
     set_scenarios= 1
     #set_times= 1:3
-    set_times= 1:24
+    set_times= 1:8
     #Number of Firms (investors). There is also 1 competitive fringe
     numberfirms=3
     nodes_th=2

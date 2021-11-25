@@ -1,7 +1,7 @@
 function Plots_Prices(data_prices_CP,data_prices_EPEC,set_times,Τ)
 
-global Demand_Block=zeros(24)
-for i in 1:24
+global Demand_Block=zeros(8)
+for i in 1:8
 global Demand_Block[i]=i
 end
 sce=5

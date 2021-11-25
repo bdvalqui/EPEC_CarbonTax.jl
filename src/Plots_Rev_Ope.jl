@@ -1,7 +1,7 @@
 function Plots_Rev_Ope(Total_Revenue_Cost_demandblock_CP,Total_Revenue_Cost_demandblock_EPEC,set_times,Τ)
 
-global Demand_Block=zeros(24)
-for i in 1:24
+global Demand_Block=zeros(8)
+for i in 1:8
 global Demand_Block[i]=i
 end
 

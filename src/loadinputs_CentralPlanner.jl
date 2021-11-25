@@ -22,7 +22,7 @@ function loadinputs_CentralPlanner(folder::String)
     set_nodes_noref=2:3
     #Operating conditions-scenarios-clsuters
     set_scenarios= 1
-    set_times= 1:24
+    set_times= 1:8
     #Penalty
     P=100000
     V=1000000
