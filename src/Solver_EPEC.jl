@@ -3,7 +3,7 @@ function Solver_EPEC(optimizer::Type{<:AbstractOptimizer},resultfile::String="",
 #global data_prices_EPEC=zeros(3,24)
 #global data_prices_CP=zeros(3,24)
 
-global iterations=1:3
+global iterations=1:1
 
 #Deterministic Equivalent------------------------------------------------------#
 println("Loading inputs...")
@@ -37,7 +37,7 @@ global Leader=1
 println("")
 println("Firm $Leader Problem...")
 println("")
-(profit_det_MPEC,x_w_value_MPEC,x_e_value_MPEC,Totalrevenue_MPEC_Firm1,TotalOperatingCost_MPEC_Firm1,Totalrevenue_MPEC_Firm2,TotalOperatingCost_MPEC_Firm2,Totalrevenue_MPEC_Firm3,TotalOperatingCost_MPEC_Firm3, Electricity_prices_MPEC, Spinning_prices_MPEC, υ_SR_value_MPEC, p_G_e_value_MPEC, p_G_w_value_MPEC, p_G_e_value_node1_MPEC, p_G_e_value_node2_MPEC, p_G_e_value_node3_MPEC, p_G_w_value_node1_MPEC, p_G_w_value_node2_MPEC, p_G_w_value_node3_MPEC, Electricity_prices_MPEC, TotalCost_MPEC,TotalEmissions_MPEC,Totalrevenue_demandblock_MPEC_Firm1, TotalOperatingCost_demandblock_MPEC_Firm1,Totalrevenue_demandblock_MPEC_Firm2, TotalOperatingCost_demandblock_MPEC_Firm2, Totalrevenue_demandblock_MPEC_Firm3, TotalOperatingCost_demandblock_MPEC_Firm3, TotalCapCost_EPEC, TotalFixedCost_EPEC, TotalEmissionsCost_EPEC, TotalOperatingCost_EPEC,TotalCurtailmentcost_EPEC, Total_Investments_Technology_Firm1_EPEC,Total_Investments_Technology_Firm2_EPEC,Total_Investments_Technology_EPEC,Total_Generation_Technology_EPEC,Total_Generation_Technology_Existing_EPEC,Total_Generation_Technology_Candidate_EPEC, Total_Generation_Technology_node1_EPEC, Total_Generation_Technology_node2_EPEC, Total_Generation_Technology_node3_EPEC )=Investment_OPF_MPEC(optimizer,set_thermalgenerators_options_numbertechnologies,set_wind_options_numbertechnologies,set_thermalgenerators_options,set_wind_options,set_thermalgenerators_existingunits,set_winds_existingunits,set_thermalgenerators,set_winds,set_demands,set_nodes,set_nodes_ref,set_nodes_noref,set_scenarios,set_times,P,V,thermal_ownership_options,wind_ownership_options,x_w_p,x_e_p,Leader, p_D,D,max_demand,Υ_SR,γ,Τ,p_lambda_upper,wind,Ns_H,n_link,links,links_rev,F_max_dict,B_dict,MapG,MapD,MapW,tech_thermal,tech_wind,capacity_per_unit,var_om,invcost,maxBuilds,ownership,capacity_existingunits,fixedcost,EmissionsRate,HeatRate,fuelprice,life,RamUP,Technology,WACC,varcost_thermal,varcost_wind,CRF_thermal,CRF_wind,set_opt_winds_numbertechnologies,set_opt_thermalgenerators_numbertechnologies)
+(profit_det_MPEC,x_w_value_MPEC,x_e_value_MPEC,Totalrevenue_MPEC_Firm1,TotalOperatingCost_MPEC_Firm1,Totalrevenue_MPEC_Firm2,TotalOperatingCost_MPEC_Firm2,Totalrevenue_MPEC_Firm3,TotalOperatingCost_MPEC_Firm3, Electricity_prices_MPEC, Spinning_prices_MPEC, υ_SR_value_MPEC, p_G_e_value_MPEC, p_G_w_value_MPEC, p_G_e_value_node1_MPEC, p_G_e_value_node2_MPEC, p_G_e_value_node3_MPEC, p_G_w_value_node1_MPEC, p_G_w_value_node2_MPEC, p_G_w_value_node3_MPEC, Electricity_prices_MPEC, TotalCost_MPEC,TotalEmissions_MPEC,Totalrevenue_demandblock_MPEC_Firm1, TotalOperatingCost_demandblock_MPEC_Firm1,Totalrevenue_demandblock_MPEC_Firm2, TotalOperatingCost_demandblock_MPEC_Firm2, Totalrevenue_demandblock_MPEC_Firm3, TotalOperatingCost_demandblock_MPEC_Firm3, TotalCapCost_EPEC, TotalFixedCost_EPEC, TotalEmissionsCost_EPEC, TotalOperatingCost_EPEC,TotalCurtailmentcost_EPEC, Total_Investments_Technology_Firm1_EPEC,Total_Investments_Technology_Firm2_EPEC,Total_Investments_Technology_EPEC,Total_Generation_Technology_EPEC,Total_Generation_Technology_Existing_EPEC,Total_Generation_Technology_Candidate_EPEC, Total_Generation_Technology_node1_EPEC, Total_Generation_Technology_node2_EPEC, Total_Generation_Technology_node3_EPEC,Total_Emissions_Technology_Existing_EPEC,Total_Emissions_Technology_Candidate_EPEC )=Investment_OPF_MPEC(optimizer,set_thermalgenerators_options_numbertechnologies,set_wind_options_numbertechnologies,set_thermalgenerators_options,set_wind_options,set_thermalgenerators_existingunits,set_winds_existingunits,set_thermalgenerators,set_winds,set_demands,set_nodes,set_nodes_ref,set_nodes_noref,set_scenarios,set_times,P,V,thermal_ownership_options,wind_ownership_options,x_w_p,x_e_p,Leader, p_D,D,max_demand,Υ_SR,γ,Τ,p_lambda_upper,wind,Ns_H,n_link,links,links_rev,F_max_dict,B_dict,MapG,MapD,MapW,tech_thermal,tech_wind,capacity_per_unit,var_om,invcost,maxBuilds,ownership,capacity_existingunits,fixedcost,EmissionsRate,HeatRate,fuelprice,life,RamUP,Technology,WACC,varcost_thermal,varcost_wind,CRF_thermal,CRF_wind,set_opt_winds_numbertechnologies,set_opt_thermalgenerators_numbertechnologies)
 
 for w in set_wind_options if wind_ownership_options[w]==Leader
 global x_w_p[w]=x_w_value_MPEC[w]
@@ -56,7 +56,7 @@ println("")
 println("Firm $Leader Problem...")
 println("")
 
-(profit_det_MPEC,x_w_value_MPEC,x_e_value_MPEC,Totalrevenue_MPEC_Firm1,TotalOperatingCost_MPEC_Firm1,Totalrevenue_MPEC_Firm2,TotalOperatingCost_MPEC_Firm2,Totalrevenue_MPEC_Firm3,TotalOperatingCost_MPEC_Firm3, Electricity_prices_MPEC, Spinning_prices_MPEC, υ_SR_value_MPEC, p_G_e_value_MPEC, p_G_w_value_MPEC, p_G_e_value_node1_MPEC, p_G_e_value_node2_MPEC, p_G_e_value_node3_MPEC, p_G_w_value_node1_MPEC, p_G_w_value_node2_MPEC, p_G_w_value_node3_MPEC, Electricity_prices_MPEC, TotalCost_MPEC,TotalEmissions_MPEC,Totalrevenue_demandblock_MPEC_Firm1, TotalOperatingCost_demandblock_MPEC_Firm1,Totalrevenue_demandblock_MPEC_Firm2, TotalOperatingCost_demandblock_MPEC_Firm2, Totalrevenue_demandblock_MPEC_Firm3, TotalOperatingCost_demandblock_MPEC_Firm3, TotalCapCost_EPEC, TotalFixedCost_EPEC, TotalEmissionsCost_EPEC, TotalOperatingCost_EPEC,TotalCurtailmentcost_EPEC, Total_Investments_Technology_Firm1_EPEC,Total_Investments_Technology_Firm2_EPEC,Total_Investments_Technology_EPEC,Total_Generation_Technology_EPEC,Total_Generation_Technology_Existing_EPEC,Total_Generation_Technology_Candidate_EPEC, Total_Generation_Technology_node1_EPEC, Total_Generation_Technology_node2_EPEC, Total_Generation_Technology_node3_EPEC )=Investment_OPF_MPEC(optimizer,set_thermalgenerators_options_numbertechnologies,set_wind_options_numbertechnologies,set_thermalgenerators_options,set_wind_options,set_thermalgenerators_existingunits,set_winds_existingunits,set_thermalgenerators,set_winds,set_demands,set_nodes,set_nodes_ref,set_nodes_noref,set_scenarios,set_times,P,V,thermal_ownership_options,wind_ownership_options,x_w_p,x_e_p,Leader, p_D,D,max_demand,Υ_SR,γ,Τ,p_lambda_upper,wind,Ns_H,n_link,links,links_rev,F_max_dict,B_dict,MapG,MapD,MapW,tech_thermal,tech_wind,capacity_per_unit,var_om,invcost,maxBuilds,ownership,capacity_existingunits,fixedcost,EmissionsRate,HeatRate,fuelprice,life,RamUP,Technology,WACC,varcost_thermal,varcost_wind,CRF_thermal,CRF_wind,set_opt_winds_numbertechnologies,set_opt_thermalgenerators_numbertechnologies)
+(profit_det_MPEC,x_w_value_MPEC,x_e_value_MPEC,Totalrevenue_MPEC_Firm1,TotalOperatingCost_MPEC_Firm1,Totalrevenue_MPEC_Firm2,TotalOperatingCost_MPEC_Firm2,Totalrevenue_MPEC_Firm3,TotalOperatingCost_MPEC_Firm3, Electricity_prices_MPEC, Spinning_prices_MPEC, υ_SR_value_MPEC, p_G_e_value_MPEC, p_G_w_value_MPEC, p_G_e_value_node1_MPEC, p_G_e_value_node2_MPEC, p_G_e_value_node3_MPEC, p_G_w_value_node1_MPEC, p_G_w_value_node2_MPEC, p_G_w_value_node3_MPEC, Electricity_prices_MPEC, TotalCost_MPEC,TotalEmissions_MPEC,Totalrevenue_demandblock_MPEC_Firm1, TotalOperatingCost_demandblock_MPEC_Firm1,Totalrevenue_demandblock_MPEC_Firm2, TotalOperatingCost_demandblock_MPEC_Firm2, Totalrevenue_demandblock_MPEC_Firm3, TotalOperatingCost_demandblock_MPEC_Firm3, TotalCapCost_EPEC, TotalFixedCost_EPEC, TotalEmissionsCost_EPEC, TotalOperatingCost_EPEC,TotalCurtailmentcost_EPEC, Total_Investments_Technology_Firm1_EPEC,Total_Investments_Technology_Firm2_EPEC,Total_Investments_Technology_EPEC,Total_Generation_Technology_EPEC,Total_Generation_Technology_Existing_EPEC,Total_Generation_Technology_Candidate_EPEC, Total_Generation_Technology_node1_EPEC, Total_Generation_Technology_node2_EPEC, Total_Generation_Technology_node3_EPEC,Total_Emissions_Technology_Existing_EPEC,Total_Emissions_Technology_Candidate_EPEC )=Investment_OPF_MPEC(optimizer,set_thermalgenerators_options_numbertechnologies,set_wind_options_numbertechnologies,set_thermalgenerators_options,set_wind_options,set_thermalgenerators_existingunits,set_winds_existingunits,set_thermalgenerators,set_winds,set_demands,set_nodes,set_nodes_ref,set_nodes_noref,set_scenarios,set_times,P,V,thermal_ownership_options,wind_ownership_options,x_w_p,x_e_p,Leader, p_D,D,max_demand,Υ_SR,γ,Τ,p_lambda_upper,wind,Ns_H,n_link,links,links_rev,F_max_dict,B_dict,MapG,MapD,MapW,tech_thermal,tech_wind,capacity_per_unit,var_om,invcost,maxBuilds,ownership,capacity_existingunits,fixedcost,EmissionsRate,HeatRate,fuelprice,life,RamUP,Technology,WACC,varcost_thermal,varcost_wind,CRF_thermal,CRF_wind,set_opt_winds_numbertechnologies,set_opt_thermalgenerators_numbertechnologies)
 
 for w in set_wind_options if wind_ownership_options[w]==Leader
 global x_w_p[w]=x_w_value_MPEC[w]
@@ -69,6 +69,12 @@ global x_e_p[e]=x_e_value_MPEC[e]
 global x_e_p_iter[e,iter]=x_e_value_MPEC[e]
 end
 end
+
+global Total_Emissions_Technology_Existing_EPEC_par=zeros(9,length(set_times))
+global Total_Emissions_Technology_Candidate_EPEC_par=zeros(9,length(set_times))
+
+global Total_Emissions_Technology_Existing_EPEC_par=Total_Emissions_Technology_Existing_EPEC
+global Total_Emissions_Technology_Candidate_EPEC_par=Total_Emissions_Technology_Candidate_EPEC
 
 global TotalCost_Emissions=zeros(4)
 global TotalCost_Emissions[3]=TotalCost_MPEC
@@ -100,6 +106,9 @@ global df_node3_EPEC_thermalgeneration =  DataFrame(p_G_e_value_node3_MPEC[:,:,1
 global df_node1_EPEC_windgeneration =  DataFrame(p_G_w_value_node1_MPEC[:,:,1], :auto)
 global df_node2_EPEC_windgeneration =  DataFrame(p_G_w_value_node2_MPEC[:,:,1], :auto)
 global df_node3_EPEC_windgeneration =  DataFrame(p_G_w_value_node3_MPEC[:,:,1], :auto)
+
+global df_EPEC_emissions_Existing = DataFrame(Total_Emissions_Technology_Existing_EPEC,:auto)
+global df_EPEC_emissions_Candidate = DataFrame(Total_Emissions_Technology_Candidate_EPEC,:auto)
 
 global df_Total_Investments_Technology_Firm1_EPEC=DataFrame(Total_Investments_Technology_Firm1_EPEC',:auto)
 
@@ -148,7 +157,7 @@ end
 df_CP_thermalinvestments = DataFrame(x_e_value',:auto)
 df_CP_windinvestments = DataFrame(x_w_value',:auto)
 
-(syscost_det_OPF,TotalEmissions,TotalRevenue_demandblock,TotalOpecost_demandblock,revenue_cost_CP,TotalCapCost,TotalFixedCost,TotalEmissionsCost,TotalOpecost,TotalCurtailmentcost,p_G_e_value_CP,p_G_e_value_node1_CP,p_G_e_value_node2_CP,p_G_e_value_node3_CP,p_G_w_value_CP,p_G_w_value_node1_CP,p_G_w_value_node2_CP,p_G_w_value_node3_CP,υ_SR_value_CP,Dual_constraint10,Dual_constraint11,Total_Generation_Technology_CP,Total_Generation_Technology_Existing_CP,Total_Generation_Technology_Candidate_CP, Total_Generation_Technology_node1_CP, Total_Generation_Technology_node2_CP, Total_Generation_Technology_node3_CP)=Solver_OPF(optimizer,"results/OPF_Solution.txt")
+(syscost_det_OPF,TotalEmissions,TotalRevenue_demandblock,TotalOpecost_demandblock,revenue_cost_CP,TotalCapCost,TotalFixedCost,TotalEmissionsCost,TotalOpecost,TotalCurtailmentcost,p_G_e_value_CP,p_G_e_value_node1_CP,p_G_e_value_node2_CP,p_G_e_value_node3_CP,p_G_w_value_CP,p_G_w_value_node1_CP,p_G_w_value_node2_CP,p_G_w_value_node3_CP,υ_SR_value_CP,Dual_constraint10,Dual_constraint11,Total_Generation_Technology_CP,Total_Generation_Technology_Existing_CP,Total_Generation_Technology_Candidate_CP, Total_Generation_Technology_node1_CP, Total_Generation_Technology_node2_CP,Total_Generation_Technology_node3_CP,Total_Emissions_Technology_CP,Total_Emissions_Technology_Candidate_CP,Total_Emissions_Technology_Existing_CP)=Solver_OPF(optimizer,"results/OPF_Solution.txt")
 
 
 #===================================#
@@ -157,6 +166,9 @@ df_CP_prices = DataFrame(Dual_constraint10[:,:,1], :auto)
 df_CP_spinning_prices = DataFrame(Dual_constraint11[:,1]', :auto)
 df_CP_spinning_reserves = DataFrame(υ_SR_value_CP[:,:,1], :auto)
 df_CP_thermalgeneration =  DataFrame(p_G_e_value_CP[:,:,1], :auto)
+df_CP_thermalemissions =  DataFrame(Total_Emissions_Technology_CP, :auto)
+df_CP_thermalemissions_Candidate =  DataFrame(Total_Emissions_Technology_Candidate_CP, :auto)
+df_CP_thermalemissions_Existing =  DataFrame(Total_Emissions_Technology_Existing_CP, :auto)
 df_node1_CP_thermalgeneration =  DataFrame(p_G_e_value_node1_CP[:,:,1], :auto)
 df_node2_CP_thermalgeneration =  DataFrame(p_G_e_value_node2_CP[:,:,1], :auto)
 df_node3_CP_thermalgeneration =  DataFrame(p_G_e_value_node3_CP[:,:,1], :auto)
@@ -181,6 +193,10 @@ CSV.write(folder *"/Results_windgeneration_node2_CP$Τ.csv", df_node2_CP_windgen
 CSV.write(folder *"/Results_windgeneration_node3_CP$Τ.csv", df_node3_CP_windgeneration)
 CSV.write(folder *"/Results_thermalinvestments_CP$Τ.csv", df_CP_thermalinvestments)
 CSV.write(folder *"/Results_windinvestments_CP$Τ.csv", df_CP_windinvestments)
+
+CSV.write(folder *"/Results_emissions_CP$Τ.csv", df_CP_thermalemissions)
+CSV.write(folder *"/Results_emissions_Candidate_CP$Τ.csv", df_CP_thermalemissions_Candidate)
+CSV.write(folder *"/Results_emissions_Existing_CP$Τ.csv", df_CP_thermalemissions_Existing)
 
 global TotalCost_Emissions[1]=syscost_det
 global TotalCost_Emissions[2]=TotalEmissions
@@ -237,12 +253,15 @@ CSV.write(folder *"/Results_Total_Investments_Firm1_EPEC$Τ.csv", df_Total_Inves
 
 CSV.write(folder *"/Results_Total_Investments_Firm2_EPEC$Τ.csv", df_Total_Investments_Technology_Firm2_EPEC)
 
+CSV.write(folder *"/Results_emissions_Candidate_EPEC$Τ.csv", df_EPEC_emissions_Candidate)
+CSV.write(folder *"/Results_emissions_Existing_EPEC$Τ.csv", df_EPEC_emissions_Existing)
+
 
 (data_prices_CP_res,data_prices_EPEC_res)=Plots_Prices(data_prices_CP,data_prices_EPEC,set_times,Τ)
 
 (Total_Investments_Technology_CP_res,Total_Investments_Technology_EPEC_res)=Plots_CapacityMix(Total_Investments_Technology_CP,Total_Investments_Technology_EPEC_par,Total_Investments_Technology_Firm1_EPEC_par,Total_Investments_Technology_Firm2_EPEC_par,Τ)
 
-(Total_Generation_Technology_CP_res)=Plots_Generation(Total_Generation_Technology_CP,Total_Generation_Technology_Existing_CP,Total_Generation_Technology_Candidate_CP, Total_Generation_Technology_node1_CP, Total_Generation_Technology_node2_CP, Total_Generation_Technology_node3_CP,Total_Generation_Technology_EPEC_par,Total_Generation_Technology_Existing_EPEC_par,Total_Generation_Technology_Candidate_EPEC_par, Total_Generation_Technology_node1_EPEC_par, Total_Generation_Technology_node2_EPEC_par, Total_Generation_Technology_node3_EPEC_par,set_times,Τ)
+(Total_Generation_Technology_CP_res)=Plots_Generation(Total_Generation_Technology_CP,Total_Generation_Technology_Existing_CP,Total_Generation_Technology_Candidate_CP, Total_Generation_Technology_node1_CP, Total_Generation_Technology_node2_CP, Total_Generation_Technology_node3_CP,Total_Generation_Technology_EPEC_par,Total_Generation_Technology_Existing_EPEC_par,Total_Generation_Technology_Candidate_EPEC_par, Total_Generation_Technology_node1_EPEC_par, Total_Generation_Technology_node2_EPEC_par, Total_Generation_Technology_node3_EPEC_par,set_times,Τ,Total_Emissions_Technology_CP,Total_Emissions_Technology_Candidate_CP,Total_Emissions_Technology_Existing_CP,Total_Emissions_Technology_Existing_EPEC_par,Total_Emissions_Technology_Candidate_EPEC_par)
 
 (Total_Revenue_Cost_demandblock_CP_res)=Plots_Rev_Ope(Total_Revenue_Cost_demandblock_CP,Total_Revenue_Cost_demandblock_EPEC,set_times,Τ)
 

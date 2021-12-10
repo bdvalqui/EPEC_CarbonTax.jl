@@ -328,6 +328,10 @@ Total_Generation_Technology_CP=zeros(9,length(set_times))
 Total_Generation_Technology_Existing_CP=zeros(9,length(set_times))
 Total_Generation_Technology_Candidate_CP=zeros(9,length(set_times))
 
+Total_Emissions_Technology_CP=zeros(9,length(set_times))
+Total_Emissions_Technology_Existing_CP=zeros(9,length(set_times))
+Total_Emissions_Technology_Candidate_CP=zeros(9,length(set_times))
+
 for i in 1:7
 for t in set_times
 Total_Generation_Technology_CP[i,t]=sum(p_G_e_value[e,t,1] for e in set_thermalgenerators if tech_thermal[e,Technology]==i;init=0)+sum(p_G_e_opt_value[e,t,1] for e in set_opt_thermalgenerators if tech_thermal_opt[e,Technology]==i;init=0)
@@ -335,6 +339,13 @@ Total_Generation_Technology_CP[i,t]=sum(p_G_e_value[e,t,1] for e in set_thermalg
 Total_Generation_Technology_Candidate_CP[i,t]=sum(p_G_e_opt_value[e,t,1] for e in set_opt_thermalgenerators if tech_thermal_opt[e,Technology]==i;init=0)
 
 Total_Generation_Technology_Existing_CP[i,t]=sum(p_G_e_value[e,t,1] for e in set_thermalgenerators if tech_thermal[e,Technology]==i;init=0)
+
+Total_Emissions_Technology_CP[i,t]=sum(tech_thermal[e,EmissionsRate]*tech_thermal[e,HeatRate]*p_G_e_value[e,t,1] for e in set_thermalgenerators if tech_thermal[e,Technology]==i;init=0)+sum(tech_thermal_opt[e,EmissionsRate]*tech_thermal_opt[e,HeatRate]*p_G_e_opt_value[e,t,1] for e in set_opt_thermalgenerators if tech_thermal_opt[e,Technology]==i;init=0)
+
+Total_Emissions_Technology_Candidate_CP[i,t]=sum(tech_thermal_opt[e,EmissionsRate]*tech_thermal_opt[e,HeatRate]*p_G_e_opt_value[e,t,1] for e in set_opt_thermalgenerators if tech_thermal_opt[e,Technology]==i;init=0)
+
+Total_Emissions_Technology_Existing_CP[i,t]=sum(tech_thermal[e,EmissionsRate]*tech_thermal[e,HeatRate]*p_G_e_value[e,t,1] for e in set_thermalgenerators if tech_thermal[e,Technology]==i;init=0)
+
 end
 end
 
@@ -495,6 +506,6 @@ global j=j+1
 end
 
 
-return (syscost_det_OPF,TotalEmissions,TotalRevenue_demandblock,TotalOpecost_demandblock,revenue_cost_CP,TotalCapCost,TotalFixedCost,TotalEmissionsCost,TotalOpecost,TotalCurtailmentcost,p_G_e_value_CP,p_G_e_value_node1_CP,p_G_e_value_node2_CP,p_G_e_value_node3_CP,p_G_w_value_CP,p_G_w_value_node1_CP,p_G_w_value_node2_CP,p_G_w_value_node3_CP,υ_SR_value_CP,Dual_constraint10,Dual_constraint11,Total_Generation_Technology_CP,Total_Generation_Technology_Existing_CP,Total_Generation_Technology_Candidate_CP, Total_Generation_Technology_node1_CP, Total_Generation_Technology_node2_CP, Total_Generation_Technology_node3_CP)
+return (syscost_det_OPF,TotalEmissions,TotalRevenue_demandblock,TotalOpecost_demandblock,revenue_cost_CP,TotalCapCost,TotalFixedCost,TotalEmissionsCost,TotalOpecost,TotalCurtailmentcost,p_G_e_value_CP,p_G_e_value_node1_CP,p_G_e_value_node2_CP,p_G_e_value_node3_CP,p_G_w_value_CP,p_G_w_value_node1_CP,p_G_w_value_node2_CP,p_G_w_value_node3_CP,υ_SR_value_CP,Dual_constraint10,Dual_constraint11,Total_Generation_Technology_CP,Total_Generation_Technology_Existing_CP,Total_Generation_Technology_Candidate_CP, Total_Generation_Technology_node1_CP, Total_Generation_Technology_node2_CP, Total_Generation_Technology_node3_CP,Total_Emissions_Technology_CP,Total_Emissions_Technology_Candidate_CP,Total_Emissions_Technology_Existing_CP)
 
 end

@@ -1,4 +1,4 @@
-function Plots_Generation(Total_Generation_Technology_CP,Total_Generation_Technology_Existing_CP,Total_Generation_Technology_Candidate_CP, Total_Generation_Technology_node1_CP, Total_Generation_Technology_node2_CP, Total_Generation_Technology_node3_CP,Total_Generation_Technology_EPEC,Total_Generation_Technology_Existing_EPEC,Total_Generation_Technology_Candidate_EPEC, Total_Generation_Technology_node1_EPEC, Total_Generation_Technology_node2_EPEC, Total_Generation_Technology_node3_EPEC ,set_times,Τ)
+function Plots_Generation(Total_Generation_Technology_CP,Total_Generation_Technology_Existing_CP,Total_Generation_Technology_Candidate_CP, Total_Generation_Technology_node1_CP, Total_Generation_Technology_node2_CP, Total_Generation_Technology_node3_CP,Total_Generation_Technology_EPEC,Total_Generation_Technology_Existing_EPEC,Total_Generation_Technology_Candidate_EPEC, Total_Generation_Technology_node1_EPEC, Total_Generation_Technology_node2_EPEC, Total_Generation_Technology_node3_EPEC ,set_times,Τ,Total_Emissions_Technology_CP,Total_Emissions_Technology_Candidate_CP,Total_Emissions_Technology_Existing_CP,Total_Emissions_Technology_Existing_EPEC,Total_Emissions_Technology_Candidate_EPEC)
 
 plt=pyimport("matplotlib")
 np=pyimport("numpy")
@@ -80,6 +80,343 @@ xticks(x,labels_Ticks)
 savefig("results/Results_TotalGeneration_CP$Τ.png",dpi=300, bbox_inches="tight")
 close()
 
+#=================================================================================================================================#
+#CP-Bars-Generation
+
+figure(figsize=(6,3),dpi=300)
+
+# y-axis in bold
+rc("font")
+
+# read data
+j=1
+
+bars1=zeros(16)
+bars2=zeros(16)
+bars3=zeros(16)
+bars4=zeros(16)
+bars5=zeros(16)
+bars6=zeros(16)
+bars7=zeros(16)
+
+for i in [1,3,5,7,9,11,13,15]
+
+    bars1[i]=y9_E[j]
+
+    bars1[i+1]=y9_C[j]
+
+    bars2[i]=y8_E[j]
+
+    bars2[i+1]=y8_C[j]
+
+    bars3[i]=y6_E[j]
+
+    bars3[i+1]=y6_C[j]
+
+    bars4[i]=y5_E[j]
+
+    bars4[i+1]=y5_C[j]
+
+    bars5[i]=y4_E[j]
+
+    bars5[i+1]=y4_C[j]
+
+    bars6[i]=y3_E[j]
+
+    bars6[i+1]=y3_C[j]
+
+    bars7[i]=y7_E[j]
+
+    bars7[i+1]=y7_C[j]
+
+    j=j+1
+
+end
+
+
+
+# Heights of bars1 + bars2
+#bars_2 = np.add(bars1, bars2).tolist()
+bars_2=bars1+bars2
+
+#bars_3 = np.add(bars_2,bars3).tolist()
+bars_3=bars_2+bars3
+
+#bars_4 = np.add(bars_3,bars4).tolist()
+bars_4=bars_3+bars4
+
+#bars_5 = np.add(bars_4,bars5).tolist()
+bars_5=bars_4+bars5
+
+#bars_6 = np.add(bars_5,bars6).tolist()
+bars_6=bars_5+bars6
+
+#bars_7 = np.add(bars_6,bars7).tolist()
+bars_7=bars_6+bars7
+
+# The position of the bars on the x-axis
+
+r = [0,1,3,4,6,7,9,10,12,13,15,16,18,19,21,22]
+
+r1 = [0.5,3.5,6.5,9.5,12.5,15.5,18.5,21.5]
+
+# Names of group and bar width
+names = ["1","2","3","4","5","6","7","8"]
+
+barWidth = 0.5
+
+#patterns = ("OO", "", "OO", "","OO", "", "OO", "", "OO", "", "OO", "","OO", "", "OO", "")
+
+patterns=( "" , "OO" ,"" , "OO" , "" , "OO" ,"" , "OO" , "" , "OO" ,"" , "OO" , "" , "OO" ,"" , "OO")
+
+# Create bar 1
+bars_hacth1=bar(r, bars1, color="gold", width=barWidth)
+
+for (bar, pattern) in zip(bars_hacth1, patterns)
+    bar.set_hatch(pattern)
+end
+
+# Create bar 2
+bars_hacth2=bar(r, bars2, bottom=bars1, color="darkgreen", width=barWidth)
+for (bar, pattern) in zip(bars_hacth2, patterns)
+    bar.set_hatch(pattern)
+end
+
+# Create bar 3
+bars_hacth3=bar(r, bars3, bottom=bars_2, color="darkorange", width=barWidth)
+for (bar, pattern) in zip(bars_hacth3, patterns)
+    bar.set_hatch(pattern)
+end
+
+# Create bar 4
+bars_hacth4=bar(r, bars4, bottom=bars_3, color="deepskyblue", width=barWidth)
+for (bar, pattern) in zip(bars_hacth4, patterns)
+    bar.set_hatch(pattern)
+end
+
+# Create bar 5
+bars_hacth5=bar(r, bars5, bottom=bars_4, color="navy", width=barWidth)
+for (bar, pattern) in zip(bars_hacth5, patterns)
+    bar.set_hatch(pattern)
+end
+
+# Create bar 6
+bars_hacth6=bar(r, bars6, bottom=bars_5, color="red", width=barWidth)
+for (bar, pattern) in zip(bars_hacth6, patterns)
+    bar.set_hatch(pattern)
+end
+
+# Create bar 7
+bars_hacth7=bar(r, bars7, bottom=bars_6, color="slategray", width=barWidth)
+for (bar, pattern) in zip(bars_hacth7, patterns)
+    bar.set_hatch(pattern)
+end
+
+#
+sns.despine()
+sns.despine(top=true, right=true, left=false, bottom=false)
+
+# Remove borders
+#Title
+title("Generation CP", loc ="center", fontsize=11)
+legend(["Solar","Wind","Nuclear","Gas-CC-CCS","Gas-CC","Gas-CT","Coal"], loc="upper left", ncol = 1,frameon=true, fontsize=6)
+
+#nclo is the number of columns in the legend.
+#########
+rc("axes", labelsize=8)
+rc("xtick", labelsize=8)    # fontsize of the tick labels
+rc("ytick", labelsize=8)    # fontsize of the tick labels
+#rc("legend", fontsize=3)    # legend fontsize
+rc("figure", titlesize=8)  # fontsize of the figure title
+
+# Custom X axis
+xticks(r1, names)
+#plt.xticks(r, names)
+xlabel("Representative Hour", fontsize=9)
+ylabel("MWh", fontsize=10)
+ylim(0, 50000)
+# Show graphic
+#plt.show()
+savefig("results/Results_TotalGeneration_CP_Bars$Τ.png",dpi=300, bbox_inches="tight")
+
+#=======================================================================================#
+#=======================================================================================#
+#Emissions
+#=================================================================================================================================#
+#CP-Bars-Emissions
+
+y3_E = Total_Emissions_Technology_Existing_CP[3,:] #Gas-CT
+y4_E = Total_Emissions_Technology_Existing_CP[4,:] #Gas-CC
+y5_E =  Total_Emissions_Technology_Existing_CP[5,:] #Gas-CC-CCS
+y6_E =  Total_Emissions_Technology_Existing_CP[6,:] #Nuclear
+y7_E =  Total_Emissions_Technology_Existing_CP[7,:] #Coal
+y8_E =  Total_Emissions_Technology_Existing_CP[8,:] #Wind
+y9_E =  Total_Emissions_Technology_Existing_CP[9,:] #Solar
+
+y3_C = Total_Emissions_Technology_Candidate_CP[3,:] #Gas-CT
+y4_C = Total_Emissions_Technology_Candidate_CP[4,:] #Gas-CC
+y5_C =  Total_Emissions_Technology_Candidate_CP[5,:] #Gas-CC-CCS
+y6_C =  Total_Emissions_Technology_Candidate_CP[6,:] #Nuclear
+y7_C =  Total_Emissions_Technology_Candidate_CP[7,:] #Coal
+y8_C =  Total_Emissions_Technology_Candidate_CP[8,:] #Wind
+y9_C =  Total_Emissions_Technology_Candidate_CP[9,:] #Solar
+
+figure(figsize=(6,3),dpi=300)
+
+# y-axis in bold
+rc("font")
+
+# read data
+j=1
+
+bars1=zeros(16)
+bars2=zeros(16)
+bars3=zeros(16)
+bars4=zeros(16)
+bars5=zeros(16)
+bars6=zeros(16)
+bars7=zeros(16)
+
+for i in [1,3,5,7,9,11,13,15]
+
+    bars1[i]=y9_E[j]
+
+    bars1[i+1]=y9_C[j]
+
+    bars2[i]=y8_E[j]
+
+    bars2[i+1]=y8_C[j]
+
+    bars3[i]=y6_E[j]
+
+    bars3[i+1]=y6_C[j]
+
+    bars4[i]=y5_E[j]
+
+    bars4[i+1]=y5_C[j]
+
+    bars5[i]=y4_E[j]
+
+    bars5[i+1]=y4_C[j]
+
+    bars6[i]=y3_E[j]
+
+    bars6[i+1]=y3_C[j]
+
+    bars7[i]=y7_E[j]
+
+    bars7[i+1]=y7_C[j]
+
+    j=j+1
+
+end
+
+
+
+# Heights of bars1 + bars2
+#bars_2 = np.add(bars1, bars2).tolist()
+bars_2=bars1+bars2
+
+#bars_3 = np.add(bars_2,bars3).tolist()
+bars_3=bars_2+bars3
+
+#bars_4 = np.add(bars_3,bars4).tolist()
+bars_4=bars_3+bars4
+
+#bars_5 = np.add(bars_4,bars5).tolist()
+bars_5=bars_4+bars5
+
+#bars_6 = np.add(bars_5,bars6).tolist()
+bars_6=bars_5+bars6
+
+#bars_7 = np.add(bars_6,bars7).tolist()
+bars_7=bars_6+bars7
+
+# The position of the bars on the x-axis
+
+r = [0,1,3,4,6,7,9,10,12,13,15,16,18,19,21,22]
+
+r1 = [0.5,3.5,6.5,9.5,12.5,15.5,18.5,21.5]
+
+# Names of group and bar width
+names = ["1","2","3","4","5","6","7","8"]
+
+barWidth = 0.5
+
+#patterns = ("OO", "", "OO", "","OO", "", "OO", "", "OO", "", "OO", "","OO", "", "OO", "")
+
+patterns=( "" , "OO" ,"" , "OO" , "" , "OO" ,"" , "OO" , "" , "OO" ,"" , "OO" , "" , "OO" ,"" , "OO")
+
+# Create bar 1
+bars_hacth1=bar(r, bars1, color="gold", width=barWidth)
+
+for (bar, pattern) in zip(bars_hacth1, patterns)
+    bar.set_hatch(pattern)
+end
+
+# Create bar 2
+bars_hacth2=bar(r, bars2, bottom=bars1, color="darkgreen", width=barWidth)
+for (bar, pattern) in zip(bars_hacth2, patterns)
+    bar.set_hatch(pattern)
+end
+
+# Create bar 3
+bars_hacth3=bar(r, bars3, bottom=bars_2, color="darkorange", width=barWidth)
+for (bar, pattern) in zip(bars_hacth3, patterns)
+    bar.set_hatch(pattern)
+end
+
+# Create bar 4
+bars_hacth4=bar(r, bars4, bottom=bars_3, color="deepskyblue", width=barWidth)
+for (bar, pattern) in zip(bars_hacth4, patterns)
+    bar.set_hatch(pattern)
+end
+
+# Create bar 5
+bars_hacth5=bar(r, bars5, bottom=bars_4, color="navy", width=barWidth)
+for (bar, pattern) in zip(bars_hacth5, patterns)
+    bar.set_hatch(pattern)
+end
+
+# Create bar 6
+bars_hacth6=bar(r, bars6, bottom=bars_5, color="red", width=barWidth)
+for (bar, pattern) in zip(bars_hacth6, patterns)
+    bar.set_hatch(pattern)
+end
+
+# Create bar 7
+bars_hacth7=bar(r, bars7, bottom=bars_6, color="slategray", width=barWidth)
+for (bar, pattern) in zip(bars_hacth7, patterns)
+    bar.set_hatch(pattern)
+end
+
+#
+sns.despine()
+sns.despine(top=true, right=true, left=false, bottom=false)
+
+# Remove borders
+#Title
+title("Emissions CP", loc ="center", fontsize=11)
+legend(["Solar","Wind","Nuclear","Gas-CC-CCS","Gas-CC","Gas-CT","Coal"], loc="upper left", ncol = 1,frameon=true, fontsize=6)
+
+#nclo is the number of columns in the legend.
+#########
+rc("axes", labelsize=8)
+rc("xtick", labelsize=8)    # fontsize of the tick labels
+rc("ytick", labelsize=8)    # fontsize of the tick labels
+#rc("legend", fontsize=3)    # legend fontsize
+rc("figure", titlesize=8)  # fontsize of the figure title
+
+# Custom X axis
+xticks(r1, names)
+#plt.xticks(r, names)
+xlabel("Representative Hour", fontsize=9)
+ylabel("Ton", fontsize=10)
+ylim(0, 12000)
+# Show graphic
+#plt.show()
+savefig("results/Results_TotalEmissions_CP_Bars$Τ.png",dpi=300, bbox_inches="tight")
+
 #=======================================================================================#
 #EPEC
 #===============================================Total Generation===================================================================#
@@ -147,6 +484,342 @@ xticks(x,labels_Ticks)
 savefig("results/Results_TotalGeneration_EPEC$Τ.png",dpi=300, bbox_inches="tight")
 close()
 
+#==============================================================================#
+#==========================EPEC Bars===========================================#
+#Generation
+
+figure(figsize=(6,3),dpi=300)
+
+# y-axis in bold
+rc("font")
+
+# read data
+j=1
+
+bars1=zeros(16)
+bars2=zeros(16)
+bars3=zeros(16)
+bars4=zeros(16)
+bars5=zeros(16)
+bars6=zeros(16)
+bars7=zeros(16)
+
+for i in [1,3,5,7,9,11,13,15]
+
+    bars1[i]=y9_E[j]
+
+    bars1[i+1]=y9_C[j]
+
+    bars2[i]=y8_E[j]
+
+    bars2[i+1]=y8_C[j]
+
+    bars3[i]=y6_E[j]
+
+    bars3[i+1]=y6_C[j]
+
+    bars4[i]=y5_E[j]
+
+    bars4[i+1]=y5_C[j]
+
+    bars5[i]=y4_E[j]
+
+    bars5[i+1]=y4_C[j]
+
+    bars6[i]=y3_E[j]
+
+    bars6[i+1]=y3_C[j]
+
+    bars7[i]=y7_E[j]
+
+    bars7[i+1]=y7_C[j]
+
+    j=j+1
+
+end
+
+
+
+# Heights of bars1 + bars2
+#bars_2 = np.add(bars1, bars2).tolist()
+bars_2=bars1+bars2
+
+#bars_3 = np.add(bars_2,bars3).tolist()
+bars_3=bars_2+bars3
+
+#bars_4 = np.add(bars_3,bars4).tolist()
+bars_4=bars_3+bars4
+
+#bars_5 = np.add(bars_4,bars5).tolist()
+bars_5=bars_4+bars5
+
+#bars_6 = np.add(bars_5,bars6).tolist()
+bars_6=bars_5+bars6
+
+#bars_7 = np.add(bars_6,bars7).tolist()
+bars_7=bars_6+bars7
+
+# The position of the bars on the x-axis
+
+r = [0,1,3,4,6,7,9,10,12,13,15,16,18,19,21,22]
+
+r1 = [0.5,3.5,6.5,9.5,12.5,15.5,18.5,21.5]
+
+# Names of group and bar width
+names = ["1","2","3","4","5","6","7","8"]
+
+barWidth = 0.5
+
+#patterns = ("OO", "", "OO", "","OO", "", "OO", "", "OO", "", "OO", "","OO", "", "OO", "")
+
+patterns=( "" , "OO" ,"" , "OO" , "" , "OO" ,"" , "OO" , "" , "OO" ,"" , "OO" , "" , "OO" ,"" , "OO")
+
+# Create bar 1
+bars_hacth1=bar(r, bars1, color="gold", width=barWidth)
+
+for (bar, pattern) in zip(bars_hacth1, patterns)
+    bar.set_hatch(pattern)
+end
+
+# Create bar 2
+bars_hacth2=bar(r, bars2, bottom=bars1, color="darkgreen", width=barWidth)
+for (bar, pattern) in zip(bars_hacth2, patterns)
+    bar.set_hatch(pattern)
+end
+
+# Create bar 3
+bars_hacth3=bar(r, bars3, bottom=bars_2, color="darkorange", width=barWidth)
+for (bar, pattern) in zip(bars_hacth3, patterns)
+    bar.set_hatch(pattern)
+end
+
+# Create bar 4
+bars_hacth4=bar(r, bars4, bottom=bars_3, color="deepskyblue", width=barWidth)
+for (bar, pattern) in zip(bars_hacth4, patterns)
+    bar.set_hatch(pattern)
+end
+
+# Create bar 5
+bars_hacth5=bar(r, bars5, bottom=bars_4, color="navy", width=barWidth)
+for (bar, pattern) in zip(bars_hacth5, patterns)
+    bar.set_hatch(pattern)
+end
+
+# Create bar 6
+bars_hacth6=bar(r, bars6, bottom=bars_5, color="red", width=barWidth)
+for (bar, pattern) in zip(bars_hacth6, patterns)
+    bar.set_hatch(pattern)
+end
+
+# Create bar 7
+bars_hacth7=bar(r, bars7, bottom=bars_6, color="slategray", width=barWidth)
+for (bar, pattern) in zip(bars_hacth7, patterns)
+    bar.set_hatch(pattern)
+end
+
+#
+sns.despine()
+sns.despine(top=true, right=true, left=false, bottom=false)
+
+# Remove borders
+#Title
+title("Generation EPEC", loc ="center", fontsize=11)
+legend(["Solar","Wind","Nuclear","Gas-CC-CCS","Gas-CC","Gas-CT","Coal"], loc="upper left", ncol = 1,frameon=true, fontsize=6)
+
+#nclo is the number of columns in the legend.
+#########
+rc("axes", labelsize=8)
+rc("xtick", labelsize=8)    # fontsize of the tick labels
+rc("ytick", labelsize=8)    # fontsize of the tick labels
+#rc("legend", fontsize=3)    # legend fontsize
+rc("figure", titlesize=8)  # fontsize of the figure title
+
+# Custom X axis
+xticks(r1, names)
+#plt.xticks(r, names)
+xlabel("Representative Hour", fontsize=9)
+ylabel("MWh", fontsize=10)
+ylim(0, 50000)
+# Show graphic
+#plt.show()
+savefig("results/Results_TotalGeneration_EPEC_Bars$Τ.png",dpi=300, bbox_inches="tight")
+
+#====================================================================================#
+#Emissions
+
+y3_E = Total_Emissions_Technology_Existing_EPEC[3,:] #Gas-CT
+y4_E = Total_Emissions_Technology_Existing_EPEC[4,:] #Gas-CC
+y5_E =  Total_Emissions_Technology_Existing_EPEC[5,:] #Gas-CC-CCS
+y6_E =  Total_Emissions_Technology_Existing_EPEC[6,:] #Nuclear
+y7_E =  Total_Emissions_Technology_Existing_EPEC[7,:] #Coal
+y8_E =  Total_Emissions_Technology_Existing_EPEC[8,:] #Wind
+y9_E =  Total_Emissions_Technology_Existing_EPEC[9,:] #Solar
+
+y3_C = Total_Emissions_Technology_Candidate_EPEC[3,:] #Gas-CT
+y4_C = Total_Emissions_Technology_Candidate_EPEC[4,:] #Gas-CC
+y5_C =  Total_Emissions_Technology_Candidate_EPEC[5,:] #Gas-CC-CCS
+y6_C =  Total_Emissions_Technology_Candidate_EPEC[6,:] #Nuclear
+y7_C =  Total_Emissions_Technology_Candidate_EPEC[7,:] #Coal
+y8_C =  Total_Emissions_Technology_Candidate_EPEC[8,:] #Wind
+y9_C =  Total_Emissions_Technology_Candidate_EPEC[9,:] #Solar
+
+figure(figsize=(6,3),dpi=300)
+
+# y-axis in bold
+rc("font")
+
+# read data
+j=1
+
+bars1=zeros(16)
+bars2=zeros(16)
+bars3=zeros(16)
+bars4=zeros(16)
+bars5=zeros(16)
+bars6=zeros(16)
+bars7=zeros(16)
+
+for i in [1,3,5,7,9,11,13,15]
+
+    bars1[i]=y9_E[j]
+
+    bars1[i+1]=y9_C[j]
+
+    bars2[i]=y8_E[j]
+
+    bars2[i+1]=y8_C[j]
+
+    bars3[i]=y6_E[j]
+
+    bars3[i+1]=y6_C[j]
+
+    bars4[i]=y5_E[j]
+
+    bars4[i+1]=y5_C[j]
+
+    bars5[i]=y4_E[j]
+
+    bars5[i+1]=y4_C[j]
+
+    bars6[i]=y3_E[j]
+
+    bars6[i+1]=y3_C[j]
+
+    bars7[i]=y7_E[j]
+
+    bars7[i+1]=y7_C[j]
+
+    j=j+1
+
+end
+
+
+
+# Heights of bars1 + bars2
+#bars_2 = np.add(bars1, bars2).tolist()
+bars_2=bars1+bars2
+
+#bars_3 = np.add(bars_2,bars3).tolist()
+bars_3=bars_2+bars3
+
+#bars_4 = np.add(bars_3,bars4).tolist()
+bars_4=bars_3+bars4
+
+#bars_5 = np.add(bars_4,bars5).tolist()
+bars_5=bars_4+bars5
+
+#bars_6 = np.add(bars_5,bars6).tolist()
+bars_6=bars_5+bars6
+
+#bars_7 = np.add(bars_6,bars7).tolist()
+bars_7=bars_6+bars7
+
+# The position of the bars on the x-axis
+
+r = [0,1,3,4,6,7,9,10,12,13,15,16,18,19,21,22]
+
+r1 = [0.5,3.5,6.5,9.5,12.5,15.5,18.5,21.5]
+
+# Names of group and bar width
+names = ["1","2","3","4","5","6","7","8"]
+
+barWidth = 0.5
+
+#patterns = ("OO", "", "OO", "","OO", "", "OO", "", "OO", "", "OO", "","OO", "", "OO", "")
+
+patterns=( "" , "OO" ,"" , "OO" , "" , "OO" ,"" , "OO" , "" , "OO" ,"" , "OO" , "" , "OO" ,"" , "OO")
+
+# Create bar 1
+bars_hacth1=bar(r, bars1, color="gold", width=barWidth)
+
+for (bar, pattern) in zip(bars_hacth1, patterns)
+    bar.set_hatch(pattern)
+end
+
+# Create bar 2
+bars_hacth2=bar(r, bars2, bottom=bars1, color="darkgreen", width=barWidth)
+for (bar, pattern) in zip(bars_hacth2, patterns)
+    bar.set_hatch(pattern)
+end
+
+# Create bar 3
+bars_hacth3=bar(r, bars3, bottom=bars_2, color="darkorange", width=barWidth)
+for (bar, pattern) in zip(bars_hacth3, patterns)
+    bar.set_hatch(pattern)
+end
+
+# Create bar 4
+bars_hacth4=bar(r, bars4, bottom=bars_3, color="deepskyblue", width=barWidth)
+for (bar, pattern) in zip(bars_hacth4, patterns)
+    bar.set_hatch(pattern)
+end
+
+# Create bar 5
+bars_hacth5=bar(r, bars5, bottom=bars_4, color="navy", width=barWidth)
+for (bar, pattern) in zip(bars_hacth5, patterns)
+    bar.set_hatch(pattern)
+end
+
+# Create bar 6
+bars_hacth6=bar(r, bars6, bottom=bars_5, color="red", width=barWidth)
+for (bar, pattern) in zip(bars_hacth6, patterns)
+    bar.set_hatch(pattern)
+end
+
+# Create bar 7
+bars_hacth7=bar(r, bars7, bottom=bars_6, color="slategray", width=barWidth)
+for (bar, pattern) in zip(bars_hacth7, patterns)
+    bar.set_hatch(pattern)
+end
+
+#
+sns.despine()
+sns.despine(top=true, right=true, left=false, bottom=false)
+
+# Remove borders
+#Title
+title("Emissions EPEC", loc ="center", fontsize=11)
+legend(["Solar","Wind","Nuclear","Gas-CC-CCS","Gas-CC","Gas-CT","Coal"], loc="upper left", ncol = 1,frameon=true, fontsize=6)
+
+#nclo is the number of columns in the legend.
+#########
+rc("axes", labelsize=8)
+rc("xtick", labelsize=8)    # fontsize of the tick labels
+rc("ytick", labelsize=8)    # fontsize of the tick labels
+#rc("legend", fontsize=3)    # legend fontsize
+rc("figure", titlesize=8)  # fontsize of the figure title
+
+# Custom X axis
+xticks(r1, names)
+#plt.xticks(r, names)
+xlabel("Representative Hour", fontsize=9)
+ylabel("Ton", fontsize=10)
+ylim(0, 12000)
+# Show graphic
+#plt.show()
+savefig("results/Results_TotalEmissions_EPEC_Bars$Τ.png",dpi=300, bbox_inches="tight")
+
+#Generation
 
 #Central Planner
 #============================+Node 1===========================================#

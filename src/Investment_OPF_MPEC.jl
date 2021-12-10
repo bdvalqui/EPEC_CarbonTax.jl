@@ -531,11 +531,18 @@ Total_Generation_Technology_EPEC=zeros(9,length(set_times))
 Total_Generation_Technology_Existing_EPEC=zeros(9,length(set_times))
 Total_Generation_Technology_Candidate_EPEC=zeros(9,length(set_times))
 
+Total_Emissions_Technology_Existing_EPEC=zeros(9,length(set_times))
+Total_Emissions_Technology_Candidate_EPEC=zeros(9,length(set_times))
+
 for i in 1:7
 for t in set_times
 Total_Generation_Technology_EPEC[i,t]=sum(p_G_e_value_MPEC[e,t,1] for e in set_thermalgenerators if tech_thermal[e,Technology]==i;init=0)
 Total_Generation_Technology_Existing_EPEC[i,t]=sum(p_G_e_value_MPEC[e,t,1] for e in set_thermalgenerators if tech_thermal[e,capacity_existingunits]>0 && tech_thermal[e,Technology]==i;init=0)
 Total_Generation_Technology_Candidate_EPEC[i,t]=sum(p_G_e_value_MPEC[e,t,1] for e in set_thermalgenerators if tech_thermal[e,capacity_existingunits]==0 && tech_thermal[e,Technology]==i;init=0)
+
+Total_Emissions_Technology_Existing_EPEC[i,t]=sum(tech_thermal[e,EmissionsRate]*tech_thermal[e,HeatRate]*p_G_e_value_MPEC[e,t,1] for e in set_thermalgenerators if tech_thermal[e,capacity_existingunits]>0 && tech_thermal[e,Technology]==i;init=0)
+Total_Emissions_Technology_Candidate_EPEC[i,t]=sum(tech_thermal[e,EmissionsRate]*tech_thermal[e,HeatRate]*p_G_e_value_MPEC[e,t,1] for e in set_thermalgenerators if tech_thermal[e,capacity_existingunits]==0 && tech_thermal[e,Technology]==i;init=0)
+
 end
 end
 
@@ -709,6 +716,6 @@ for t in set_times, s in set_scenarios, e in set_thermalgenerators
   U_complementarity_9_MPEC[e,t,s]=JuMP.value.(U_complementarity_9[e,t,s])
 end
 
-return (profit_det_MPEC,x_w_value_MPEC,x_e_value_MPEC,Totalrevenue_MPEC_Firm1,TotalOperatingCost_MPEC_Firm1,Totalrevenue_MPEC_Firm2,TotalOperatingCost_MPEC_Firm2,Totalrevenue_MPEC_Firm3,TotalOperatingCost_MPEC_Firm3, Electricity_prices_MPEC, Spinning_prices_MPEC, υ_SR_value_MPEC,p_G_e_value_MPEC, p_G_w_value_MPEC, p_G_e_value_node1_MPEC, p_G_e_value_node2_MPEC, p_G_e_value_node3_MPEC, p_G_w_value_node1_MPEC, p_G_w_value_node2_MPEC, p_G_w_value_node3_MPEC, Electricity_prices_MPEC, TotalCost_MPEC,TotalEmissions_MPEC,Totalrevenue_demandblock_MPEC_Firm1, TotalOperatingCost_demandblock_MPEC_Firm1,Totalrevenue_demandblock_MPEC_Firm2, TotalOperatingCost_demandblock_MPEC_Firm2, Totalrevenue_demandblock_MPEC_Firm3, TotalOperatingCost_demandblock_MPEC_Firm3, TotalCapCost_EPEC, TotalFixedCost_EPEC, TotalEmissionsCost_EPEC, TotalOperatingCost_EPEC,TotalCurtailmentcost_EPEC, Total_Investments_Technology_Firm1_EPEC,Total_Investments_Technology_Firm2_EPEC,Total_Investments_Technology_EPEC,Total_Generation_Technology_EPEC,Total_Generation_Technology_Existing_EPEC,Total_Generation_Technology_Candidate_EPEC, Total_Generation_Technology_node1_EPEC, Total_Generation_Technology_node2_EPEC, Total_Generation_Technology_node3_EPEC)
+return (profit_det_MPEC,x_w_value_MPEC,x_e_value_MPEC,Totalrevenue_MPEC_Firm1,TotalOperatingCost_MPEC_Firm1,Totalrevenue_MPEC_Firm2,TotalOperatingCost_MPEC_Firm2,Totalrevenue_MPEC_Firm3,TotalOperatingCost_MPEC_Firm3, Electricity_prices_MPEC, Spinning_prices_MPEC, υ_SR_value_MPEC,p_G_e_value_MPEC, p_G_w_value_MPEC, p_G_e_value_node1_MPEC, p_G_e_value_node2_MPEC, p_G_e_value_node3_MPEC, p_G_w_value_node1_MPEC, p_G_w_value_node2_MPEC, p_G_w_value_node3_MPEC, Electricity_prices_MPEC, TotalCost_MPEC,TotalEmissions_MPEC,Totalrevenue_demandblock_MPEC_Firm1, TotalOperatingCost_demandblock_MPEC_Firm1,Totalrevenue_demandblock_MPEC_Firm2, TotalOperatingCost_demandblock_MPEC_Firm2, Totalrevenue_demandblock_MPEC_Firm3, TotalOperatingCost_demandblock_MPEC_Firm3, TotalCapCost_EPEC, TotalFixedCost_EPEC, TotalEmissionsCost_EPEC, TotalOperatingCost_EPEC,TotalCurtailmentcost_EPEC, Total_Investments_Technology_Firm1_EPEC,Total_Investments_Technology_Firm2_EPEC,Total_Investments_Technology_EPEC,Total_Generation_Technology_EPEC,Total_Generation_Technology_Existing_EPEC,Total_Generation_Technology_Candidate_EPEC, Total_Generation_Technology_node1_EPEC, Total_Generation_Technology_node2_EPEC, Total_Generation_Technology_node3_EPEC,Total_Emissions_Technology_Existing_EPEC,Total_Emissions_Technology_Candidate_EPEC)
 
 end
