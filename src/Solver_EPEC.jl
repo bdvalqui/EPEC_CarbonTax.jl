@@ -229,6 +229,14 @@ CSV.write(folder *"/Results_Total_Detail_Cost$Τ.csv", df_Cost_Detail)
 df_EPEC_thermalinvestments = DataFrame(x_e_p_iter,:auto)
 df_EPEC_windinvestments = DataFrame(x_w_p_iter,:auto)
 
+df_CP_totalinvestments= DataFrame(Total_Investments_Technology_CP',:auto)
+df_EPEC_totalinvestments=DataFrame(Total_Investments_Technology_EPEC_par',:auto)
+
+Total_Investments_Technology_Firms_EPEC_par=[Total_Investments_Technology_Firm1_EPEC_par,Total_Investments_Technology_Firm2_EPEC_par]
+
+df_EPEC_totalinvestments_Firms=DataFrame(Total_Investments_Technology_Firms_EPEC_par,:auto)
+#df_EPEC_totalinvestments_Firm2=DataFrame(Total_Investments_Technology_Firm2_EPEC_par,:auto)
+
 CSV.write(folder *"/Results_thermalinvestments_EPEC$Τ.csv", df_EPEC_thermalinvestments)
 CSV.write(folder *"/Results_windinvestments_EPEC$Τ.csv", df_EPEC_windinvestments)
 
@@ -256,6 +264,9 @@ CSV.write(folder *"/Results_Total_Investments_Firm2_EPEC$Τ.csv", df_Total_Inves
 CSV.write(folder *"/Results_emissions_Candidate_EPEC$Τ.csv", df_EPEC_emissions_Candidate)
 CSV.write(folder *"/Results_emissions_Existing_EPEC$Τ.csv", df_EPEC_emissions_Existing)
 
+CSV.write(folder *"/Results_CP_totalinvestments$Τ.csv", df_CP_totalinvestments)
+CSV.write(folder *"/Results_EPEC_totalinvestments$Τ.csv", df_EPEC_totalinvestments)
+CSV.write(folder *"/Results_EPEC_totalinvestments_Firms$Τ.csv", df_EPEC_totalinvestments_Firms)
 
 (data_prices_CP_res,data_prices_EPEC_res)=Plots_Prices(data_prices_CP,data_prices_EPEC,set_times,Τ)
 
