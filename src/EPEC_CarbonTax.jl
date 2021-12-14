@@ -33,13 +33,22 @@ include("loadinputs_CentralPlanner.jl")
 include("loadinputs.jl")
 include("loadinputs_4firms.jl")
 include("Plots_Prices.jl")
+include("Plots_Prices_startpoints.jl")
 include("Plots_CapacityMix.jl")
+include("Plots_CapacityMix_startpoints.jl")
 include("Plots_CapacityMix_4firms.jl")
 include("Plots_Generation.jl")
+include("Plots_Generation_startpoints.jl")
 include("Plots_Rev_Ope.jl")
+include("Plots_Rev_Ope_startpoints.jl")
 include("Plots_Rev_Ope_4firms.jl")
 
-export Solver_CentralPlanner,Solver_OPF,Solver_OPF_Experiment,Solver_MPEC,Solver_EPEC,Solver_EPEC_4firms,Solver_EPEC_Experiment,Solver_EPEC_SOS1,Investment_OPF_original,Investment_OPF_original_Experiment,OPF_original,Investment_OPF_MPEC,Investment_OPF_MPEC_4firms,Investment_OPF_MPEC_Experiment,Investment_OPF_MPEC_SOS1,loadinputs_CentralPlanner,loadinputs,loadinputs_4firms,Plots_Prices,Plots_CapacityMix,Plots_CapacityMix_4firms,Plots_Generation,Plots_Rev_Ope,Plots_Rev_Ope_4firms
+#Starting Points
+include("Solver_EPEC_Diag_StartingPoints.jl")
+include("loadinputs_startingpoints.jl")
+include("Plots_CapacityMix_All_Solutions.jl")
+
+export Solver_CentralPlanner,Solver_OPF,Solver_OPF_Experiment,Solver_MPEC,Solver_EPEC,Solver_EPEC_4firms,Solver_EPEC_Experiment,Solver_EPEC_SOS1,Investment_OPF_original,Investment_OPF_original_Experiment,OPF_original,Investment_OPF_MPEC,Investment_OPF_MPEC_4firms,Investment_OPF_MPEC_Experiment,Investment_OPF_MPEC_SOS1,loadinputs_CentralPlanner,loadinputs,loadinputs_4firms,Plots_Prices,Plots_CapacityMix,Plots_CapacityMix_4firms,Plots_Generation,Plots_Rev_Ope,Plots_Rev_Ope_4firms,Solver_EPEC_Diag_StartingPoints,loadinputs_startingpoints,Plots_Prices_startpoints,Plots_CapacityMix_startpoints,Plots_Generation_startpoints,Plots_Rev_Ope_startpoints,Plots_CapacityMix_All_Solutions
 
 end
 #cd("C:\\Users\\braya\\.julia\\dev\\EPEC_CarbonTax\\src")
