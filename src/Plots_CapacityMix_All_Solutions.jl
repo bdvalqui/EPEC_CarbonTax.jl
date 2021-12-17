@@ -125,7 +125,7 @@ xticks(r, names)
 #plt.xticks(r, names)
 xlabel("Nash Equilibrium Solution", fontsize=9)
 ylabel("MW", fontsize=10)
-ylim(0, 60000)
+ylim(0, 80000)
 # Show graphic
 #plt.show()
 savefig("results_startingpoints/Results_TotalInvestments_AllSolutions_Bars.png",dpi=300, bbox_inches="tight")

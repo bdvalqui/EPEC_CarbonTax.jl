@@ -420,7 +420,7 @@ xticks(r, names)
 #plt.xticks(r, names)
 xlabel("Strategic Firms", fontsize=9)
 ylabel("MW", fontsize=10)
-ylim(0, 35000)
+ylim(0, 50000)
 # Show graphic
 #plt.show()
 savefig("results/Results_TotalInvestments_Firms_Bars$Τ.png",dpi=300, bbox_inches="tight")
