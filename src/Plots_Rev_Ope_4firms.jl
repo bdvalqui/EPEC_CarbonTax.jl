@@ -35,7 +35,7 @@ rc("legend", fontsize=6, loc="upper left")    # legend fontsize
 sns.despine()
 sns.despine(top=true, right=true, left=false, bottom=false)
 xlim(1, length(set_times))
-ylim(0, 2500)
+ylim(0, 10000)
 xticks(Demand_Block)
 savefig("results/Results_Revenue_Cost_DemandBlock$Τ",dpi=300, bbox_inches="tight")
 close()
