@@ -57,6 +57,8 @@ global x_e_p_iter[e,iter]=x_e_value_MPEC[e]
 end
 end
 
+global profit_det_MPEC_val_firm1=profit_det_MPEC
+
 global Leader=2
 println("")
 println("Firm $Leader Problem...")
@@ -86,7 +88,7 @@ global TotalCost_Emissions=zeros(4)
 global TotalCost_Emissions[3]=TotalCost_MPEC
 global TotalCost_Emissions[4]=TotalEmissions_MPEC
 
-global profit_det_MPEC_val=profit_det_MPEC
+global profit_det_MPEC_val_firm2=profit_det_MPEC
 
 global revenue_cost_EPEC=zeros(6)
 global revenue_cost_EPEC[1]=Totalrevenue_MPEC_Firm1
@@ -288,7 +290,7 @@ resultfile != "" && open(resultfile, truncate = true) do f
 
     println(f,"*****************EPEC Solution*****************")
     println(f,"")
-    println(f,"Objective Function (Firm $Leader): ",profit_det_MPEC_val)
+    println(f,"Objective Function (Firm $Leader): ",profit_det_MPEC_val_firm2)
     println(f,"")
     println(f,"Wind Investments per iteration: ",x_w_p)
     println(f,"")
@@ -296,5 +298,5 @@ resultfile != "" && open(resultfile, truncate = true) do f
     end
 
 
-return (profit_det_MPEC_val,x_w_p,x_e_p,Total_Investments_Technology_EPEC_par,Total_Investments_Technology_Firms_EPEC_par)
+return (profit_det_MPEC_val_firm1,profit_det_MPEC_val_firm2,x_w_p,x_e_p,Total_Investments_Technology_EPEC_par,Total_Investments_Technology_Firms_EPEC_par)
 end

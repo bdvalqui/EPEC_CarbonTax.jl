@@ -1,4 +1,4 @@
-function Plots_CapacityMix_All_Solutions(equilibrium_investments,Number_Runs,folder::String="")
+function Plots_CapacityMix_All_Solutions(equilibrium_investments,Number_Runs,Profits_Objective_Function,folder::String="")
 plt=pyimport("matplotlib")
 np=pyimport("numpy")
 sns=pyimport("seaborn")
@@ -8,6 +8,9 @@ df_EPEC_thermalinvestments = DataFrame(equilibrium_investments,:auto)
 
 CSV.write(folder *"/Results_EPEC_totalinvestments_Firms_All_Solutions.csv", df_EPEC_thermalinvestments)
 
+df_EPEC_Profits_Objective_Function = DataFrame(Profits_Objective_Function,:auto)
+
+CSV.write(folder *"/Results_EPEC_totalprofits_Firms_All_Solutions.csv", df_EPEC_Profits_Objective_Function)
 
 #==============================================================================================#
 #=================================Capacity Mix=================================================#
