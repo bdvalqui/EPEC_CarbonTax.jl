@@ -96,8 +96,8 @@ equilibrium_investments[:,start_point]=Total_Investments_Technology_EPEC_par
 Profits_Objective_Function[start_point,1]=profit_det_MPEC_val_firm1
 Profits_Objective_Function[start_point,2]=profit_det_MPEC_val_firm2
 
-share_starting_1_renew=0.8
-share_starting_1_thermal=0.2
+share_starting_1_renew=0.65
+share_starting_1_thermal=0.45
 start_point=9
 
 @time (profit_det_MPEC_val_firm1,profit_det_MPEC_val_firm2,x_w_value_MPEC,x_e_value_MPEC,Total_Investments_Technology_EPEC_par,Total_Investments_Technology_Firms_EPEC_par)=Solver_EPEC_Diag_StartingPoints(share_starting_1_renew,share_starting_1_thermal,start_point,Gurobi.Optimizer,"results/EPEC_Solution.txt","results_startingpoints/$start_point")
