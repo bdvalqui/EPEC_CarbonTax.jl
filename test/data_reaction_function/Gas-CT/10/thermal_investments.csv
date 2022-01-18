@@ -1,0 +1,45 @@
+Thermal,
+0,Gas_CT_ExistingN1_Firm1
+0,Gas_CC_ExistingN1_Firm1
+0,Nuclear_ExistingN1_Firm1
+0,Coal_new_ExistingN1_Firm1
+0,Gas_CT_ExistingN1_Firm2
+0,Gas_CC_ExistingN1_Firm2
+0,Nuclear_ExistingN1_Firm2
+0,Coal_new_Existing1_Firm2
+0,Gas_CT_ExistingN1_Firm3
+0,Gas_CC_ExistingN1_Firm3
+0,Nuclear_ExistingN1_Firm3
+0,Coal_new_Existing1_Firm3
+0,Gas_CT_ExistingN2_Firm1
+0,Gas_CC_ExistingN2_Firm1
+0,Nuclear_ExistingN2_Firm1
+0,Coal_new_ExistingN2_Firm1
+0,Gas_CT_ExistingN2_Firm2
+0,Gas_CC_ExistingN2_Firm2
+0,Nuclear_ExistingN2_Firm2
+0,Coal_new_Existing2_Firm2
+0,Gas_CT_ExistingN2_Firm3
+0,Gas_CC_ExistingN2_Firm3
+0,Nuclear_ExistingN2_Firm3
+0,Coal_new_Existing2_Firm3
+0,Coal_CCS_30_CandidateN1_firm 1
+0,Coal_CCS_90_CandidateN1_firm 1
+0,Gas_CT_CandidateN1_firm 1
+0,Gas_CC_CandidateN1_firm 1
+0,Gas_CC_CCS_CandidateN1_firm 1
+0,Coal_CCS_30_CandidateN1_firm 2
+0,Coal_CCS_90_CandidateN1_firm 2
+0,Gas_CT_CandidateN1_firm 2
+0,Gas_CC_CandidateN1_firm 2
+0,Gas_CC_CCS_CandidateN1_firm 2
+0,Coal_CCS_30_CandidateN2_firm 1
+0,Coal_CCS_90_CandidateN2_firm 1
+0,Gas_CT_CandidateN2_firm 1
+0,Gas_CC_CandidateN2_firm 1
+9820.332964,Gas_CC_CCS_CandidateN2_firm 1
+0,Coal_CCS_30_CandidateN2_firm 2
+0,Coal_CCS_90_CandidateN2_firm 2
+8467.216438,Gas_CT_CandidateN2_firm 2
+2.92E-05,Gas_CC_CandidateN2_firm 2
+7622.167007,Gas_CC_CCS_CandidateN2_firm 2
