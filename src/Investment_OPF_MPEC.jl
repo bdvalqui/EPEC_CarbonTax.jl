@@ -294,433 +294,602 @@ println("The solution status is: $status")
 println("")
 println("The solution of firm $Leader's  problem")
 println("")
-profit_det_MPEC=objective_value(m)
-
-println("Total Cost:",profit_det_MPEC)
-
-println("Investment Decisions")
-
-x_w_value_MPEC=zeros(length(set_winds))
-for w in set_winds
-println("Investment decision for candidate wind unit $w: ",JuMP.value.(x_w[w]))
-x_w_value_MPEC[w]=JuMP.value.(x_w[w])
-end
-
-x_e_value_MPEC=zeros(length(set_thermalgenerators))
-for e in set_thermalgenerators
-println("Investment decision for candidate thermal unit $e: ",JuMP.value.(x_e[e]))
-x_e_value_MPEC[e]=JuMP.value.(x_e[e])
-end
-
-p_G_e_value_MPEC=zeros(length(set_thermalgenerators),length(set_times),length(set_scenarios))
-for t in set_times, s in set_scenarios, e in set_thermalgenerators
-#println("Production level of thermal generator $e in time $t under scenario $s:",JuMP.value.(p_G_e[e,t,s]))
-  p_G_e_value_MPEC[e,t,s]=JuMP.value.(p_G_e[e,t,s])
-end
-
-p_G_e_value_node1_MPEC=zeros(length(set_thermalgenerators),length(set_times),length(set_scenarios))
-
-for e in set_thermalgenerators if 1 == MapG[e][2]
-for t in set_times, s in set_scenarios
-  p_G_e_value_node1_MPEC[e,t,s]=JuMP.value.(p_G_e[e,t,s])
-end
-end
-end
-
-p_G_e_value_node2_MPEC=zeros(length(set_thermalgenerators),length(set_times),length(set_scenarios))
-
-for e in set_thermalgenerators if 2 == MapG[e][2]
-for t in set_times, s in set_scenarios
-  p_G_e_value_node2_MPEC[e,t,s]=JuMP.value.(p_G_e[e,t,s])
-end
-end
-end
-
-p_G_e_value_node3_MPEC=zeros(length(set_thermalgenerators),length(set_times),length(set_scenarios))
-
-for e in set_thermalgenerators if 3 == MapG[e][2]
-for t in set_times, s in set_scenarios
-  p_G_e_value_node3_MPEC[e,t,s]=JuMP.value.(p_G_e[e,t,s])
-end
-end
-end
-
-p_G_w_value_MPEC=zeros(length(set_winds),length(set_times),length(set_scenarios))
-for t in set_times, s in set_scenarios, w in set_winds
-#println("Production level of wind unit $w in time $t under scenario $s:",JuMP.value.(p_G_w[w,t,s]))
-  p_G_w_value_MPEC[w,t,s]=JuMP.value.(p_G_w[w,t,s])
-end
-
-
-p_G_w_value_node1_MPEC=zeros(length(set_winds),length(set_times),length(set_scenarios))
-for w in set_winds if 1 == MapW[w][2]
-for t in set_times, s in set_scenarios
-  p_G_w_value_node1_MPEC[w,t,s]=JuMP.value.(p_G_w[w,t,s])
-end
-end
-end
-
-p_G_w_value_node2_MPEC=zeros(length(set_winds),length(set_times),length(set_scenarios))
-for w in set_winds if 2 == MapW[w][2]
-for t in set_times, s in set_scenarios
-  p_G_w_value_node2_MPEC[w,t,s]=JuMP.value.(p_G_w[w,t,s])
-end
-end
-end
-
-p_G_w_value_node3_MPEC=zeros(length(set_winds),length(set_times),length(set_scenarios))
-for w in set_winds if 3 == MapW[w][2]
-for t in set_times, s in set_scenarios
-  p_G_w_value_node3_MPEC[w,t,s]=JuMP.value.(p_G_w[w,t,s])
-end
-end
-end
-
-p_D_value_MPEC=zeros(length(set_demands),length(set_scenarios))
-for d in set_demands, s in set_scenarios
-  p_D_value_MPEC[d,s]=p_D[d,s]*max_demand
-end
-#println("Comsuption level of demand d: ",p_D_value)
-
-υ_SR_value_MPEC=zeros(length(set_thermalgenerators),length(set_times),length(set_scenarios))
-for t in set_times, s in set_scenarios, e in set_thermalgenerators
-#println("Spinning reserves of thermal generator $e in time $t under scenario $s:",JuMP.value.(υ_SR[e,t,s]))
-  υ_SR_value_MPEC[e,t,s]=JuMP.value.(υ_SR[e,t,s])
-end
 
-r_d_value_MPEC=zeros(length(set_demands),length(set_times),length(set_scenarios))
-for t in set_times, s in set_scenarios, d in set_demands
-#println("Unserved energy of demand $d in time $t under scenario $s:",JuMP.value.(r_d[d,t,s]))
-  r_d_value_MPEC[d,t,s]=JuMP.value.(r_d[d,t,s])
-end
 
-r_w_value_MPEC=zeros(length(set_winds),length(set_times),length(set_scenarios))
+if status == MOI.INFEASIBLE_OR_UNBOUNDED
 
-for t in set_times, s in set_scenarios, w in set_winds
-#println("Curtailment of wind unit $w in time $t under scenario $s: ",JuMP.value.(r_w[w,t,s]))
-  r_w_value_MPEC[w,t,s]=JuMP.value.(r_w[w,t,s])
-end
+        profit_det_MPEC=0
 
-Electricity_prices_MPEC=zeros(length(set_nodes),length(set_times),length(set_scenarios))
+        println("Total Cost:",profit_det_MPEC)
 
-for   t in set_times, s in set_scenarios,n in set_nodes
-   Electricity_prices_MPEC[n,t,s]= JuMP.value.(λ[n,t,s])
-println("Electricity Price in node $n in time $t under scenario $s: ", Electricity_prices_MPEC[n,t,s])
-end
+        println("Investment Decisions")
 
-Spinning_prices_MPEC=zeros(length(set_times),length(set_scenarios))
+        x_w_value_MPEC=zeros(length(set_winds))
 
-for   t in set_times, s in set_scenarios
-   Spinning_prices_MPEC[t,s]= JuMP.value.(λ_SR[t,s])
-println("Spinning reserve Price time $t under scenario $s: ", Spinning_prices_MPEC[t,s])
-end
 
+        x_e_value_MPEC=zeros(length(set_thermalgenerators))
 
-θ_values_MPEC=zeros(length(set_nodes),length(set_times),length(set_scenarios))
 
-for   t in set_times, s in set_scenarios,n in set_nodes
-   θ_values_MPEC[n,t,s]= JuMP.value.(θ[n,t,s])
-#println("Angle in node $n in time $t under scenario $s: ", θ_values_MPEC[n,t,s])
-end
+        p_G_e_value_MPEC=zeros(length(set_thermalgenerators),length(set_times),length(set_scenarios))
 
-f_MPEC=zeros(n_link,length(set_times),length(set_scenarios))
-i=1
-for j in links
-for s in set_scenarios, t in set_times
-f_MPEC[i,t,s]=B_dict[j]*(θ_values_MPEC[j[1],t,s]-θ_values_MPEC[j[2],t,s])
-println("Power Flow lines $j in time $t under scenario $s: ", f_MPEC[i,t,s])
-end
-global i=i+1
-end
+        p_G_e_value_node1_MPEC=zeros(length(set_thermalgenerators),length(set_times),length(set_scenarios))
 
-TotalEmissions_MPEC= sum(sum((sum(tech_thermal[e,EmissionsRate]*tech_thermal[e,HeatRate]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators))*γ[s]*Ns_H[t] for s in set_scenarios) for t in set_times)
 
-println("Total Emissions:", TotalEmissions_MPEC)
+        p_G_e_value_node2_MPEC=zeros(length(set_thermalgenerators),length(set_times),length(set_scenarios))
 
-TotalCost_MPEC=   sum(sum(sum((
-                  +sum(varcost_thermal[e]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators)
-                  +sum(varcost_wind[w]*p_G_w_value_MPEC[w,t,s]  for w in set_winds)
-                  +sum(V*r_d_value_MPEC[d,t,s]  for d in set_demands)
-                  +sum(P*r_w_value_MPEC[w,t,s]  for w in set_winds)
-                  +sum(Τ[s]*tech_thermal[e,EmissionsRate]*tech_thermal[e,HeatRate]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators))*γ[s]*Ns_H[t] for s in set_scenarios) for t in set_times)
-                  +sum(tech_thermal[e,invcost]*CRF_thermal[e]*x_e_value_MPEC[e]  for e in set_thermalgenerators)
-                  +sum(tech_wind[w,invcost]*CRF_wind[w]*x_w_value_MPEC[w]  for w in set_winds)
-                  +sum(tech_thermal[e,fixedcost]*(tech_thermal[e,capacity_existingunits]+x_e_value_MPEC[e])  for e in set_thermalgenerators)
-                  +sum(tech_wind[w,fixedcost]*(tech_wind[w,capacity_existingunits]+x_w_value_MPEC[w])  for w in set_winds))
+        p_G_e_value_node3_MPEC=zeros(length(set_thermalgenerators),length(set_times),length(set_scenarios))
 
-TotalCapCost_EPEC=sum(sum(tech_thermal[e,invcost]*CRF_thermal[e]*x_e_value_MPEC[e]  for e in set_thermalgenerators)
-                      +sum(tech_wind[w,invcost]*CRF_wind[w]*x_w_value_MPEC[w]  for w in set_winds))
 
-TotalFixedCost_EPEC=sum(sum(tech_thermal[e,fixedcost]*(tech_thermal[e,capacity_existingunits]+x_e_value_MPEC[e])  for e in set_thermalgenerators)
-                     +sum(tech_wind[w,fixedcost]*(tech_wind[w,capacity_existingunits]+x_w_value_MPEC[w])  for w in set_winds))
+        p_G_w_value_MPEC=zeros(length(set_winds),length(set_times),length(set_scenarios))
 
-TotalEmissionsCost_EPEC= sum(sum((sum(Τ[s]*tech_thermal[e,EmissionsRate]*tech_thermal[e,HeatRate]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators))*γ[s]*Ns_H[t] for s in set_scenarios) for t in set_times)
+        p_G_w_value_node1_MPEC=zeros(length(set_winds),length(set_times),length(set_scenarios))
 
-TotalOperatingCost_EPEC= sum(sum((sum(varcost_thermal[e]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators)
-                                +sum(varcost_wind[w]*p_G_w_value_MPEC[w,t,s]  for w in set_winds))*γ[s]*Ns_H[t] for s in set_scenarios) for t in set_times)
+        p_G_w_value_node2_MPEC=zeros(length(set_winds),length(set_times),length(set_scenarios))
 
-TotalCurtailmentcost_EPEC=sum(sum((sum(P*r_w_value_MPEC[w,t,s]  for w in set_winds))*γ[s]*Ns_H[t] for s in set_scenarios) for t in set_times)
+        p_G_w_value_node3_MPEC=zeros(length(set_winds),length(set_times),length(set_scenarios))
 
-TotalCost_MPEC_Check=TotalCapCost_EPEC+TotalFixedCost_EPEC+TotalEmissionsCost_EPEC+TotalOperatingCost_EPEC+TotalCurtailmentcost_EPEC
+        p_D_value_MPEC=zeros(length(set_demands),length(set_scenarios))
 
-println("Total Operating Cost:", TotalOperatingCost_EPEC)
+        υ_SR_value_MPEC=zeros(length(set_thermalgenerators),length(set_times),length(set_scenarios))
 
-println("Total Cost:", TotalCost_MPEC)
+        r_d_value_MPEC=zeros(length(set_demands),length(set_times),length(set_scenarios))
 
-TotalOperatingCost_MPEC_Firm1=sum(sum(sum((sum(varcost_thermal[e]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==1)
-                                           +sum(varcost_wind[w]*p_G_w_value_MPEC[w,t,s]  for w in set_winds if tech_wind[w,ownership]==1))*γ[s]*Ns_H[t] for s in set_scenarios) for t in set_times))
+        r_w_value_MPEC=zeros(length(set_winds),length(set_times),length(set_scenarios))
 
-#Note: Both operating cost and profits might different among solvers, but the total system cost should be the same.
-println("Total Operating Cost, Firm 1:", TotalOperatingCost_MPEC_Firm1)
+        Electricity_prices_MPEC=zeros(length(set_nodes),length(set_times),length(set_scenarios))
 
-TotalOperatingCost_MPEC_Firm2=sum(sum(sum((sum(varcost_thermal[e]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==2)
-                                           +sum(varcost_wind[w]*p_G_w_value_MPEC[w,t,s]  for w in set_winds if tech_wind[w,ownership]==2))*γ[s]*Ns_H[t] for s in set_scenarios) for t in set_times))
+        Spinning_prices_MPEC=zeros(length(set_times),length(set_scenarios))
 
-println("Total Operating Cost, Firm 2:", TotalOperatingCost_MPEC_Firm2)
+        θ_values_MPEC=zeros(length(set_nodes),length(set_times),length(set_scenarios))
 
+        f_MPEC=zeros(n_link,length(set_times),length(set_scenarios))
 
-TotalOperatingCost_MPEC_Firm3=sum(sum(sum((sum(varcost_thermal[e]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==3)
-                                           +sum(varcost_wind[w]*p_G_w_value_MPEC[w,t,s]  for w in set_winds if tech_wind[w,ownership]==3))*γ[s]*Ns_H[t] for s in set_scenarios) for t in set_times))
+        TotalEmissions_MPEC= 0
 
-println("Total Operating Cost, Firm 3:", TotalOperatingCost_MPEC_Firm3)
 
+        TotalCost_MPEC=  0
 
-Totalrevenue_MPEC_Firm1= sum(sum(sum((sum(Electricity_prices_MPEC[MapG[e][2],t,s]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==1)
-                                     +sum(Electricity_prices_MPEC[MapW[w][2],t,s]*p_G_w_value_MPEC[w,t,s] for w in set_winds if tech_wind[w,ownership]==1)
-                                     +sum(Spinning_prices_MPEC[t,s]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==1))*γ[s]*Ns_H[t] for s in set_scenarios) for t in set_times))
+        TotalCapCost_EPEC=0
 
-println("MPEC Objective Function: ", objective_value(m))
+        TotalFixedCost_EPEC=0
 
-println("Total Revenue, Firm 1:", Totalrevenue_MPEC_Firm1)
+        TotalEmissionsCost_EPEC= 0
+        TotalOperatingCost_EPEC= 0
 
-Totalrevenue_MPEC_Firm2= sum(sum(sum((sum(Electricity_prices_MPEC[MapG[e][2],t,s]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==2)
-                                     +sum(Electricity_prices_MPEC[MapW[w][2],t,s]*p_G_w_value_MPEC[w,t,s] for w in set_winds if tech_wind[w,ownership]==2)
-                                     +sum(Spinning_prices_MPEC[t,s]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==2))*γ[s]*Ns_H[t] for s in set_scenarios) for t in set_times))
+        TotalCurtailmentcost_EPEC=0
 
-println("Total Revenue, Firm 2:", Totalrevenue_MPEC_Firm2)
+        TotalCost_MPEC_Check=TotalCapCost_EPEC+TotalFixedCost_EPEC+TotalEmissionsCost_EPEC+TotalOperatingCost_EPEC+TotalCurtailmentcost_EPEC
 
-ObjectiveFunction_Revenue=JuMP.value.(revenue_firm)
+        println("Total Operating Cost:", TotalOperatingCost_EPEC)
 
-println("MPEC Revenue: ", ObjectiveFunction_Revenue)
+        println("Total Cost:", TotalCost_MPEC)
 
-Totalrevenue_MPEC_Firm3= sum(sum(sum((sum(Electricity_prices_MPEC[MapG[e][2],t,s]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==3)
-                                     +sum(Electricity_prices_MPEC[MapW[w][2],t,s]*p_G_w_value_MPEC[w,t,s] for w in set_winds if tech_wind[w,ownership]==3)
-                                     +sum(Spinning_prices_MPEC[t,s]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==3))*γ[s]*Ns_H[t] for s in set_scenarios) for t in set_times))
+        TotalOperatingCost_MPEC_Firm1=0
+        #Note: Both operating cost and profits might different among solvers, but the total system cost should be the same.
+        println("Total Operating Cost, Firm 1:", TotalOperatingCost_MPEC_Firm1)
 
-println("Total Revenue, Firm 3:", Totalrevenue_MPEC_Firm3)
+        TotalOperatingCost_MPEC_Firm2=0
+        println("Total Operating Cost, Firm 2:", TotalOperatingCost_MPEC_Firm2)
 
-Total_Investments_Technology_EPEC=zeros(7)
-Total_Investments_Technology_Firm1_EPEC=zeros(7)
-Total_Investments_Technology_Firm2_EPEC=zeros(7)
 
-for i in set_opt_thermalgenerators_numbertechnologies
-Total_Investments_Technology_EPEC[i]=sum(x_e_value_MPEC[e] for e in set_thermalgenerators if tech_thermal[e,Technology]== i)
-Total_Investments_Technology_Firm1_EPEC[i]=sum(x_e_value_MPEC[e] for e in set_thermalgenerators if tech_thermal[e,ownership]==1 && tech_thermal[e,Technology]== i)
-Total_Investments_Technology_Firm2_EPEC[i]=sum(x_e_value_MPEC[e] for e in set_thermalgenerators if tech_thermal[e,ownership]==2 && tech_thermal[e,Technology]== i)
-end
+        TotalOperatingCost_MPEC_Firm3=0
+        println("Total Operating Cost, Firm 3:", TotalOperatingCost_MPEC_Firm3)
 
-global j=6
-for i in set_opt_winds_numbertechnologies
-Total_Investments_Technology_EPEC[j]=sum(x_w_value_MPEC[w] for w in set_winds if tech_wind[w,Technology]== i)
-Total_Investments_Technology_Firm1_EPEC[j]=sum(x_w_value_MPEC[w] for w in set_winds if tech_wind[w,ownership]==1 && tech_wind[w,Technology]== i)
-Total_Investments_Technology_Firm2_EPEC[j]=sum(x_w_value_MPEC[w] for w in set_winds if tech_wind[w,ownership]==2 && tech_wind[w,Technology]== i)
-global j=j+1
-end
 
-Total_Generation_Technology_EPEC=zeros(9,length(set_times))
-Total_Generation_Technology_Existing_EPEC=zeros(9,length(set_times))
-Total_Generation_Technology_Candidate_EPEC=zeros(9,length(set_times))
+        Totalrevenue_MPEC_Firm1= 0
 
-Total_Emissions_Technology_Existing_EPEC=zeros(9,length(set_times))
-Total_Emissions_Technology_Candidate_EPEC=zeros(9,length(set_times))
+        println("MPEC Objective Function: ", 0)
 
-Total_Emissions_Technology_Existing_Cummulative_EPEC=zeros(9)
-Total_Emissions_Technology_Candidate_Cummulative_EPEC=zeros(9)
+        println("Total Revenue, Firm 1:", Totalrevenue_MPEC_Firm1)
 
-for i in 1:7
-for t in set_times
-Total_Generation_Technology_EPEC[i,t]=sum(p_G_e_value_MPEC[e,t,1] for e in set_thermalgenerators if tech_thermal[e,Technology]==i;init=0)
-Total_Generation_Technology_Existing_EPEC[i,t]=sum(p_G_e_value_MPEC[e,t,1] for e in set_thermalgenerators if tech_thermal[e,capacity_existingunits]>0 && tech_thermal[e,Technology]==i;init=0)
-Total_Generation_Technology_Candidate_EPEC[i,t]=sum(p_G_e_value_MPEC[e,t,1] for e in set_thermalgenerators if tech_thermal[e,capacity_existingunits]==0 && tech_thermal[e,Technology]==i;init=0)
+        Totalrevenue_MPEC_Firm2= 0
+        println("Total Revenue, Firm 2:", Totalrevenue_MPEC_Firm2)
 
-Total_Emissions_Technology_Existing_EPEC[i,t]=sum(tech_thermal[e,EmissionsRate]*tech_thermal[e,HeatRate]*p_G_e_value_MPEC[e,t,1] for e in set_thermalgenerators if tech_thermal[e,capacity_existingunits]>0 && tech_thermal[e,Technology]==i;init=0)
-Total_Emissions_Technology_Candidate_EPEC[i,t]=sum(tech_thermal[e,EmissionsRate]*tech_thermal[e,HeatRate]*p_G_e_value_MPEC[e,t,1] for e in set_thermalgenerators if tech_thermal[e,capacity_existingunits]==0 && tech_thermal[e,Technology]==i;init=0)
+        ObjectiveFunction_Revenue=0
+        println("MPEC Revenue: ", ObjectiveFunction_Revenue)
 
-Total_Emissions_Technology_Existing_Cummulative_EPEC[i]=sum(sum(tech_thermal[e,EmissionsRate]*tech_thermal[e,HeatRate]*p_G_e_value_MPEC[e,t,1] for e in set_thermalgenerators if tech_thermal[e,capacity_existingunits]>0 && tech_thermal[e,Technology]==i;init=0)*Ns_H[t] for t in set_times)
-Total_Emissions_Technology_Candidate_Cummulative_EPEC[i]=sum(sum(tech_thermal[e,EmissionsRate]*tech_thermal[e,HeatRate]*p_G_e_value_MPEC[e,t,1] for e in set_thermalgenerators if tech_thermal[e,capacity_existingunits]==0 && tech_thermal[e,Technology]==i;init=0)*Ns_H[t] for t in set_times)
+        Totalrevenue_MPEC_Firm3= 0
+        println("Total Revenue, Firm 3:", Totalrevenue_MPEC_Firm3)
 
-end
-end
+        Total_Investments_Technology_EPEC=zeros(7)
+        Total_Investments_Technology_Firm1_EPEC=zeros(7)
+        Total_Investments_Technology_Firm2_EPEC=zeros(7)
 
-global j=1
-for i in 8:9
-for t in set_times
-Total_Generation_Technology_EPEC[i,t]=sum(p_G_w_value_MPEC[w,t,1] for w in set_winds if tech_wind[w,Technology]==j;init=0)
-Total_Generation_Technology_Existing_EPEC[i,t]=sum(p_G_w_value_MPEC[w,t,1] for w in set_winds if tech_wind[w,capacity_existingunits]>0 && tech_wind[w,Technology]==j;init=0)
-Total_Generation_Technology_Candidate_EPEC[i,t]=sum(p_G_w_value_MPEC[w,t,1] for w in set_winds if tech_wind[w,capacity_existingunits]==0 && tech_wind[w,Technology]==j;init=0)
-end
-global j=j+1
-end
 
+        Total_Generation_Technology_EPEC=zeros(9,length(set_times))
+        Total_Generation_Technology_Existing_EPEC=zeros(9,length(set_times))
+        Total_Generation_Technology_Candidate_EPEC=zeros(9,length(set_times))
 
-#Generation per node
-#Node 1
-Total_Generation_Technology_node1_EPEC=zeros(9,length(set_times))
+        Total_Emissions_Technology_Existing_EPEC=zeros(9,length(set_times))
+        Total_Emissions_Technology_Candidate_EPEC=zeros(9,length(set_times))
 
-for i in 1:7
-for t in set_times
-Total_Generation_Technology_node1_EPEC[i,t]=sum(p_G_e_value_node1_MPEC[e,t,1] for e in set_thermalgenerators if tech_thermal[e,Technology]==i;init=0)
-end
-end
+        Total_Emissions_Technology_Existing_Cummulative_EPEC=zeros(9)
+        Total_Emissions_Technology_Candidate_Cummulative_EPEC=zeros(9)
 
-global j=1
-for i in 8:9
-for t in set_times
-Total_Generation_Technology_node1_EPEC[i,t]=sum(p_G_w_value_node1_MPEC[w,t,1] for w in set_winds if tech_wind[w,Technology]==j;init=0)
-end
-global j=j+1
-end
+        #Generation per node
+        #Node 1
+        Total_Generation_Technology_node1_EPEC=zeros(9,length(set_times))
 
-#Generation per node
-#Node 2
-Total_Generation_Technology_node2_EPEC=zeros(9,length(set_times))
 
-for i in 1:7
-for t in set_times
-Total_Generation_Technology_node2_EPEC[i,t]=sum(p_G_e_value_node2_MPEC[e,t,1] for e in set_thermalgenerators if tech_thermal[e,Technology]==i;init=0)
-end
-end
+        #Generation per node
+        #Node 2
+        Total_Generation_Technology_node2_EPEC=zeros(9,length(set_times))
 
-global j=1
-for i in 8:9
-for t in set_times
-Total_Generation_Technology_node2_EPEC[i,t]=sum(p_G_w_value_node2_MPEC[w,t,1] for w in set_winds if tech_wind[w,Technology]==j;init=0)
-end
-global j=j+1
-end
+        #Generation per node
+        #Node 3
+        Total_Generation_Technology_node3_EPEC=zeros(9,length(set_times))
 
-#Generation per node
-#Node 3
-Total_Generation_Technology_node3_EPEC=zeros(9,length(set_times))
 
-for i in 1:7
-for t in set_times
-Total_Generation_Technology_node3_EPEC[i,t]=sum(p_G_e_value_node3_MPEC[e,t,1] for e in set_thermalgenerators if tech_thermal[e,Technology]==i;init=0)
-end
-end
 
-global j=1
-for i in 8:9
-for t in set_times
-Total_Generation_Technology_node3_EPEC[i,t]=sum(p_G_w_value_node3_MPEC[w,t,1] for w in set_winds if tech_wind[w,Technology]==j;init=0)
-end
-global j=j+1
-end
+        TotalOperatingCost_demandblock_MPEC_Firm1=zeros(length(set_times))
 
-TotalOperatingCost_demandblock_MPEC_Firm1=zeros(length(set_times))
 
-for t in set_times
-TotalOperatingCost_demandblock_MPEC_Firm1[t]=sum(sum((sum(varcost_thermal[e]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==1)
-                                           +sum(varcost_wind[w]*p_G_w_value_MPEC[w,t,s]  for w in set_winds if tech_wind[w,ownership]==1))*γ[s]*Ns_H[t] for s in set_scenarios))
-end
+        TotalOperatingCost_demandblock_MPEC_Firm2=zeros(length(set_times))
 
-TotalOperatingCost_demandblock_MPEC_Firm2=zeros(length(set_times))
 
-for t in set_times
-TotalOperatingCost_demandblock_MPEC_Firm2[t]=sum(sum((sum(varcost_thermal[e]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==2)
-                                           +sum(varcost_wind[w]*p_G_w_value_MPEC[w,t,s]  for w in set_winds if tech_wind[w,ownership]==2))*γ[s]*Ns_H[t] for s in set_scenarios))
-end
+        TotalOperatingCost_demandblock_MPEC_Firm3=zeros(length(set_times))
 
-TotalOperatingCost_demandblock_MPEC_Firm3=zeros(length(set_times))
 
-for t in set_times
-TotalOperatingCost_demandblock_MPEC_Firm3[t]=sum(sum((sum(varcost_thermal[e]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==3)
-                                           +sum(varcost_wind[w]*p_G_w_value_MPEC[w,t,s]  for w in set_winds if tech_wind[w,ownership]==3))*γ[s]*Ns_H[t] for s in set_scenarios))
-end
+        Totalrevenue_demandblock_MPEC_Firm1=zeros(length(set_times))
 
 
-Totalrevenue_demandblock_MPEC_Firm1=zeros(length(set_times))
+        Totalrevenue_demandblock_MPEC_Firm2=zeros(length(set_times))
 
-for t in set_times
-Totalrevenue_demandblock_MPEC_Firm1[t]= sum(sum((sum(Electricity_prices_MPEC[MapG[e][2],t,s]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==1)
-                                     +sum(Electricity_prices_MPEC[MapW[w][2],t,s]*p_G_w_value_MPEC[w,t,s] for w in set_winds if tech_wind[w,ownership]==1)
-                                     +sum(Spinning_prices_MPEC[t,s]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==1))*γ[s]*Ns_H[t] for s in set_scenarios))
-end
+        Totalrevenue_demandblock_MPEC_Firm3=zeros(length(set_times))
 
-Totalrevenue_demandblock_MPEC_Firm2=zeros(length(set_times))
 
-for t in set_times
-Totalrevenue_demandblock_MPEC_Firm2[t]= sum(sum((sum(Electricity_prices_MPEC[MapG[e][2],t,s]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==2)
-                                     +sum(Electricity_prices_MPEC[MapW[w][2],t,s]*p_G_w_value_MPEC[w,t,s] for w in set_winds if tech_wind[w,ownership]==2)
-                                     +sum(Spinning_prices_MPEC[t,s]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==2))*γ[s]*Ns_H[t] for s in set_scenarios))
-end
+        U_complementarity_1_MPEC=zeros(length(set_thermalgenerators),length(set_times),length(set_scenarios))
+        U_complementarity_2_MPEC=zeros(length(set_thermalgenerators),length(set_times),length(set_scenarios))
 
-Totalrevenue_demandblock_MPEC_Firm3=zeros(length(set_times))
 
-for t in set_times
-Totalrevenue_demandblock_MPEC_Firm3[t]= sum(sum((sum(Electricity_prices_MPEC[MapG[e][2],t,s]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==3)
-                                     +sum(Electricity_prices_MPEC[MapW[w][2],t,s]*p_G_w_value_MPEC[w,t,s] for w in set_winds if tech_wind[w,ownership]==3)
-                                     +sum(Spinning_prices_MPEC[t,s]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==3))*γ[s]*Ns_H[t] for s in set_scenarios))
-end
+        U_complementarity_3_MPEC=zeros(n_link,length(set_times),length(set_scenarios))
 
 
-U_complementarity_1_MPEC=zeros(length(set_thermalgenerators),length(set_times),length(set_scenarios))
-U_complementarity_2_MPEC=zeros(length(set_thermalgenerators),length(set_times),length(set_scenarios))
 
-for t in set_times, s in set_scenarios, e in set_thermalgenerators
-  U_complementarity_1_MPEC[e,t,s]=JuMP.value.(U_complementarity_1[e,t,s])
-end
+        U_complementarity_4_MPEC=zeros(n_link,length(set_times),length(set_scenarios))
 
-for t in set_times, s in set_scenarios, e in set_thermalgenerators
-  U_complementarity_2_MPEC[e,t,s]=JuMP.value.(U_complementarity_2[e,t,s])
-end
 
-U_complementarity_3_MPEC=zeros(n_link,length(set_times),length(set_scenarios))
 
-global i=1
-for j in links
-for s in set_scenarios, t in set_times
-U_complementarity_3_MPEC[i,t,s]=JuMP.value.(U_complementarity_3[j,t,s])
-end
-global i=i+1
-end
+        U_complementarity_5_MPEC=zeros(length(set_winds),length(set_times),length(set_scenarios))
+        U_complementarity_6_MPEC=zeros(length(set_demands),length(set_times),length(set_scenarios))
+        U_complementarity_7_MPEC=zeros(length(set_winds),length(set_times),length(set_scenarios))
+        U_complementarity_8_MPEC=zeros(length(set_thermalgenerators),length(set_times),length(set_scenarios))
+        U_complementarity_9_MPEC=zeros(length(set_thermalgenerators),length(set_times),length(set_scenarios))
 
-U_complementarity_4_MPEC=zeros(n_link,length(set_times),length(set_scenarios))
+    elseif status == MOI.OPTIMAL || (status == MOI.TIME_LIMIT && has_values(m))
 
-global i=1
-for j in links
-for s in set_scenarios, t in set_times
-U_complementarity_4_MPEC[i,t,s]=JuMP.value.(U_complementarity_4[j,t,s])
-end
-global i=i+1
-end
+        profit_det_MPEC=objective_value(m)
 
-U_complementarity_5_MPEC=zeros(length(set_winds),length(set_times),length(set_scenarios))
-U_complementarity_6_MPEC=zeros(length(set_demands),length(set_times),length(set_scenarios))
-U_complementarity_7_MPEC=zeros(length(set_winds),length(set_times),length(set_scenarios))
-U_complementarity_8_MPEC=zeros(length(set_thermalgenerators),length(set_times),length(set_scenarios))
-U_complementarity_9_MPEC=zeros(length(set_thermalgenerators),length(set_times),length(set_scenarios))
+        println("Total Cost:",profit_det_MPEC)
 
-for t in set_times, s in set_scenarios, w in set_winds
-  U_complementarity_5_MPEC[w,t,s]=JuMP.value.(U_complementarity_5[w,t,s])
-end
+        println("Investment Decisions")
 
-for t in set_times, s in set_scenarios, d in set_demands
-  U_complementarity_6_MPEC[d,t,s]=JuMP.value.(U_complementarity_6[d,t,s])
-end
+        x_w_value_MPEC=zeros(length(set_winds))
+        for w in set_winds
+        println("Investment decision for candidate wind unit $w: ",JuMP.value.(x_w[w]))
+        x_w_value_MPEC[w]=JuMP.value.(x_w[w])
+        end
 
+        x_e_value_MPEC=zeros(length(set_thermalgenerators))
+        for e in set_thermalgenerators
+        println("Investment decision for candidate thermal unit $e: ",JuMP.value.(x_e[e]))
+        x_e_value_MPEC[e]=JuMP.value.(x_e[e])
+        end
 
-for t in set_times, s in set_scenarios, w in set_winds
-  U_complementarity_7_MPEC[w,t,s]=JuMP.value.(U_complementarity_7[w,t,s])
-end
+        p_G_e_value_MPEC=zeros(length(set_thermalgenerators),length(set_times),length(set_scenarios))
+        for t in set_times, s in set_scenarios, e in set_thermalgenerators
+        #println("Production level of thermal generator $e in time $t under scenario $s:",JuMP.value.(p_G_e[e,t,s]))
+          p_G_e_value_MPEC[e,t,s]=JuMP.value.(p_G_e[e,t,s])
+        end
 
-for t in set_times, s in set_scenarios, e in set_thermalgenerators
-  U_complementarity_8_MPEC[e,t,s]=JuMP.value.(U_complementarity_8[e,t,s])
-end
+        p_G_e_value_node1_MPEC=zeros(length(set_thermalgenerators),length(set_times),length(set_scenarios))
 
-for t in set_times, s in set_scenarios, e in set_thermalgenerators
-  U_complementarity_9_MPEC[e,t,s]=JuMP.value.(U_complementarity_9[e,t,s])
-end
+        for e in set_thermalgenerators if 1 == MapG[e][2]
+        for t in set_times, s in set_scenarios
+          p_G_e_value_node1_MPEC[e,t,s]=JuMP.value.(p_G_e[e,t,s])
+        end
+        end
+        end
+
+        p_G_e_value_node2_MPEC=zeros(length(set_thermalgenerators),length(set_times),length(set_scenarios))
+
+        for e in set_thermalgenerators if 2 == MapG[e][2]
+        for t in set_times, s in set_scenarios
+          p_G_e_value_node2_MPEC[e,t,s]=JuMP.value.(p_G_e[e,t,s])
+        end
+        end
+        end
+
+        p_G_e_value_node3_MPEC=zeros(length(set_thermalgenerators),length(set_times),length(set_scenarios))
+
+        for e in set_thermalgenerators if 3 == MapG[e][2]
+        for t in set_times, s in set_scenarios
+          p_G_e_value_node3_MPEC[e,t,s]=JuMP.value.(p_G_e[e,t,s])
+        end
+        end
+        end
+
+        p_G_w_value_MPEC=zeros(length(set_winds),length(set_times),length(set_scenarios))
+        for t in set_times, s in set_scenarios, w in set_winds
+        #println("Production level of wind unit $w in time $t under scenario $s:",JuMP.value.(p_G_w[w,t,s]))
+          p_G_w_value_MPEC[w,t,s]=JuMP.value.(p_G_w[w,t,s])
+        end
+
+
+        p_G_w_value_node1_MPEC=zeros(length(set_winds),length(set_times),length(set_scenarios))
+        for w in set_winds if 1 == MapW[w][2]
+        for t in set_times, s in set_scenarios
+          p_G_w_value_node1_MPEC[w,t,s]=JuMP.value.(p_G_w[w,t,s])
+        end
+        end
+        end
+
+        p_G_w_value_node2_MPEC=zeros(length(set_winds),length(set_times),length(set_scenarios))
+        for w in set_winds if 2 == MapW[w][2]
+        for t in set_times, s in set_scenarios
+          p_G_w_value_node2_MPEC[w,t,s]=JuMP.value.(p_G_w[w,t,s])
+        end
+        end
+        end
+
+        p_G_w_value_node3_MPEC=zeros(length(set_winds),length(set_times),length(set_scenarios))
+        for w in set_winds if 3 == MapW[w][2]
+        for t in set_times, s in set_scenarios
+          p_G_w_value_node3_MPEC[w,t,s]=JuMP.value.(p_G_w[w,t,s])
+        end
+        end
+        end
+
+        p_D_value_MPEC=zeros(length(set_demands),length(set_scenarios))
+        for d in set_demands, s in set_scenarios
+          p_D_value_MPEC[d,s]=p_D[d,s]*max_demand
+        end
+        #println("Comsuption level of demand d: ",p_D_value)
+
+        υ_SR_value_MPEC=zeros(length(set_thermalgenerators),length(set_times),length(set_scenarios))
+        for t in set_times, s in set_scenarios, e in set_thermalgenerators
+        #println("Spinning reserves of thermal generator $e in time $t under scenario $s:",JuMP.value.(υ_SR[e,t,s]))
+          υ_SR_value_MPEC[e,t,s]=JuMP.value.(υ_SR[e,t,s])
+        end
+
+        r_d_value_MPEC=zeros(length(set_demands),length(set_times),length(set_scenarios))
+        for t in set_times, s in set_scenarios, d in set_demands
+        #println("Unserved energy of demand $d in time $t under scenario $s:",JuMP.value.(r_d[d,t,s]))
+          r_d_value_MPEC[d,t,s]=JuMP.value.(r_d[d,t,s])
+        end
+
+        r_w_value_MPEC=zeros(length(set_winds),length(set_times),length(set_scenarios))
+
+        for t in set_times, s in set_scenarios, w in set_winds
+        #println("Curtailment of wind unit $w in time $t under scenario $s: ",JuMP.value.(r_w[w,t,s]))
+          r_w_value_MPEC[w,t,s]=JuMP.value.(r_w[w,t,s])
+        end
+
+        Electricity_prices_MPEC=zeros(length(set_nodes),length(set_times),length(set_scenarios))
+
+        for   t in set_times, s in set_scenarios,n in set_nodes
+           Electricity_prices_MPEC[n,t,s]= JuMP.value.(λ[n,t,s])
+        println("Electricity Price in node $n in time $t under scenario $s: ", Electricity_prices_MPEC[n,t,s])
+        end
+
+        Spinning_prices_MPEC=zeros(length(set_times),length(set_scenarios))
+
+        for   t in set_times, s in set_scenarios
+           Spinning_prices_MPEC[t,s]= JuMP.value.(λ_SR[t,s])
+        println("Spinning reserve Price time $t under scenario $s: ", Spinning_prices_MPEC[t,s])
+        end
+
+
+        θ_values_MPEC=zeros(length(set_nodes),length(set_times),length(set_scenarios))
+
+        for   t in set_times, s in set_scenarios,n in set_nodes
+           θ_values_MPEC[n,t,s]= JuMP.value.(θ[n,t,s])
+        #println("Angle in node $n in time $t under scenario $s: ", θ_values_MPEC[n,t,s])
+        end
+
+        f_MPEC=zeros(n_link,length(set_times),length(set_scenarios))
+        i=1
+        for j in links
+        for s in set_scenarios, t in set_times
+        f_MPEC[i,t,s]=B_dict[j]*(θ_values_MPEC[j[1],t,s]-θ_values_MPEC[j[2],t,s])
+        println("Power Flow lines $j in time $t under scenario $s: ", f_MPEC[i,t,s])
+        end
+        global i=i+1
+        end
+
+        TotalEmissions_MPEC= sum(sum((sum(tech_thermal[e,EmissionsRate]*tech_thermal[e,HeatRate]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators))*γ[s]*Ns_H[t] for s in set_scenarios) for t in set_times)
+
+        println("Total Emissions:", TotalEmissions_MPEC)
+
+        TotalCost_MPEC=   sum(sum(sum((
+                          +sum(varcost_thermal[e]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators)
+                          +sum(varcost_wind[w]*p_G_w_value_MPEC[w,t,s]  for w in set_winds)
+                          +sum(V*r_d_value_MPEC[d,t,s]  for d in set_demands)
+                          +sum(P*r_w_value_MPEC[w,t,s]  for w in set_winds)
+                          +sum(Τ[s]*tech_thermal[e,EmissionsRate]*tech_thermal[e,HeatRate]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators))*γ[s]*Ns_H[t] for s in set_scenarios) for t in set_times)
+                          +sum(tech_thermal[e,invcost]*CRF_thermal[e]*x_e_value_MPEC[e]  for e in set_thermalgenerators)
+                          +sum(tech_wind[w,invcost]*CRF_wind[w]*x_w_value_MPEC[w]  for w in set_winds)
+                          +sum(tech_thermal[e,fixedcost]*(tech_thermal[e,capacity_existingunits]+x_e_value_MPEC[e])  for e in set_thermalgenerators)
+                          +sum(tech_wind[w,fixedcost]*(tech_wind[w,capacity_existingunits]+x_w_value_MPEC[w])  for w in set_winds))
+
+        TotalCapCost_EPEC=sum(sum(tech_thermal[e,invcost]*CRF_thermal[e]*x_e_value_MPEC[e]  for e in set_thermalgenerators)
+                              +sum(tech_wind[w,invcost]*CRF_wind[w]*x_w_value_MPEC[w]  for w in set_winds))
+
+        TotalFixedCost_EPEC=sum(sum(tech_thermal[e,fixedcost]*(tech_thermal[e,capacity_existingunits]+x_e_value_MPEC[e])  for e in set_thermalgenerators)
+                             +sum(tech_wind[w,fixedcost]*(tech_wind[w,capacity_existingunits]+x_w_value_MPEC[w])  for w in set_winds))
+
+        TotalEmissionsCost_EPEC= sum(sum((sum(Τ[s]*tech_thermal[e,EmissionsRate]*tech_thermal[e,HeatRate]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators))*γ[s]*Ns_H[t] for s in set_scenarios) for t in set_times)
+
+        TotalOperatingCost_EPEC= sum(sum((sum(varcost_thermal[e]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators)
+                                        +sum(varcost_wind[w]*p_G_w_value_MPEC[w,t,s]  for w in set_winds))*γ[s]*Ns_H[t] for s in set_scenarios) for t in set_times)
+
+        TotalCurtailmentcost_EPEC=sum(sum((sum(P*r_w_value_MPEC[w,t,s]  for w in set_winds))*γ[s]*Ns_H[t] for s in set_scenarios) for t in set_times)
+
+        TotalCost_MPEC_Check=TotalCapCost_EPEC+TotalFixedCost_EPEC+TotalEmissionsCost_EPEC+TotalOperatingCost_EPEC+TotalCurtailmentcost_EPEC
+
+        println("Total Operating Cost:", TotalOperatingCost_EPEC)
+
+        println("Total Cost:", TotalCost_MPEC)
+
+        TotalOperatingCost_MPEC_Firm1=sum(sum(sum((sum(varcost_thermal[e]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==1)
+                                                   +sum(varcost_wind[w]*p_G_w_value_MPEC[w,t,s]  for w in set_winds if tech_wind[w,ownership]==1))*γ[s]*Ns_H[t] for s in set_scenarios) for t in set_times))
+
+        #Note: Both operating cost and profits might different among solvers, but the total system cost should be the same.
+        println("Total Operating Cost, Firm 1:", TotalOperatingCost_MPEC_Firm1)
+
+        TotalOperatingCost_MPEC_Firm2=sum(sum(sum((sum(varcost_thermal[e]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==2)
+                                                   +sum(varcost_wind[w]*p_G_w_value_MPEC[w,t,s]  for w in set_winds if tech_wind[w,ownership]==2))*γ[s]*Ns_H[t] for s in set_scenarios) for t in set_times))
+
+        println("Total Operating Cost, Firm 2:", TotalOperatingCost_MPEC_Firm2)
+
+
+        TotalOperatingCost_MPEC_Firm3=sum(sum(sum((sum(varcost_thermal[e]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==3)
+                                                   +sum(varcost_wind[w]*p_G_w_value_MPEC[w,t,s]  for w in set_winds if tech_wind[w,ownership]==3))*γ[s]*Ns_H[t] for s in set_scenarios) for t in set_times))
+
+        println("Total Operating Cost, Firm 3:", TotalOperatingCost_MPEC_Firm3)
+
+
+        Totalrevenue_MPEC_Firm1= sum(sum(sum((sum(Electricity_prices_MPEC[MapG[e][2],t,s]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==1)
+                                             +sum(Electricity_prices_MPEC[MapW[w][2],t,s]*p_G_w_value_MPEC[w,t,s] for w in set_winds if tech_wind[w,ownership]==1)
+                                             +sum(Spinning_prices_MPEC[t,s]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==1))*γ[s]*Ns_H[t] for s in set_scenarios) for t in set_times))
+
+        println("MPEC Objective Function: ", objective_value(m))
+
+        println("Total Revenue, Firm 1:", Totalrevenue_MPEC_Firm1)
+
+        Totalrevenue_MPEC_Firm2= sum(sum(sum((sum(Electricity_prices_MPEC[MapG[e][2],t,s]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==2)
+                                             +sum(Electricity_prices_MPEC[MapW[w][2],t,s]*p_G_w_value_MPEC[w,t,s] for w in set_winds if tech_wind[w,ownership]==2)
+                                             +sum(Spinning_prices_MPEC[t,s]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==2))*γ[s]*Ns_H[t] for s in set_scenarios) for t in set_times))
+
+        println("Total Revenue, Firm 2:", Totalrevenue_MPEC_Firm2)
+
+        ObjectiveFunction_Revenue=JuMP.value.(revenue_firm)
+
+        println("MPEC Revenue: ", ObjectiveFunction_Revenue)
+
+        Totalrevenue_MPEC_Firm3= sum(sum(sum((sum(Electricity_prices_MPEC[MapG[e][2],t,s]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==3)
+                                             +sum(Electricity_prices_MPEC[MapW[w][2],t,s]*p_G_w_value_MPEC[w,t,s] for w in set_winds if tech_wind[w,ownership]==3)
+                                             +sum(Spinning_prices_MPEC[t,s]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==3))*γ[s]*Ns_H[t] for s in set_scenarios) for t in set_times))
+
+        println("Total Revenue, Firm 3:", Totalrevenue_MPEC_Firm3)
+
+        Total_Investments_Technology_EPEC=zeros(7)
+        Total_Investments_Technology_Firm1_EPEC=zeros(7)
+        Total_Investments_Technology_Firm2_EPEC=zeros(7)
+
+        for i in set_opt_thermalgenerators_numbertechnologies
+        Total_Investments_Technology_EPEC[i]=sum(x_e_value_MPEC[e] for e in set_thermalgenerators if tech_thermal[e,Technology]== i)
+        Total_Investments_Technology_Firm1_EPEC[i]=sum(x_e_value_MPEC[e] for e in set_thermalgenerators if tech_thermal[e,ownership]==1 && tech_thermal[e,Technology]== i)
+        Total_Investments_Technology_Firm2_EPEC[i]=sum(x_e_value_MPEC[e] for e in set_thermalgenerators if tech_thermal[e,ownership]==2 && tech_thermal[e,Technology]== i)
+        end
+
+        global j=6
+        for i in set_opt_winds_numbertechnologies
+        Total_Investments_Technology_EPEC[j]=sum(x_w_value_MPEC[w] for w in set_winds if tech_wind[w,Technology]== i)
+        Total_Investments_Technology_Firm1_EPEC[j]=sum(x_w_value_MPEC[w] for w in set_winds if tech_wind[w,ownership]==1 && tech_wind[w,Technology]== i)
+        Total_Investments_Technology_Firm2_EPEC[j]=sum(x_w_value_MPEC[w] for w in set_winds if tech_wind[w,ownership]==2 && tech_wind[w,Technology]== i)
+        global j=j+1
+        end
+
+        Total_Generation_Technology_EPEC=zeros(9,length(set_times))
+        Total_Generation_Technology_Existing_EPEC=zeros(9,length(set_times))
+        Total_Generation_Technology_Candidate_EPEC=zeros(9,length(set_times))
+
+        Total_Emissions_Technology_Existing_EPEC=zeros(9,length(set_times))
+        Total_Emissions_Technology_Candidate_EPEC=zeros(9,length(set_times))
+
+        Total_Emissions_Technology_Existing_Cummulative_EPEC=zeros(9)
+        Total_Emissions_Technology_Candidate_Cummulative_EPEC=zeros(9)
+
+        for i in 1:7
+        for t in set_times
+        Total_Generation_Technology_EPEC[i,t]=sum(p_G_e_value_MPEC[e,t,1] for e in set_thermalgenerators if tech_thermal[e,Technology]==i;init=0)
+        Total_Generation_Technology_Existing_EPEC[i,t]=sum(p_G_e_value_MPEC[e,t,1] for e in set_thermalgenerators if tech_thermal[e,capacity_existingunits]>0 && tech_thermal[e,Technology]==i;init=0)
+        Total_Generation_Technology_Candidate_EPEC[i,t]=sum(p_G_e_value_MPEC[e,t,1] for e in set_thermalgenerators if tech_thermal[e,capacity_existingunits]==0 && tech_thermal[e,Technology]==i;init=0)
+
+        Total_Emissions_Technology_Existing_EPEC[i,t]=sum(tech_thermal[e,EmissionsRate]*tech_thermal[e,HeatRate]*p_G_e_value_MPEC[e,t,1] for e in set_thermalgenerators if tech_thermal[e,capacity_existingunits]>0 && tech_thermal[e,Technology]==i;init=0)
+        Total_Emissions_Technology_Candidate_EPEC[i,t]=sum(tech_thermal[e,EmissionsRate]*tech_thermal[e,HeatRate]*p_G_e_value_MPEC[e,t,1] for e in set_thermalgenerators if tech_thermal[e,capacity_existingunits]==0 && tech_thermal[e,Technology]==i;init=0)
+
+        Total_Emissions_Technology_Existing_Cummulative_EPEC[i]=sum(sum(tech_thermal[e,EmissionsRate]*tech_thermal[e,HeatRate]*p_G_e_value_MPEC[e,t,1] for e in set_thermalgenerators if tech_thermal[e,capacity_existingunits]>0 && tech_thermal[e,Technology]==i;init=0)*Ns_H[t] for t in set_times)
+        Total_Emissions_Technology_Candidate_Cummulative_EPEC[i]=sum(sum(tech_thermal[e,EmissionsRate]*tech_thermal[e,HeatRate]*p_G_e_value_MPEC[e,t,1] for e in set_thermalgenerators if tech_thermal[e,capacity_existingunits]==0 && tech_thermal[e,Technology]==i;init=0)*Ns_H[t] for t in set_times)
+
+        end
+        end
+
+        global j=1
+        for i in 8:9
+        for t in set_times
+        Total_Generation_Technology_EPEC[i,t]=sum(p_G_w_value_MPEC[w,t,1] for w in set_winds if tech_wind[w,Technology]==j;init=0)
+        Total_Generation_Technology_Existing_EPEC[i,t]=sum(p_G_w_value_MPEC[w,t,1] for w in set_winds if tech_wind[w,capacity_existingunits]>0 && tech_wind[w,Technology]==j;init=0)
+        Total_Generation_Technology_Candidate_EPEC[i,t]=sum(p_G_w_value_MPEC[w,t,1] for w in set_winds if tech_wind[w,capacity_existingunits]==0 && tech_wind[w,Technology]==j;init=0)
+        end
+        global j=j+1
+        end
+
+
+        #Generation per node
+        #Node 1
+        Total_Generation_Technology_node1_EPEC=zeros(9,length(set_times))
+
+        for i in 1:7
+        for t in set_times
+        Total_Generation_Technology_node1_EPEC[i,t]=sum(p_G_e_value_node1_MPEC[e,t,1] for e in set_thermalgenerators if tech_thermal[e,Technology]==i;init=0)
+        end
+        end
+
+        global j=1
+        for i in 8:9
+        for t in set_times
+        Total_Generation_Technology_node1_EPEC[i,t]=sum(p_G_w_value_node1_MPEC[w,t,1] for w in set_winds if tech_wind[w,Technology]==j;init=0)
+        end
+        global j=j+1
+        end
+
+        #Generation per node
+        #Node 2
+        Total_Generation_Technology_node2_EPEC=zeros(9,length(set_times))
+
+        for i in 1:7
+        for t in set_times
+        Total_Generation_Technology_node2_EPEC[i,t]=sum(p_G_e_value_node2_MPEC[e,t,1] for e in set_thermalgenerators if tech_thermal[e,Technology]==i;init=0)
+        end
+        end
+
+        global j=1
+        for i in 8:9
+        for t in set_times
+        Total_Generation_Technology_node2_EPEC[i,t]=sum(p_G_w_value_node2_MPEC[w,t,1] for w in set_winds if tech_wind[w,Technology]==j;init=0)
+        end
+        global j=j+1
+        end
+
+        #Generation per node
+        #Node 3
+        Total_Generation_Technology_node3_EPEC=zeros(9,length(set_times))
+
+        for i in 1:7
+        for t in set_times
+        Total_Generation_Technology_node3_EPEC[i,t]=sum(p_G_e_value_node3_MPEC[e,t,1] for e in set_thermalgenerators if tech_thermal[e,Technology]==i;init=0)
+        end
+        end
+
+        global j=1
+        for i in 8:9
+        for t in set_times
+        Total_Generation_Technology_node3_EPEC[i,t]=sum(p_G_w_value_node3_MPEC[w,t,1] for w in set_winds if tech_wind[w,Technology]==j;init=0)
+        end
+        global j=j+1
+        end
+
+        TotalOperatingCost_demandblock_MPEC_Firm1=zeros(length(set_times))
+
+        for t in set_times
+        TotalOperatingCost_demandblock_MPEC_Firm1[t]=sum(sum((sum(varcost_thermal[e]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==1)
+                                                   +sum(varcost_wind[w]*p_G_w_value_MPEC[w,t,s]  for w in set_winds if tech_wind[w,ownership]==1))*γ[s]*Ns_H[t] for s in set_scenarios))
+        end
+
+        TotalOperatingCost_demandblock_MPEC_Firm2=zeros(length(set_times))
+
+        for t in set_times
+        TotalOperatingCost_demandblock_MPEC_Firm2[t]=sum(sum((sum(varcost_thermal[e]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==2)
+                                                   +sum(varcost_wind[w]*p_G_w_value_MPEC[w,t,s]  for w in set_winds if tech_wind[w,ownership]==2))*γ[s]*Ns_H[t] for s in set_scenarios))
+        end
+
+        TotalOperatingCost_demandblock_MPEC_Firm3=zeros(length(set_times))
+
+        for t in set_times
+        TotalOperatingCost_demandblock_MPEC_Firm3[t]=sum(sum((sum(varcost_thermal[e]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==3)
+                                                   +sum(varcost_wind[w]*p_G_w_value_MPEC[w,t,s]  for w in set_winds if tech_wind[w,ownership]==3))*γ[s]*Ns_H[t] for s in set_scenarios))
+        end
+
+
+        Totalrevenue_demandblock_MPEC_Firm1=zeros(length(set_times))
+
+        for t in set_times
+        Totalrevenue_demandblock_MPEC_Firm1[t]= sum(sum((sum(Electricity_prices_MPEC[MapG[e][2],t,s]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==1)
+                                             +sum(Electricity_prices_MPEC[MapW[w][2],t,s]*p_G_w_value_MPEC[w,t,s] for w in set_winds if tech_wind[w,ownership]==1)
+                                             +sum(Spinning_prices_MPEC[t,s]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==1))*γ[s]*Ns_H[t] for s in set_scenarios))
+        end
+
+        Totalrevenue_demandblock_MPEC_Firm2=zeros(length(set_times))
+
+        for t in set_times
+        Totalrevenue_demandblock_MPEC_Firm2[t]= sum(sum((sum(Electricity_prices_MPEC[MapG[e][2],t,s]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==2)
+                                             +sum(Electricity_prices_MPEC[MapW[w][2],t,s]*p_G_w_value_MPEC[w,t,s] for w in set_winds if tech_wind[w,ownership]==2)
+                                             +sum(Spinning_prices_MPEC[t,s]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==2))*γ[s]*Ns_H[t] for s in set_scenarios))
+        end
+
+        Totalrevenue_demandblock_MPEC_Firm3=zeros(length(set_times))
+
+        for t in set_times
+        Totalrevenue_demandblock_MPEC_Firm3[t]= sum(sum((sum(Electricity_prices_MPEC[MapG[e][2],t,s]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==3)
+                                             +sum(Electricity_prices_MPEC[MapW[w][2],t,s]*p_G_w_value_MPEC[w,t,s] for w in set_winds if tech_wind[w,ownership]==3)
+                                             +sum(Spinning_prices_MPEC[t,s]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==3))*γ[s]*Ns_H[t] for s in set_scenarios))
+        end
+
+
+        U_complementarity_1_MPEC=zeros(length(set_thermalgenerators),length(set_times),length(set_scenarios))
+        U_complementarity_2_MPEC=zeros(length(set_thermalgenerators),length(set_times),length(set_scenarios))
+
+        for t in set_times, s in set_scenarios, e in set_thermalgenerators
+          U_complementarity_1_MPEC[e,t,s]=JuMP.value.(U_complementarity_1[e,t,s])
+        end
+
+        for t in set_times, s in set_scenarios, e in set_thermalgenerators
+          U_complementarity_2_MPEC[e,t,s]=JuMP.value.(U_complementarity_2[e,t,s])
+        end
+
+        U_complementarity_3_MPEC=zeros(n_link,length(set_times),length(set_scenarios))
+
+        global i=1
+        for j in links
+        for s in set_scenarios, t in set_times
+        U_complementarity_3_MPEC[i,t,s]=JuMP.value.(U_complementarity_3[j,t,s])
+        end
+        global i=i+1
+        end
+
+        U_complementarity_4_MPEC=zeros(n_link,length(set_times),length(set_scenarios))
+
+        global i=1
+        for j in links
+        for s in set_scenarios, t in set_times
+        U_complementarity_4_MPEC[i,t,s]=JuMP.value.(U_complementarity_4[j,t,s])
+        end
+        global i=i+1
+        end
+
+        U_complementarity_5_MPEC=zeros(length(set_winds),length(set_times),length(set_scenarios))
+        U_complementarity_6_MPEC=zeros(length(set_demands),length(set_times),length(set_scenarios))
+        U_complementarity_7_MPEC=zeros(length(set_winds),length(set_times),length(set_scenarios))
+        U_complementarity_8_MPEC=zeros(length(set_thermalgenerators),length(set_times),length(set_scenarios))
+        U_complementarity_9_MPEC=zeros(length(set_thermalgenerators),length(set_times),length(set_scenarios))
+
+        for t in set_times, s in set_scenarios, w in set_winds
+          U_complementarity_5_MPEC[w,t,s]=JuMP.value.(U_complementarity_5[w,t,s])
+        end
+
+        for t in set_times, s in set_scenarios, d in set_demands
+          U_complementarity_6_MPEC[d,t,s]=JuMP.value.(U_complementarity_6[d,t,s])
+        end
+
+
+        for t in set_times, s in set_scenarios, w in set_winds
+          U_complementarity_7_MPEC[w,t,s]=JuMP.value.(U_complementarity_7[w,t,s])
+        end
+
+        for t in set_times, s in set_scenarios, e in set_thermalgenerators
+          U_complementarity_8_MPEC[e,t,s]=JuMP.value.(U_complementarity_8[e,t,s])
+        end
+
+        for t in set_times, s in set_scenarios, e in set_thermalgenerators
+          U_complementarity_9_MPEC[e,t,s]=JuMP.value.(U_complementarity_9[e,t,s])
+        end
+    else
+        println("The model is neither UNBOUNDED, nor INFEASIBLE, there is another error in the model.")
+    end
+
+
 
 return (profit_det_MPEC,x_w_value_MPEC,x_e_value_MPEC,Totalrevenue_MPEC_Firm1,TotalOperatingCost_MPEC_Firm1,Totalrevenue_MPEC_Firm2,TotalOperatingCost_MPEC_Firm2,Totalrevenue_MPEC_Firm3,TotalOperatingCost_MPEC_Firm3, Electricity_prices_MPEC, Spinning_prices_MPEC, υ_SR_value_MPEC,p_G_e_value_MPEC, p_G_w_value_MPEC, p_G_e_value_node1_MPEC, p_G_e_value_node2_MPEC, p_G_e_value_node3_MPEC, p_G_w_value_node1_MPEC, p_G_w_value_node2_MPEC, p_G_w_value_node3_MPEC, Electricity_prices_MPEC, TotalCost_MPEC,TotalEmissions_MPEC,Totalrevenue_demandblock_MPEC_Firm1, TotalOperatingCost_demandblock_MPEC_Firm1,Totalrevenue_demandblock_MPEC_Firm2, TotalOperatingCost_demandblock_MPEC_Firm2, Totalrevenue_demandblock_MPEC_Firm3, TotalOperatingCost_demandblock_MPEC_Firm3, TotalCapCost_EPEC, TotalFixedCost_EPEC, TotalEmissionsCost_EPEC, TotalOperatingCost_EPEC,TotalCurtailmentcost_EPEC, Total_Investments_Technology_Firm1_EPEC,Total_Investments_Technology_Firm2_EPEC,Total_Investments_Technology_EPEC,Total_Generation_Technology_EPEC,Total_Generation_Technology_Existing_EPEC,Total_Generation_Technology_Candidate_EPEC, Total_Generation_Technology_node1_EPEC, Total_Generation_Technology_node2_EPEC, Total_Generation_Technology_node3_EPEC,Total_Emissions_Technology_Existing_EPEC,Total_Emissions_Technology_Candidate_EPEC,Total_Emissions_Technology_Existing_Cummulative_EPEC,Total_Emissions_Technology_Candidate_Cummulative_EPEC)
 
