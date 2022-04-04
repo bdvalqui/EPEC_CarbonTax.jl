@@ -1,4 +1,4 @@
-function Plots_Rev_Ope_startpoints(Total_Revenue_Cost_demandblock_CP,Total_Revenue_Cost_demandblock_EPEC,set_times,Τ,start_point)
+function Plots_Rev_Ope_startpoints(Total_Revenue_Cost_demandblock_CP,Total_Revenue_Cost_demandblock_EPEC,set_times,Τ,start_point,scenario)
 
 global Demand_Block=zeros(8)
 for i in 1:8
@@ -37,7 +37,7 @@ sns.despine(top=true, right=true, left=false, bottom=false)
 xlim(1, length(set_times))
 ylim(0, 10000)
 xticks(Demand_Block)
-savefig("results_startingpoints/$start_point/Results_Revenue_Cost_DemandBlock$Τ",dpi=300, bbox_inches="tight")
+savefig("results_startingpoints/$scenario/$start_point/Results_Revenue_Cost_DemandBlock$Τ",dpi=300, bbox_inches="tight")
 close()
 
 return (Total_Revenue_Cost_demandblock_CP)

@@ -1,4 +1,4 @@
-function Plots_CapacityMix_All_Solutions(equilibrium_investments,Number_Runs,Profits_Objective_Function,folder::String="")
+function Plots_CapacityMix_All_Solutions(equilibrium_investments,Number_Runs,Profits_Objective_Function,equilibrium_indicators,scenario,folder::String="")
 plt=pyimport("matplotlib")
 np=pyimport("numpy")
 sns=pyimport("seaborn")
@@ -11,6 +11,22 @@ CSV.write(folder *"/Results_EPEC_totalinvestments_Firms_All_Solutions.csv", df_E
 df_EPEC_Profits_Objective_Function = DataFrame(Profits_Objective_Function,:auto)
 
 CSV.write(folder *"/Results_EPEC_totalprofits_Firms_All_Solutions.csv", df_EPEC_Profits_Objective_Function)
+
+#Selecting the Nash Equilibrium that leads to the maximum sum of total profits
+
+Total_Profits_Allfirms=vec(sum(Profits_Objective_Function, dims=2))
+
+Max_Total_Profits_Allfirms=findmax(Total_Profits_Allfirms)
+
+Max_Nash_Equilibrium=[Max_Total_Profits_Allfirms[2],Max_Total_Profits_Allfirms[1]]
+
+df_EPEC_Max_Nash_Equilibrium = DataFrame(Max_Nash_Equilibrium',:auto)
+
+CSV.write(folder *"/Results_EPEC_Nash_Equilibrium_Solution.csv", df_EPEC_Max_Nash_Equilibrium)
+
+df_EPEC_equilibrium_indicators = DataFrame(equilibrium_indicators',:auto)
+
+CSV.write(folder *"/Results_EPEC_equilibrium_indicators.csv", df_EPEC_equilibrium_indicators)
 
 #==============================================================================================#
 #=================================Capacity Mix=================================================#
@@ -131,7 +147,7 @@ ylabel("MW", fontsize=10)
 ylim(0, 80000)
 # Show graphic
 #plt.show()
-savefig("results_startingpoints/Results_TotalInvestments_AllSolutions_Bars.png",dpi=300, bbox_inches="tight")
+savefig("results_startingpoints/$scenario/Results_TotalInvestments_AllSolutions_Bars.png",dpi=300, bbox_inches="tight")
 
 
 return (equilibrium_investments)

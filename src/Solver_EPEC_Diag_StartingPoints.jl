@@ -1,20 +1,23 @@
-function Solver_EPEC_Diag_StartingPoints(share_starting_1_renew,share_starting_1_thermal,start_point,optimizer::Type{<:AbstractOptimizer},resultfile::String="",folder::String="")
+function Solver_EPEC_Diag_StartingPoints(share_starting_1_renew,share_starting_1_thermal,start_point,scenario,scenario_tax,optimizer::Type{<:AbstractOptimizer},resultfile::String="",folder::String="")
 
 #global data_prices_EPEC=zeros(3,24)
 #global data_prices_CP=zeros(3,24)
 
 global iterations=1:5
+global Nash_Equilibrium_Indicator=1000
+global Total_Investments_Technology_Firm1_EPEC_par_iter=zeros(7,length(iterations))
+global Total_Investments_Technology_Firm2_EPEC_par_iter=zeros(7,length(iterations))
 
 #Deterministic Equivalent------------------------------------------------------#
 println("Loading inputs...")
 println("Solving Central Planner to get initial conditions...")
 
-(syscost_det,x_w_value,x_e_value,set_opt_winds_numbertechnologies,set_opt_thermalgenerators_numbertechnologies,Total_Investments_Technology_CP)=Solver_CentralPlanner(optimizer,"results/CentralPlanner_Solution.txt")
+(syscost_det,x_w_value,x_e_value,set_opt_winds_numbertechnologies,set_opt_thermalgenerators_numbertechnologies,Total_Investments_Technology_CP)=Solver_CentralPlanner_scenario(scenario_tax,optimizer,"results/CentralPlanner_Solution.txt")
 
 #I need to have predetermine initial conditions. To run the EPEC, I provide the initial conditions with x_w_value and x_e_value. I will get x_w_p and x_e_p as the initial investments for firm 2
 
 #Run MPEC
-(set_thermalgenerators_options_numbertechnologies,set_wind_options_numbertechnologies,set_thermalgenerators_options,set_wind_options,set_thermalgenerators_existingunits,set_winds_existingunits,set_thermalgenerators,set_winds,set_demands,set_nodes,set_nodes_ref,set_nodes_noref,set_scenarios,set_times,P,V,thermal_ownership_options,wind_ownership_options,x_w_p,x_e_p,Leader, p_D,D,max_demand,Υ_SR,γ,Τ,p_lambda_upper,wind,Ns_H,n_link,links,links_rev,F_max_dict,B_dict,MapG,MapD,MapW,tech_thermal,tech_wind,capacity_per_unit,var_om,invcost,maxBuilds,ownership,capacity_existingunits,fixedcost,EmissionsRate,HeatRate,fuelprice,life,RamUP,Technology,WACC,varcost_thermal,varcost_wind,CRF_thermal,CRF_wind)=loadinputs_startingpoints(x_w_value,x_e_value,share_starting_1_renew,share_starting_1_thermal,"data")
+(set_thermalgenerators_options_numbertechnologies,set_wind_options_numbertechnologies,set_thermalgenerators_options,set_wind_options,set_thermalgenerators_existingunits,set_winds_existingunits,set_thermalgenerators,set_winds,set_demands,set_nodes,set_nodes_ref,set_nodes_noref,set_scenarios,set_times,P,V,thermal_ownership_options,wind_ownership_options,x_w_p,x_e_p,Leader, p_D,D,max_demand,Υ_SR,γ,Τ,p_lambda_upper,wind,Ns_H,n_link,links,links_rev,F_max_dict,B_dict,MapG,MapD,MapW,tech_thermal,tech_wind,capacity_per_unit,var_om,invcost,maxBuilds,ownership,capacity_existingunits,fixedcost,EmissionsRate,HeatRate,fuelprice,life,RamUP,Technology,WACC,varcost_thermal,varcost_wind,CRF_thermal,CRF_wind)=loadinputs_startingpoints(x_w_value,x_e_value,share_starting_1_renew,share_starting_1_thermal,scenario_tax,"data")
 
 
 
@@ -35,6 +38,9 @@ Total_Investments_Technology_Firm2_EPEC=zeros(7)
 =#
 
 for iter in iterations
+
+#while Nash_Equilibrium_Indicator>0.0001 || iter<6
+
 println("")
 println("Iteration $iter...")
 #Firm 1
@@ -152,17 +158,51 @@ global Total_Investments_Technology_EPEC_par=Total_Investments_Technology_EPEC
 global Total_Investments_Technology_Firm1_EPEC_par=Total_Investments_Technology_Firm1_EPEC
 global Total_Investments_Technology_Firm2_EPEC_par=Total_Investments_Technology_Firm2_EPEC
 
+global Total_Investments_Technology_Firm1_EPEC_par_iter[:,iter]=Total_Investments_Technology_Firm1_EPEC
+global Total_Investments_Technology_Firm2_EPEC_par_iter[:,iter]=Total_Investments_Technology_Firm2_EPEC
+
 global Total_Generation_Technology_EPEC_par=Total_Generation_Technology_EPEC
 global Total_Generation_Technology_Existing_EPEC_par=Total_Generation_Technology_Existing_EPEC
 global Total_Generation_Technology_Candidate_EPEC_par=Total_Generation_Technology_Candidate_EPEC
 global Total_Generation_Technology_node1_EPEC_par=Total_Generation_Technology_node1_EPEC
 global Total_Generation_Technology_node2_EPEC_par=Total_Generation_Technology_node2_EPEC
 global Total_Generation_Technology_node3_EPEC_par=Total_Generation_Technology_node3_EPEC
+
+#Determining difference between iterations to determine Nash Equilirbium solution
+if iter>=2
+Total_Investments_Technology_Firm1_EPEC_par_iter_dummy1=view(Total_Investments_Technology_Firm1_EPEC_par_iter, :, 2:iter)
+Total_Investments_Technology_Firm1_EPEC_par_iter_dummy2=view(Total_Investments_Technology_Firm1_EPEC_par_iter, :, 1:iter-1)
+
+Total_Investments_Technology_Firm2_EPEC_par_iter_dummy1=view(Total_Investments_Technology_Firm2_EPEC_par_iter, :, 2:iter)
+Total_Investments_Technology_Firm2_EPEC_par_iter_dummy2=view(Total_Investments_Technology_Firm2_EPEC_par_iter, :, 1:iter-1)
+
+global Total_Investments_Technology_Firm1_EPEC_par_iter_diff=sum(abs.(Total_Investments_Technology_Firm1_EPEC_par_iter_dummy1-Total_Investments_Technology_Firm1_EPEC_par_iter_dummy2),dims=1)
+global Total_Investments_Technology_Firm2_EPEC_par_iter_diff=sum(abs.(Total_Investments_Technology_Firm2_EPEC_par_iter_dummy1-Total_Investments_Technology_Firm2_EPEC_par_iter_dummy2),dims=1)
+
+global Total_Investments_Technology_Firms_EPEC_par_iter_diff=sum(vcat(Total_Investments_Technology_Firm1_EPEC_par_iter_diff, Total_Investments_Technology_Firm2_EPEC_par_iter_diff),dims=1)
+
+global Nash_Equilibrium_Indicator=Total_Investments_Technology_Firms_EPEC_par_iter_diff[iter-1]
+end
+
+
 println("")
 println("")
 println("End of iteration $iter...")
 println("")
 println("------------------------------------------------------------------------------")
+
+if Nash_Equilibrium_Indicator<0.0001
+    # Using 'break' keyword
+    break
+end
+
+
+end
+
+if Nash_Equilibrium_Indicator<0.0001
+global Nash_Equilibrium_Indicator_bin=0
+else Nash_Equilibrium_Indicator>=0.0001
+global Nash_Equilibrium_Indicator_bin=1
 end
 
 #Central Planner
@@ -170,7 +210,7 @@ end
 df_CP_thermalinvestments = DataFrame(x_e_value',:auto)
 df_CP_windinvestments = DataFrame(x_w_value',:auto)
 
-(syscost_det_OPF,TotalEmissions,TotalRevenue_demandblock,TotalOpecost_demandblock,revenue_cost_CP,TotalCapCost,TotalFixedCost,TotalEmissionsCost,TotalOpecost,TotalCurtailmentcost,p_G_e_value_CP,p_G_e_value_node1_CP,p_G_e_value_node2_CP,p_G_e_value_node3_CP,p_G_w_value_CP,p_G_w_value_node1_CP,p_G_w_value_node2_CP,p_G_w_value_node3_CP,υ_SR_value_CP,Dual_constraint10,Dual_constraint11,Total_Generation_Technology_CP,Total_Generation_Technology_Existing_CP,Total_Generation_Technology_Candidate_CP, Total_Generation_Technology_node1_CP, Total_Generation_Technology_node2_CP,Total_Generation_Technology_node3_CP,Total_Emissions_Technology_CP,Total_Emissions_Technology_Candidate_CP,Total_Emissions_Technology_Existing_CP,Total_Emissions_Technology_Candidate_Cummulative_CP,Total_Emissions_Technology_Existing_Cummulative_CP)=Solver_OPF(optimizer,"results/OPF_Solution.txt")
+(syscost_det_OPF,TotalEmissions,TotalRevenue_demandblock,TotalOpecost_demandblock,revenue_cost_CP,TotalCapCost,TotalFixedCost,TotalEmissionsCost,TotalOpecost,TotalCurtailmentcost,p_G_e_value_CP,p_G_e_value_node1_CP,p_G_e_value_node2_CP,p_G_e_value_node3_CP,p_G_w_value_CP,p_G_w_value_node1_CP,p_G_w_value_node2_CP,p_G_w_value_node3_CP,υ_SR_value_CP,Dual_constraint10,Dual_constraint11,Total_Generation_Technology_CP,Total_Generation_Technology_Existing_CP,Total_Generation_Technology_Candidate_CP, Total_Generation_Technology_node1_CP, Total_Generation_Technology_node2_CP,Total_Generation_Technology_node3_CP,Total_Emissions_Technology_CP,Total_Emissions_Technology_Candidate_CP,Total_Emissions_Technology_Existing_CP,Total_Emissions_Technology_Candidate_Cummulative_CP,Total_Emissions_Technology_Existing_Cummulative_CP)=Solver_OPF_scenario(scenario_tax,optimizer,"results/OPF_Solution.txt")
 
 
 global Cummulative_Emissions_CP=zeros(9,2)
@@ -288,13 +328,17 @@ CSV.write(folder *"/Results_CP_totalinvestments$Τ.csv", df_CP_totalinvestments)
 CSV.write(folder *"/Results_EPEC_totalinvestments$Τ.csv", df_EPEC_totalinvestments)
 CSV.write(folder *"/Results_EPEC_totalinvestments_Firms$Τ.csv", df_EPEC_totalinvestments_Firms)
 
-(data_prices_CP_res,data_prices_EPEC_res)=Plots_Prices_startpoints(data_prices_CP,data_prices_EPEC,set_times,Τ,start_point)
+(data_prices_CP_res,data_prices_EPEC_res)=Plots_Prices_startpoints(data_prices_CP,data_prices_EPEC,set_times,Τ,start_point,scenario)
 
-(Total_Investments_Technology_CP_res,Total_Investments_Technology_EPEC_res)=Plots_CapacityMix_startpoints(Total_Investments_Technology_CP,Total_Investments_Technology_EPEC_par,Total_Investments_Technology_Firm1_EPEC_par,Total_Investments_Technology_Firm2_EPEC_par,Τ,start_point)
+(Total_Investments_Technology_CP_res,Total_Investments_Technology_EPEC_res)=Plots_CapacityMix_startpoints(Total_Investments_Technology_CP,Total_Investments_Technology_EPEC_par,Total_Investments_Technology_Firm1_EPEC_par,Total_Investments_Technology_Firm2_EPEC_par,Τ,start_point,scenario)
 
-(Total_Generation_Technology_CP_res)=Plots_Generation_startpoints(Total_Generation_Technology_CP,Total_Generation_Technology_Existing_CP,Total_Generation_Technology_Candidate_CP, Total_Generation_Technology_node1_CP, Total_Generation_Technology_node2_CP, Total_Generation_Technology_node3_CP,Total_Generation_Technology_EPEC_par,Total_Generation_Technology_Existing_EPEC_par,Total_Generation_Technology_Candidate_EPEC_par, Total_Generation_Technology_node1_EPEC_par, Total_Generation_Technology_node2_EPEC_par, Total_Generation_Technology_node3_EPEC_par,set_times,Τ,Total_Emissions_Technology_CP,Total_Emissions_Technology_Candidate_CP,Total_Emissions_Technology_Existing_CP,Total_Emissions_Technology_Existing_EPEC_par,Total_Emissions_Technology_Candidate_EPEC_par,start_point)
+(Total_Generation_Technology_CP_res)=Plots_Generation_startpoints(Total_Generation_Technology_CP,Total_Generation_Technology_Existing_CP,Total_Generation_Technology_Candidate_CP, Total_Generation_Technology_node1_CP, Total_Generation_Technology_node2_CP, Total_Generation_Technology_node3_CP,Total_Generation_Technology_EPEC_par,Total_Generation_Technology_Existing_EPEC_par,Total_Generation_Technology_Candidate_EPEC_par, Total_Generation_Technology_node1_EPEC_par, Total_Generation_Technology_node2_EPEC_par, Total_Generation_Technology_node3_EPEC_par,set_times,Τ,Total_Emissions_Technology_CP,Total_Emissions_Technology_Candidate_CP,Total_Emissions_Technology_Existing_CP,Total_Emissions_Technology_Existing_EPEC_par,Total_Emissions_Technology_Candidate_EPEC_par,start_point,scenario)
 
-(Total_Revenue_Cost_demandblock_CP_res)=Plots_Rev_Ope_startpoints(Total_Revenue_Cost_demandblock_CP,Total_Revenue_Cost_demandblock_EPEC,set_times,Τ,start_point)
+(Total_Revenue_Cost_demandblock_CP_res)=Plots_Rev_Ope_startpoints(Total_Revenue_Cost_demandblock_CP,Total_Revenue_Cost_demandblock_EPEC,set_times,Τ,start_point,scenario)
+
+
+(Total_Investments_Technology_CP_res,Total_Investments_Technology_EPEC_res,Total_Revenue_Cost_demandblock_EPEC_res)=Tables_Capacity_Generation_Emissions(Total_Investments_Technology_CP,Total_Investments_Technology_EPEC_par,Total_Investments_Technology_Firm1_EPEC_par,Total_Investments_Technology_Firm2_EPEC_par,Total_Generation_Technology_CP,Total_Generation_Technology_Existing_CP,Total_Generation_Technology_Candidate_CP,Total_Generation_Technology_EPEC_par,Total_Generation_Technology_Existing_EPEC_par,Total_Generation_Technology_Candidate_EPEC_par,Total_Emissions_Technology_CP,Total_Emissions_Technology_Candidate_CP,Total_Emissions_Technology_Existing_CP,Total_Emissions_Technology_Existing_EPEC_par,Total_Emissions_Technology_Candidate_EPEC_par,data_prices_CP,data_prices_EPEC,Total_Revenue_Cost_demandblock_CP,Total_Revenue_Cost_demandblock_EPEC,set_times,Τ,start_point,Cost_Detail,scenario)
+
 
 #(Total_Investments_Technology_CP_res,Total_Investments_Technology_EPEC_res)=Plots_CapacityMix(Total_Investments_Technology_CP,Total_Investments_Technology_EPEC,Total_Investments_Technology_Firm1_EPEC,Total_Investments_Technology_Firm2_EPEC)
 
@@ -310,5 +354,5 @@ resultfile != "" && open(resultfile, truncate = true) do f
     end
 
 
-return (profit_det_MPEC_val_firm1,profit_det_MPEC_val_firm2,x_w_p,x_e_p,Total_Investments_Technology_EPEC_par,Total_Investments_Technology_Firms_EPEC_par)
+return (profit_det_MPEC_val_firm1,profit_det_MPEC_val_firm2,x_w_p,x_e_p,Total_Investments_Technology_EPEC_par,Total_Investments_Technology_Firms_EPEC_par,Total_Investments_Technology_Firm1_EPEC_par_iter,Total_Investments_Technology_Firm2_EPEC_par_iter,Total_Investments_Technology_Firm1_EPEC_par_iter_diff,Total_Investments_Technology_Firm2_EPEC_par_iter_diff,Total_Investments_Technology_Firms_EPEC_par_iter_diff,Nash_Equilibrium_Indicator_bin,Total_Revenue_Cost_demandblock_EPEC_res)
 end

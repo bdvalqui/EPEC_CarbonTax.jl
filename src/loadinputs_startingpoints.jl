@@ -1,10 +1,10 @@
-function loadinputs_startingpoints(x_w_value,x_e_value,share_starting_1_renew,share_starting_1_thermal,folder::String)
+function loadinputs_startingpoints(x_w_value,x_e_value,share_starting_1_renew,share_starting_1_thermal,scenario_tax,folder::String)
 
     #Congestion
     Trans_Cap=CSV.File(folder *"/congestion_parameter.csv") |> Tables.matrix
 #sce=CSV.File(folder *"/scenario.csv") |> Tables.matrix
 #Trans_Cap=100000
-    sce=5
+    #sce=5
     #Sets
     set_thermalgenerators_options_numbertechnologies=25:34
     set_wind_options_numbertechnologies=13:16
@@ -86,8 +86,8 @@ function loadinputs_startingpoints(x_w_value,x_e_value,share_starting_1_renew,sh
 
     p_Carbprice_par=CSV.File(folder *"/carbontax_scenarios.csv") |> Tables.matrix
 
-    Τ=[p_Carbprice_par[sce]]
-    p_lambda_upper=[p_lambda_upper_par[sce]]
+    Τ=[p_Carbprice_par[scenario_tax]]
+    p_lambda_upper=[p_lambda_upper_par[scenario_tax]]
 
     wind_rowdata= CSV.File(folder *"/wind.csv") |> Tables.matrix
     wind=wind_rowdata'

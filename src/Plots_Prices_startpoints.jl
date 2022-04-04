@@ -1,4 +1,4 @@
-function Plots_Prices_startpoints(data_prices_CP,data_prices_EPEC,set_times,Τ,start_point)
+function Plots_Prices_startpoints(data_prices_CP,data_prices_EPEC,set_times,Τ,start_point,scenario)
 
 global Demand_Block=zeros(8)
 for i in 1:8
@@ -29,7 +29,7 @@ sns.despine(top=true, right=true, left=false, bottom=false)
 xlim(1, length(set_times))
 ylim(0, LimitPrices[sce])
 xticks(Demand_Block)
-savefig("results_startingpoints/$start_point/Results_ElectricityPrice_node1$Τ",dpi=300, bbox_inches="tight")
+savefig("results_startingpoints/$scenario/$start_point/Results_ElectricityPrice_node1$Τ",dpi=300, bbox_inches="tight")
 close()
 #==============================================================================#
 #node2
@@ -49,7 +49,7 @@ sns.despine(top=true, right=true, left=false, bottom=false)
 xlim(1, length(set_times))
 ylim(0, LimitPrices[sce])
 xticks(Demand_Block)
-savefig("results_startingpoints/$start_point/Results_ElectricityPrice_node2$Τ",dpi=300, bbox_inches="tight")
+savefig("results_startingpoints/$scenario/$start_point/Results_ElectricityPrice_node2$Τ",dpi=300, bbox_inches="tight")
 close()
 #==============================================================================#
 #node3
@@ -69,7 +69,7 @@ sns.despine(top=true, right=true, left=false, bottom=false)
 xlim(1, length(set_times))
 ylim(0, LimitPrices[sce])
 xticks(Demand_Block)
-savefig("results_startingpoints/$start_point/Results_ElectricityPrice_node3$Τ",dpi=300, bbox_inches="tight")
+savefig("results_startingpoints/$scenario/$start_point/Results_ElectricityPrice_node3$Τ",dpi=300, bbox_inches="tight")
 close()
 
 return (data_prices_CP,data_prices_EPEC)

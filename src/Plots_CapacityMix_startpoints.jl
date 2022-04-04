@@ -1,4 +1,4 @@
-function Plots_CapacityMix_startpoints(Total_Investments_Technology_CP,Total_Investments_Technology_EPEC,Total_Investments_Technology_Firm1_EPEC,Total_Investments_Technology_Firm2_EPEC,Τ,start_point)
+function Plots_CapacityMix_startpoints(Total_Investments_Technology_CP,Total_Investments_Technology_EPEC,Total_Investments_Technology_Firm1_EPEC,Total_Investments_Technology_Firm2_EPEC,Τ,start_point,scenario)
 plt=pyimport("matplotlib")
 np=pyimport("numpy")
 sns=pyimport("seaborn")
@@ -31,7 +31,7 @@ legend(patches, labels, loc="upper center",frameon=false,fontsize=25,bbox_to_anc
 axis("equal")
 
 #PyPlot.title("Beer")
-savefig("results_startingpoints/$start_point/Results_PieChart_CP$Τ.png",dpi=300, bbox_inches="tight")
+savefig("results_startingpoints/$scenario/$start_point/Results_PieChart_CP$Τ.png",dpi=300, bbox_inches="tight")
 close()
 
 
@@ -177,7 +177,7 @@ ylabel("MW", fontsize=10)
 ylim(0, 60000)
 # Show graphic
 #plt.show()
-savefig("results_startingpoints/$start_point/Results_TotalInvestments_Bars$Τ.png",dpi=300, bbox_inches="tight")
+savefig("results_startingpoints/$scenario/$start_point/Results_TotalInvestments_Bars$Τ.png",dpi=300, bbox_inches="tight")
 
 
 #EPEC
@@ -212,7 +212,7 @@ legend(patches, labels, loc="upper center",frameon=false,fontsize=25,bbox_to_anc
 axis("equal")
 
 #PyPlot.title("Beer")
-savefig("results_startingpoints/$start_point/Results_PieChart_EPEC$Τ.png",dpi=300, bbox_inches="tight")
+savefig("results_startingpoints/$scenario/$start_point/Results_PieChart_EPEC$Τ.png",dpi=300, bbox_inches="tight")
 close()
 
 #=======================================================EPEC-Firm 1==================================================================#
@@ -248,7 +248,7 @@ legend(patches, labels, loc="upper center",frameon=false,fontsize=25,bbox_to_anc
 axis("equal")
 
 #PyPlot.title("Beer")
-savefig("results_startingpoints/$start_point/Results_PieChart_Firm1_EPEC$Τ.png",dpi=300, bbox_inches="tight")
+savefig("results_startingpoints/$scenario/$start_point/Results_PieChart_Firm1_EPEC$Τ.png",dpi=300, bbox_inches="tight")
 close()
 
 #=======================================================EPEC-Firm 2==================================================================#
@@ -283,7 +283,7 @@ legend(patches, labels, loc="upper center",frameon=false,fontsize=25,bbox_to_anc
 axis("equal")
 
 #PyPlot.title("Beer")
-savefig("results_startingpoints/$start_point/Results_PieChart_Firm2_EPEC$Τ.png",dpi=300, bbox_inches="tight")
+savefig("results_startingpoints/$scenario/$start_point/Results_PieChart_Firm2_EPEC$Τ.png",dpi=300, bbox_inches="tight")
 close()
 
 #===================================Bars================================================================#
@@ -423,7 +423,7 @@ ylabel("MW", fontsize=10)
 ylim(0, 35000)
 # Show graphic
 #plt.show()
-savefig("results_startingpoints/$start_point/Results_TotalInvestments_Firms_Bars$Τ.png",dpi=300, bbox_inches="tight")
+savefig("results_startingpoints/$scenario/$start_point/Results_TotalInvestments_Firms_Bars$Τ.png",dpi=300, bbox_inches="tight")
 close()
 
 return (Total_Investments_Technology_CP,Total_Investments_Technology_EPEC)

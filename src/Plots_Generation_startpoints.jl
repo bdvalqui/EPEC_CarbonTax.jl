@@ -1,4 +1,4 @@
-function Plots_Generation_startpoints(Total_Generation_Technology_CP,Total_Generation_Technology_Existing_CP,Total_Generation_Technology_Candidate_CP, Total_Generation_Technology_node1_CP, Total_Generation_Technology_node2_CP, Total_Generation_Technology_node3_CP,Total_Generation_Technology_EPEC,Total_Generation_Technology_Existing_EPEC,Total_Generation_Technology_Candidate_EPEC, Total_Generation_Technology_node1_EPEC, Total_Generation_Technology_node2_EPEC, Total_Generation_Technology_node3_EPEC ,set_times,Τ,Total_Emissions_Technology_CP,Total_Emissions_Technology_Candidate_CP,Total_Emissions_Technology_Existing_CP,Total_Emissions_Technology_Existing_EPEC,Total_Emissions_Technology_Candidate_EPEC,start_point)
+function Plots_Generation_startpoints(Total_Generation_Technology_CP,Total_Generation_Technology_Existing_CP,Total_Generation_Technology_Candidate_CP, Total_Generation_Technology_node1_CP, Total_Generation_Technology_node2_CP, Total_Generation_Technology_node3_CP,Total_Generation_Technology_EPEC,Total_Generation_Technology_Existing_EPEC,Total_Generation_Technology_Candidate_EPEC, Total_Generation_Technology_node1_EPEC, Total_Generation_Technology_node2_EPEC, Total_Generation_Technology_node3_EPEC ,set_times,Τ,Total_Emissions_Technology_CP,Total_Emissions_Technology_Candidate_CP,Total_Emissions_Technology_Existing_CP,Total_Emissions_Technology_Existing_EPEC,Total_Emissions_Technology_Candidate_EPEC,start_point,scenario)
 
 plt=pyimport("matplotlib")
 np=pyimport("numpy")
@@ -77,7 +77,7 @@ xlim(1, length(set_times))
 ylim(0, 80000)
 xticks(x,labels_Ticks)
 
-savefig("results_startingpoints/$start_point/Results_TotalGeneration_CP$Τ.png",dpi=300, bbox_inches="tight")
+savefig("results_startingpoints/$scenario/$start_point/Results_TotalGeneration_CP$Τ.png",dpi=300, bbox_inches="tight")
 close()
 
 #=================================================================================================================================#
@@ -237,7 +237,7 @@ ylabel("MWh", fontsize=10)
 ylim(0, 50000)
 # Show graphic
 #plt.show()
-savefig("results_startingpoints/$start_point/Results_TotalGeneration_CP_Bars$Τ.png",dpi=300, bbox_inches="tight")
+savefig("results_startingpoints/$scenario/$start_point/Results_TotalGeneration_CP_Bars$Τ.png",dpi=300, bbox_inches="tight")
 close()
 #=======================================================================================#
 #=======================================================================================#
@@ -415,7 +415,7 @@ ylabel("Ton", fontsize=10)
 ylim(0, 12000)
 # Show graphic
 #plt.show()
-savefig("results_startingpoints/$start_point/Results_TotalEmissions_CP_Bars$Τ.png",dpi=300, bbox_inches="tight")
+savefig("results_startingpoints/$scenario/$start_point/Results_TotalEmissions_CP_Bars$Τ.png",dpi=300, bbox_inches="tight")
 close()
 #=======================================================================================#
 #EPEC
@@ -481,7 +481,7 @@ xlim(1, length(set_times))
 ylim(0, 80000)
 xticks(x,labels_Ticks)
 
-savefig("results_startingpoints/$start_point/Results_TotalGeneration_EPEC$Τ.png",dpi=300, bbox_inches="tight")
+savefig("results_startingpoints/$scenario/$start_point/Results_TotalGeneration_EPEC$Τ.png",dpi=300, bbox_inches="tight")
 close()
 
 #==============================================================================#
@@ -642,7 +642,7 @@ ylabel("MWh", fontsize=10)
 ylim(0, 50000)
 # Show graphic
 #plt.show()
-savefig("results_startingpoints/$start_point/Results_TotalGeneration_EPEC_Bars$Τ.png",dpi=300, bbox_inches="tight")
+savefig("results_startingpoints/$scenario/$start_point/Results_TotalGeneration_EPEC_Bars$Τ.png",dpi=300, bbox_inches="tight")
 close()
 #====================================================================================#
 #Emissions
@@ -817,7 +817,7 @@ ylabel("Ton", fontsize=10)
 ylim(0, 12000)
 # Show graphic
 #plt.show()
-savefig("results_startingpoints/$start_point/Results_TotalEmissions_EPEC_Bars$Τ.png",dpi=300, bbox_inches="tight")
+savefig("results_startingpoints/$scenario/$start_point/Results_TotalEmissions_EPEC_Bars$Τ.png",dpi=300, bbox_inches="tight")
 close()
 
 #Generation
@@ -1041,7 +1041,7 @@ ylabel("MWh", fontsize=10)
 ylim(0, 50000)
 # Show graphic
 #plt.show()
-savefig("results_startingpoints/$start_point/Results_TotalGeneration_CP_EPEC_Bars$Τ.png",dpi=300, bbox_inches="tight")
+savefig("results_startingpoints/$scenario/$start_point/Results_TotalGeneration_CP_EPEC_Bars$Τ.png",dpi=300, bbox_inches="tight")
 close()
 
 #===============================Emissions CP and EPEC===================================#
@@ -1263,7 +1263,7 @@ ylabel("MWh", fontsize=10)
 ylim(0, 12000)
 # Show graphic
 #plt.show()
-savefig("results_startingpoints/$start_point/Results_TotalEmissions_CP_EPEC_Bars$Τ.png",dpi=300, bbox_inches="tight")
+savefig("results_startingpoints/$scenario/$start_point/Results_TotalEmissions_CP_EPEC_Bars$Τ.png",dpi=300, bbox_inches="tight")
 close()
 
 #=========================Generation per Nodes==========================================#
@@ -1292,7 +1292,7 @@ xlim(1, length(set_times))
 xticks(x,labels_Ticks)
 ylim(0, 10000)
 
-savefig("results_startingpoints/$start_point/Results_TotalGeneration_node1_CP$Τ.png",dpi=300, bbox_inches="tight")
+savefig("results_startingpoints/$scenario/$start_point/Results_TotalGeneration_node1_CP$Τ.png",dpi=300, bbox_inches="tight")
 close()
 
 #============================+Node 2===========================================#
@@ -1318,7 +1318,7 @@ xlim(1, length(set_times))
 xticks(x,labels_Ticks)
 ylim(0, 45000)
 
-savefig("results_startingpoints/$start_point/Results_TotalGeneration_node2_CP$Τ.png",dpi=300, bbox_inches="tight")
+savefig("results_startingpoints/$scenario/$start_point/Results_TotalGeneration_node2_CP$Τ.png",dpi=300, bbox_inches="tight")
 close()
 
 #============================+Node 3===========================================#
@@ -1344,7 +1344,7 @@ xlim(1, length(set_times))
 xticks(x,labels_Ticks)
 ylim(0, 30000)
 
-savefig("results_startingpoints/$start_point/Results_TotalGeneration_node3_CP$Τ.png",dpi=300, bbox_inches="tight")
+savefig("results_startingpoints/$scenario/$start_point/Results_TotalGeneration_node3_CP$Τ.png",dpi=300, bbox_inches="tight")
 close()
 
 #EPEC
@@ -1371,7 +1371,7 @@ xlim(1, length(set_times))
 xticks(x,labels_Ticks)
 ylim(0, 10000)
 
-savefig("results_startingpoints/$start_point/Results_TotalGeneration_node1_EPEC$Τ.png",dpi=300, bbox_inches="tight")
+savefig("results_startingpoints/$scenario/$start_point/Results_TotalGeneration_node1_EPEC$Τ.png",dpi=300, bbox_inches="tight")
 close()
 
 #============================+Node 2===========================================#
@@ -1397,7 +1397,7 @@ xlim(1, length(set_times))
 xticks(x,labels_Ticks)
 ylim(0, 45000)
 
-savefig("results_startingpoints/$start_point/Results_TotalGeneration_node2_EPEC$Τ.png",dpi=300, bbox_inches="tight")
+savefig("results_startingpoints/$scenario/$start_point/Results_TotalGeneration_node2_EPEC$Τ.png",dpi=300, bbox_inches="tight")
 close()
 
 #============================+Node 3===========================================#
@@ -1423,7 +1423,7 @@ xlim(1, length(set_times))
 xticks(x,labels_Ticks)
 ylim(0, 30000)
 
-savefig("results_startingpoints/$start_point/Results_TotalGeneration_node3_EPEC$Τ.png",dpi=300, bbox_inches="tight")
+savefig("results_startingpoints/$scenario/$start_point/Results_TotalGeneration_node3_EPEC$Τ.png",dpi=300, bbox_inches="tight")
 close()
 
 

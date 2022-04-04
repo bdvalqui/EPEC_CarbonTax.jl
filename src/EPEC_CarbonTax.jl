@@ -15,7 +15,9 @@ include("utils.jl")
 
 #Functions
 include("Solver_CentralPlanner.jl")
+include("Solver_CentralPlanner_scenario.jl")
 include("Solver_OPF.jl")
+include("Solver_OPF_scenario.jl")
 include("Solver_OPF_Experiment.jl")
 include("Solver_MPEC.jl")
 include("Solver_EPEC.jl")
@@ -30,6 +32,7 @@ include("Investment_OPF_MPEC_4firms.jl")
 include("Investment_OPF_MPEC_Experiment.jl")
 include("Investment_OPF_MPEC_SOS1.jl")
 include("loadinputs_CentralPlanner.jl")
+include("loadinputs_CentralPlanner_scenario.jl")
 include("loadinputs.jl")
 include("loadinputs_4firms.jl")
 include("Plots_Prices.jl")
@@ -54,7 +57,10 @@ include("loadinputs_Reaction.jl")
 include("loadinputs_Reaction_Investments.jl")
 include("Solver_EPEC_Reaction.jl")
 
-export Solver_CentralPlanner,Solver_OPF,Solver_OPF_Experiment,Solver_MPEC,Solver_EPEC,Solver_EPEC_4firms,Solver_EPEC_Experiment,Solver_EPEC_SOS1,Investment_OPF_original,Investment_OPF_original_Experiment,OPF_original,Investment_OPF_MPEC,Investment_OPF_MPEC_4firms,Investment_OPF_MPEC_Experiment,Investment_OPF_MPEC_SOS1,loadinputs_CentralPlanner,loadinputs,loadinputs_4firms,Plots_Prices,Plots_CapacityMix,Plots_CapacityMix_4firms,Plots_Generation,Plots_Rev_Ope,Plots_Rev_Ope_4firms,Solver_EPEC_Diag_StartingPoints,loadinputs_startingpoints,Plots_Prices_startpoints,Plots_CapacityMix_startpoints,Plots_Generation_startpoints,Plots_Rev_Ope_startpoints,Plots_CapacityMix_All_Solutions,loadinputs_Reaction,loadinputs_Reaction_Investments,Solver_EPEC_Reaction,Investment_OPF_MPEC_Reaction
+#Tables
+include("Tables_Capacity_Generation_Emissions.jl")
+
+export Solver_CentralPlanner,Solver_OPF,Solver_OPF_Experiment,Solver_MPEC,Solver_EPEC,Solver_EPEC_4firms,Solver_EPEC_Experiment,Solver_EPEC_SOS1,Investment_OPF_original,Investment_OPF_original_Experiment,OPF_original,Investment_OPF_MPEC,Investment_OPF_MPEC_4firms,Investment_OPF_MPEC_Experiment,Investment_OPF_MPEC_SOS1,loadinputs_CentralPlanner,loadinputs,loadinputs_4firms,Plots_Prices,Plots_CapacityMix,Plots_CapacityMix_4firms,Plots_Generation,Plots_Rev_Ope,Plots_Rev_Ope_4firms,Solver_EPEC_Diag_StartingPoints,loadinputs_startingpoints,Plots_Prices_startpoints,Plots_CapacityMix_startpoints,Plots_Generation_startpoints,Plots_Rev_Ope_startpoints,Plots_CapacityMix_All_Solutions,loadinputs_Reaction,loadinputs_Reaction_Investments,Solver_EPEC_Reaction,Investment_OPF_MPEC_Reaction,Tables_Capacity_Generation_Emissions,Solver_CentralPlanner_scenario,loadinputs_CentralPlanner_scenario,Solver_OPF_scenario
 
 end
 #cd("C:\\Users\\braya\\.julia\\dev\\EPEC_CarbonTax\\src")
