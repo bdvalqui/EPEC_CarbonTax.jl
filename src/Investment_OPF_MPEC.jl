@@ -8,6 +8,8 @@ largeprimallimit=999999
 #largeprimallimit=999999
 m=Model(optimizer)
 
+#GUROBI or CPLEX: Change status at the end of the code
+
 #GUROBI solver
 #Absolute MIP gap tolerance
 #set_optimizer_attribute(m, "MIPGapAbs", 1e-15)
@@ -295,6 +297,8 @@ println("")
 println("The solution of firm $Leader's  problem")
 println("")
 
+#Gurobi=INFEASIBLE_OR_UNBOUNDED
+#CPLEX=INFEASIBLE
 
 if status == MOI.INFEASIBLE_OR_UNBOUNDED
 
