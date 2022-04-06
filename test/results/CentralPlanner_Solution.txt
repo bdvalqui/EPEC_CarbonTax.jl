@@ -1,6 +1,6 @@
 *****************Central Planner Solution*****************
 
-Objective System Cost: 1.2923476277736612e10
+Objective System Cost: 1.0751968904961622e10
 
 Wind Investments: [0.0, 0.0, 0.0, 0.0]
 

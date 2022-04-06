@@ -19,7 +19,7 @@ set_tax=[1,2,3,4,5]
 #set_ownership=[1,2,3,4,5]
 #scenario_ownership=5  [1=Dirty-Symmetric,2=Dirty-Asymmetric,3=Clean-Symmetric,4=Clean-Asymmetric, 5=Reference]
 scenario_ownership=5
-Trans_Cap=1000000
+Trans_Cap=100000
 #TO Run Congested Scenario, Set Trans_Cap=5000, and  set_ownership=[1,3,5] [1=Dirty-Symmetric-Congested,3=Clean-Symmetric-Congested,5=Reference-Congested]
 #set_ownership=[1,3,5]
 
