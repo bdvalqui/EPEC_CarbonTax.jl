@@ -199,9 +199,9 @@ end
 
 end
 
-if Nash_Equilibrium_Indicator<0.0001
+if Nash_Equilibrium_Indicator<0.01
 global Nash_Equilibrium_Indicator_bin=0
-else Nash_Equilibrium_Indicator>=0.0001
+else Nash_Equilibrium_Indicator>=0.01
 global Nash_Equilibrium_Indicator_bin=1
 end
 
