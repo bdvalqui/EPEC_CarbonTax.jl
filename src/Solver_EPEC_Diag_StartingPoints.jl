@@ -191,7 +191,7 @@ println("End of iteration $iter...")
 println("")
 println("------------------------------------------------------------------------------")
 
-if Nash_Equilibrium_Indicator<0.0001
+if Nash_Equilibrium_Indicator<0.01
     # Using 'break' keyword
     break
 end
