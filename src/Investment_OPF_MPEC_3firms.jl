@@ -1,4 +1,4 @@
-function Investment_OPF_MPEC_4firms(optimizer,set_thermalgenerators_options_numbertechnologies,set_wind_options_numbertechnologies,set_thermalgenerators_options,set_wind_options,set_thermalgenerators_existingunits,set_winds_existingunits,set_thermalgenerators,set_winds,set_demands,set_nodes,set_nodes_ref,set_nodes_noref,set_scenarios,set_times,P,V,thermal_ownership_options,wind_ownership_options,x_w_p,x_e_p,Leader, p_D,D,max_demand,Υ_SR,γ,Τ,p_lambda_upper,wind,Ns_H,n_link,links,links_rev,F_max_dict,B_dict,MapG,MapD,MapW,tech_thermal,tech_wind,capacity_per_unit,var_om,invcost,maxBuilds,ownership,capacity_existingunits,fixedcost,EmissionsRate,HeatRate,fuelprice,life,RamUP,Technology,WACC,varcost_thermal,varcost_wind,CRF_thermal,CRF_wind,set_opt_winds_numbertechnologies,set_opt_thermalgenerators_numbertechnologies)
+function Investment_OPF_MPEC_3firms(optimizer,set_thermalgenerators_options_numbertechnologies,set_wind_options_numbertechnologies,set_thermalgenerators_options,set_wind_options,set_thermalgenerators_existingunits,set_winds_existingunits,set_thermalgenerators,set_winds,set_demands,set_nodes,set_nodes_ref,set_nodes_noref,set_scenarios,set_times,P,V,thermal_ownership_options,wind_ownership_options,x_w_p,x_e_p,Leader, p_D,D,max_demand,Υ_SR,γ,Τ,p_lambda_upper,wind,Ns_H,n_link,links,links_rev,F_max_dict,B_dict,MapG,MapD,MapW,tech_thermal,tech_wind,capacity_per_unit,var_om,invcost,maxBuilds,ownership,capacity_existingunits,fixedcost,EmissionsRate,HeatRate,fuelprice,life,RamUP,Technology,WACC,varcost_thermal,varcost_wind,CRF_thermal,CRF_wind,set_opt_winds_numbertechnologies,set_opt_thermalgenerators_numbertechnologies)
 
 #include("utils.jl")
 
@@ -382,8 +382,6 @@ if status == MOI.INFEASIBLE_OR_UNBOUNDED
         TotalOperatingCost_MPEC_Firm4=0
         println("Total Operating Cost, Firm 4:", TotalOperatingCost_MPEC_Firm4)
 
-        TotalOperatingCost_MPEC_Firm5=0
-        println("Total Operating Cost, Firm 5:", TotalOperatingCost_MPEC_Firm5)
 
         Totalrevenue_MPEC_Firm1= 0
 
@@ -403,14 +401,11 @@ if status == MOI.INFEASIBLE_OR_UNBOUNDED
         Totalrevenue_MPEC_Firm4= 0
         println("Total Revenue, Firm 4:", Totalrevenue_MPEC_Firm4)
 
-        Totalrevenue_MPEC_Firm5= 0
-        println("Total Revenue, Firm 5:", Totalrevenue_MPEC_Firm5)
-
         Total_Investments_Technology_EPEC=zeros(7)
         Total_Investments_Technology_Firm1_EPEC=zeros(7)
         Total_Investments_Technology_Firm2_EPEC=zeros(7)
         Total_Investments_Technology_Firm3_EPEC=zeros(7)
-        Total_Investments_Technology_Firm4_EPEC=zeros(7)
+
 
         Total_Generation_Technology_EPEC=zeros(9,length(set_times))
         Total_Generation_Technology_Existing_EPEC=zeros(9,length(set_times))
@@ -447,7 +442,6 @@ if status == MOI.INFEASIBLE_OR_UNBOUNDED
 
         TotalOperatingCost_demandblock_MPEC_Firm4=zeros(length(set_times))
 
-        TotalOperatingCost_demandblock_MPEC_Firm5=zeros(length(set_times))
 
         Totalrevenue_demandblock_MPEC_Firm1=zeros(length(set_times))
 
@@ -458,7 +452,6 @@ if status == MOI.INFEASIBLE_OR_UNBOUNDED
 
         Totalrevenue_demandblock_MPEC_Firm4=zeros(length(set_times))
 
-        Totalrevenue_demandblock_MPEC_Firm5=zeros(length(set_times))
 
         U_complementarity_1_MPEC=zeros(length(set_thermalgenerators),length(set_times),length(set_scenarios))
         U_complementarity_2_MPEC=zeros(length(set_thermalgenerators),length(set_times),length(set_scenarios))
@@ -675,11 +668,6 @@ if status == MOI.INFEASIBLE_OR_UNBOUNDED
 
         println("Total Operating Cost, Firm 4:", TotalOperatingCost_MPEC_Firm4)
 
-        TotalOperatingCost_MPEC_Firm5=sum(sum(sum((sum(varcost_thermal[e]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==5)
-                                                   +sum(varcost_wind[w]*p_G_w_value_MPEC[w,t,s]  for w in set_winds if tech_wind[w,ownership]==5))*γ[s]*Ns_H[t] for s in set_scenarios) for t in set_times))
-
-        println("Total Operating Cost, Firm 5:", TotalOperatingCost_MPEC_Firm5)
-
         Totalrevenue_MPEC_Firm1= sum(sum(sum((sum(Electricity_prices_MPEC[MapG[e][2],t,s]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==1)
                                              +sum(Electricity_prices_MPEC[MapW[w][2],t,s]*p_G_w_value_MPEC[w,t,s] for w in set_winds if tech_wind[w,ownership]==1)
                                              +sum(Spinning_prices_MPEC[t,s]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==1))*γ[s]*Ns_H[t] for s in set_scenarios) for t in set_times))
@@ -710,24 +698,16 @@ if status == MOI.INFEASIBLE_OR_UNBOUNDED
 
         println("Total Revenue, Firm 4:", Totalrevenue_MPEC_Firm4)
 
-        Totalrevenue_MPEC_Firm5= sum(sum(sum((sum(Electricity_prices_MPEC[MapG[e][2],t,s]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==5)
-                                     +sum(Electricity_prices_MPEC[MapW[w][2],t,s]*p_G_w_value_MPEC[w,t,s] for w in set_winds if tech_wind[w,ownership]==5)
-                                     +sum(Spinning_prices_MPEC[t,s]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==5))*γ[s]*Ns_H[t] for s in set_scenarios) for t in set_times))
-
-        println("Total Revenue, Firm 5:", Totalrevenue_MPEC_Firm5)
-
         Total_Investments_Technology_EPEC=zeros(7)
         Total_Investments_Technology_Firm1_EPEC=zeros(7)
         Total_Investments_Technology_Firm2_EPEC=zeros(7)
         Total_Investments_Technology_Firm3_EPEC=zeros(7)
-        Total_Investments_Technology_Firm4_EPEC=zeros(7)
 
         for i in set_opt_thermalgenerators_numbertechnologies
         Total_Investments_Technology_EPEC[i]=sum(x_e_value_MPEC[e] for e in set_thermalgenerators if tech_thermal[e,Technology]== i)
         Total_Investments_Technology_Firm1_EPEC[i]=sum(x_e_value_MPEC[e] for e in set_thermalgenerators if tech_thermal[e,ownership]==1 && tech_thermal[e,Technology]== i)
         Total_Investments_Technology_Firm2_EPEC[i]=sum(x_e_value_MPEC[e] for e in set_thermalgenerators if tech_thermal[e,ownership]==2 && tech_thermal[e,Technology]== i)
         Total_Investments_Technology_Firm3_EPEC[i]=sum(x_e_value_MPEC[e] for e in set_thermalgenerators if tech_thermal[e,ownership]==3 && tech_thermal[e,Technology]== i)
-        Total_Investments_Technology_Firm4_EPEC[i]=sum(x_e_value_MPEC[e] for e in set_thermalgenerators if tech_thermal[e,ownership]==4 && tech_thermal[e,Technology]== i)
         end
 
         global j=6
@@ -736,7 +716,6 @@ if status == MOI.INFEASIBLE_OR_UNBOUNDED
         Total_Investments_Technology_Firm1_EPEC[j]=sum(x_w_value_MPEC[w] for w in set_winds if tech_wind[w,ownership]==1 && tech_wind[w,Technology]== i)
         Total_Investments_Technology_Firm2_EPEC[j]=sum(x_w_value_MPEC[w] for w in set_winds if tech_wind[w,ownership]==2 && tech_wind[w,Technology]== i)
         Total_Investments_Technology_Firm3_EPEC[j]=sum(x_w_value_MPEC[w] for w in set_winds if tech_wind[w,ownership]==3 && tech_wind[w,Technology]== i)
-        Total_Investments_Technology_Firm4_EPEC[j]=sum(x_w_value_MPEC[w] for w in set_winds if tech_wind[w,ownership]==4 && tech_wind[w,Technology]== i)
         global j=j+1
         end
 
@@ -858,14 +837,6 @@ if status == MOI.INFEASIBLE_OR_UNBOUNDED
                                                    +sum(varcost_wind[w]*p_G_w_value_MPEC[w,t,s]  for w in set_winds if tech_wind[w,ownership]==4))*γ[s]*Ns_H[t] for s in set_scenarios))
         end
 
-        TotalOperatingCost_demandblock_MPEC_Firm5=zeros(length(set_times))
-
-        for t in set_times
-        TotalOperatingCost_demandblock_MPEC_Firm5[t]=sum(sum((sum(varcost_thermal[e]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==5)
-                                                   +sum(varcost_wind[w]*p_G_w_value_MPEC[w,t,s]  for w in set_winds if tech_wind[w,ownership]==5))*γ[s]*Ns_H[t] for s in set_scenarios))
-        end
-
-
         Totalrevenue_demandblock_MPEC_Firm1=zeros(length(set_times))
 
         for t in set_times
@@ -898,13 +869,6 @@ if status == MOI.INFEASIBLE_OR_UNBOUNDED
                                              +sum(Spinning_prices_MPEC[t,s]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==4))*γ[s]*Ns_H[t] for s in set_scenarios))
         end
 
-        Totalrevenue_demandblock_MPEC_Firm5=zeros(length(set_times))
-
-        for t in set_times
-        Totalrevenue_demandblock_MPEC_Firm5[t]= sum(sum((sum(Electricity_prices_MPEC[MapG[e][2],t,s]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==5)
-                                             +sum(Electricity_prices_MPEC[MapW[w][2],t,s]*p_G_w_value_MPEC[w,t,s] for w in set_winds if tech_wind[w,ownership]==5)
-                                             +sum(Spinning_prices_MPEC[t,s]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==5))*γ[s]*Ns_H[t] for s in set_scenarios))
-        end
 
         U_complementarity_1_MPEC=zeros(length(set_thermalgenerators),length(set_times),length(set_scenarios))
         U_complementarity_2_MPEC=zeros(length(set_thermalgenerators),length(set_times),length(set_scenarios))
@@ -969,6 +933,6 @@ if status == MOI.INFEASIBLE_OR_UNBOUNDED
 
 
 
-return (profit_det_MPEC,x_w_value_MPEC,x_e_value_MPEC,Totalrevenue_MPEC_Firm1,TotalOperatingCost_MPEC_Firm1,Totalrevenue_MPEC_Firm2,TotalOperatingCost_MPEC_Firm2,Totalrevenue_MPEC_Firm3,TotalOperatingCost_MPEC_Firm3, Electricity_prices_MPEC, Spinning_prices_MPEC, υ_SR_value_MPEC,p_G_e_value_MPEC, p_G_w_value_MPEC, p_G_e_value_node1_MPEC, p_G_e_value_node2_MPEC, p_G_e_value_node3_MPEC, p_G_w_value_node1_MPEC, p_G_w_value_node2_MPEC, p_G_w_value_node3_MPEC, Electricity_prices_MPEC, TotalCost_MPEC,TotalEmissions_MPEC,Totalrevenue_demandblock_MPEC_Firm1, TotalOperatingCost_demandblock_MPEC_Firm1,Totalrevenue_demandblock_MPEC_Firm2, TotalOperatingCost_demandblock_MPEC_Firm2, Totalrevenue_demandblock_MPEC_Firm3, TotalOperatingCost_demandblock_MPEC_Firm3, TotalCapCost_EPEC, TotalFixedCost_EPEC, TotalEmissionsCost_EPEC, TotalOperatingCost_EPEC,TotalCurtailmentcost_EPEC, Total_Investments_Technology_Firm1_EPEC,Total_Investments_Technology_Firm2_EPEC,Total_Investments_Technology_EPEC,Total_Generation_Technology_EPEC,Total_Generation_Technology_Existing_EPEC,Total_Generation_Technology_Candidate_EPEC, Total_Generation_Technology_node1_EPEC, Total_Generation_Technology_node2_EPEC, Total_Generation_Technology_node3_EPEC,Total_Emissions_Technology_Existing_EPEC,Total_Emissions_Technology_Candidate_EPEC,Total_Emissions_Technology_Existing_Cummulative_EPEC,Total_Emissions_Technology_Candidate_Cummulative_EPEC,TotalOperatingCost_MPEC_Firm4,Totalrevenue_MPEC_Firm4,Total_Investments_Technology_Firm3_EPEC,TotalOperatingCost_demandblock_MPEC_Firm4,Totalrevenue_demandblock_MPEC_Firm4,TotalOperatingCost_MPEC_Firm5,Totalrevenue_MPEC_Firm5,Total_Investments_Technology_Firm4_EPEC,TotalOperatingCost_demandblock_MPEC_Firm5,Totalrevenue_demandblock_MPEC_Firm5)
+return (profit_det_MPEC,x_w_value_MPEC,x_e_value_MPEC,Totalrevenue_MPEC_Firm1,TotalOperatingCost_MPEC_Firm1,Totalrevenue_MPEC_Firm2,TotalOperatingCost_MPEC_Firm2,Totalrevenue_MPEC_Firm3,TotalOperatingCost_MPEC_Firm3, Electricity_prices_MPEC, Spinning_prices_MPEC, υ_SR_value_MPEC,p_G_e_value_MPEC, p_G_w_value_MPEC, p_G_e_value_node1_MPEC, p_G_e_value_node2_MPEC, p_G_e_value_node3_MPEC, p_G_w_value_node1_MPEC, p_G_w_value_node2_MPEC, p_G_w_value_node3_MPEC, Electricity_prices_MPEC, TotalCost_MPEC,TotalEmissions_MPEC,Totalrevenue_demandblock_MPEC_Firm1, TotalOperatingCost_demandblock_MPEC_Firm1,Totalrevenue_demandblock_MPEC_Firm2, TotalOperatingCost_demandblock_MPEC_Firm2, Totalrevenue_demandblock_MPEC_Firm3, TotalOperatingCost_demandblock_MPEC_Firm3, TotalCapCost_EPEC, TotalFixedCost_EPEC, TotalEmissionsCost_EPEC, TotalOperatingCost_EPEC,TotalCurtailmentcost_EPEC, Total_Investments_Technology_Firm1_EPEC,Total_Investments_Technology_Firm2_EPEC,Total_Investments_Technology_EPEC,Total_Generation_Technology_EPEC,Total_Generation_Technology_Existing_EPEC,Total_Generation_Technology_Candidate_EPEC, Total_Generation_Technology_node1_EPEC, Total_Generation_Technology_node2_EPEC, Total_Generation_Technology_node3_EPEC,Total_Emissions_Technology_Existing_EPEC,Total_Emissions_Technology_Candidate_EPEC,Total_Emissions_Technology_Existing_Cummulative_EPEC,Total_Emissions_Technology_Candidate_Cummulative_EPEC,TotalOperatingCost_MPEC_Firm4,Totalrevenue_MPEC_Firm4,Total_Investments_Technology_Firm3_EPEC,TotalOperatingCost_demandblock_MPEC_Firm4,Totalrevenue_demandblock_MPEC_Firm4)
 
 end
