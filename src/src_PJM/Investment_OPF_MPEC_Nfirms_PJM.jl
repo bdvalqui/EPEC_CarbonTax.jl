@@ -1,4 +1,4 @@
-function Investment_OPF_MPEC(optimizer,set_thermalgenerators_options_numbertechnologies,set_wind_options_numbertechnologies,set_thermalgenerators_options,set_wind_options,set_thermalgenerators_existingunits,set_winds_existingunits,set_thermalgenerators,set_winds,set_demands,set_nodes,set_nodes_ref,set_nodes_noref,set_scenarios,set_times,P,V,thermal_ownership_options,wind_ownership_options,x_w_p,x_e_p,Leader, p_D,D,max_demand,Υ_SR,γ,Τ,p_lambda_upper,wind,Ns_H,n_link,links,links_rev,F_max_dict,B_dict,MapG,MapD,MapW,tech_thermal,tech_wind,capacity_per_unit,var_om,invcost,maxBuilds,ownership,capacity_existingunits,fixedcost,EmissionsRate,HeatRate,fuelprice,life,RamUP,Technology,WACC,varcost_thermal,varcost_wind,CRF_thermal,CRF_wind,set_opt_winds_numbertechnologies,set_opt_thermalgenerators_numbertechnologies)
+function Investment_OPF_MPEC_Nfirms_PJM(optimizer,set_thermalgenerators_options,set_wind_options,set_thermalgenerators_existingunits,set_winds_existingunits,set_thermalgenerators,set_winds,set_demands,set_nodes,set_nodes_ref,set_nodes_noref,set_scenarios,set_times,P,V,thermal_ownership_options,wind_ownership_options,x_w_p,x_e_p,Leader, p_D,D,max_demand,Υ_SR,γ,Τ,p_lambda_upper,wind,Ns_H,n_link,links,links_rev,F_max_dict,B_dict,MapG,MapD,MapW,tech_thermal,tech_wind,capacity_per_unit,var_om,invcost,maxBuilds,ownership,capacity_existingunits,fixedcost,EmissionsRate,HeatRate,fuelprice,life,RamUP,Technology,WACC,varcost_thermal,varcost_wind,CRF_thermal,CRF_wind,set_opt_winds_numbertechnologies,set_opt_thermalgenerators_numbertechnologies,Number_Firms)
 
 #include("utils.jl")
 
@@ -14,7 +14,7 @@ m=Model(optimizer)
 #Absolute MIP gap tolerance
 #set_optimizer_attribute(m, "MIPGapAbs", 1e-15)
 #Relative MIP gap tolerance
-#set_optimizer_attribute(m, "MIPGap", 0.005)
+set_optimizer_attribute(m, "MIPGap", 0.005)
 #set_optimizer_attribute(m, "MIPFocus", 3)
 #set_optimizer_attribute(m, "Method", 3)
 #Default value 0.0002
@@ -25,7 +25,7 @@ m=Model(optimizer)
 #Absolute MIP gap tolerance
 #set_optimizer_attribute(m, "CPX_PARAM_EPAGAP", 1e-15)
 #Relative MIP gap tolerance
-set_optimizer_attribute(m, "CPX_PARAM_EPGAP", 0.005)
+#set_optimizer_attribute(m, "CPX_PARAM_EPGAP", 0.005)
 #set_optimizer_attribute(m, "CPX_PARAM_MIPEMPHASIS", 2)
 #set_optimizer_attribute(m, "CPX_PARAM_LPMETHOD", 6)
 #Default value 10e-6
@@ -300,6 +300,11 @@ println("")
 #Gurobi=INFEASIBLE_OR_UNBOUNDED
 #CPLEX=INFEASIBLE
 
+global Number_of_investment_options_thermal_renewables=7
+global Number_of_thermal_technologies_existing_new=9
+global Number_of_thermal_renew_existing_new=3
+global Number_of_technologies_thermal_renewables=12 
+
 if status == MOI.INFEASIBLE_OR_UNBOUNDED
 
         profit_det_MPEC=0
@@ -368,62 +373,48 @@ if status == MOI.INFEASIBLE_OR_UNBOUNDED
 
         println("Total Cost:", TotalCost_MPEC)
 
-        TotalOperatingCost_MPEC_Firm1=0
-        #Note: Both operating cost and profits might different among solvers, but the total system cost should be the same.
-        println("Total Operating Cost, Firm 1:", TotalOperatingCost_MPEC_Firm1)
-
-        TotalOperatingCost_MPEC_Firm2=0
-        println("Total Operating Cost, Firm 2:", TotalOperatingCost_MPEC_Firm2)
-
-
-        TotalOperatingCost_MPEC_Firm3=0
-        println("Total Operating Cost, Firm 3:", TotalOperatingCost_MPEC_Firm3)
+        Number_Total_Firms=Number_Firms+1
+        TotalOperatingCost_MPEC_Firms=zeros(Number_Total_Firms)
+        Totalrevenue_MPEC_Firms=zeros(Number_Total_Firms)
+        println("The problem is INFEASIBLE_OR_UNBOUNDED, setting Operating Costs and Revenues equal to zero")
+        
 
 
-        Totalrevenue_MPEC_Firm1= 0
 
-        println("MPEC Objective Function: ", 0)
-
-        println("Total Revenue, Firm 1:", Totalrevenue_MPEC_Firm1)
-
-        Totalrevenue_MPEC_Firm2= 0
-        println("Total Revenue, Firm 2:", Totalrevenue_MPEC_Firm2)
-
-        ObjectiveFunction_Revenue=0
-        println("MPEC Revenue: ", ObjectiveFunction_Revenue)
-
-        Totalrevenue_MPEC_Firm3= 0
-        println("Total Revenue, Firm 3:", Totalrevenue_MPEC_Firm3)
-
-        Total_Investments_Technology_EPEC=zeros(7)
-        Total_Investments_Technology_Firm1_EPEC=zeros(7)
-        Total_Investments_Technology_Firm2_EPEC=zeros(7)
+        Total_Investments_Technology_EPEC=zeros(Number_of_investment_options_thermal_renewables)
+        #Total_Investments_Technology_Firm1_EPEC=zeros(7)
+        #Total_Investments_Technology_Firm2_EPEC=zeros(7)
 
 
-        Total_Generation_Technology_EPEC=zeros(9,length(set_times))
-        Total_Generation_Technology_Existing_EPEC=zeros(9,length(set_times))
-        Total_Generation_Technology_Candidate_EPEC=zeros(9,length(set_times))
+        Total_Generation_Technology_EPEC=zeros(Number_of_technologies_thermal_renewables,length(set_times))
+        Total_Generation_Technology_Existing_EPEC=zeros(Number_of_technologies_thermal_renewables,length(set_times))
+        Total_Generation_Technology_Candidate_EPEC=zeros(Number_of_technologies_thermal_renewables,length(set_times))
 
-        Total_Emissions_Technology_Existing_EPEC=zeros(9,length(set_times))
-        Total_Emissions_Technology_Candidate_EPEC=zeros(9,length(set_times))
+        Total_Emissions_Technology_Existing_EPEC=zeros(Number_of_technologies_thermal_renewables,length(set_times))
+        Total_Emissions_Technology_Candidate_EPEC=zeros(Number_of_technologies_thermal_renewables,length(set_times))
 
-        Total_Emissions_Technology_Existing_Cummulative_EPEC=zeros(9)
-        Total_Emissions_Technology_Candidate_Cummulative_EPEC=zeros(9)
+        Total_Emissions_Technology_Existing_Cummulative_EPEC=zeros(Number_of_technologies_thermal_renewables)
+        Total_Emissions_Technology_Candidate_Cummulative_EPEC=zeros(Number_of_technologies_thermal_renewables)
 
         #Generation per node
         #Node 1
-        Total_Generation_Technology_node1_EPEC=zeros(9,length(set_times))
+        Total_Generation_Technology_node1_EPEC=zeros(Number_of_technologies_thermal_renewables,length(set_times))
 
 
         #Generation per node
         #Node 2
-        Total_Generation_Technology_node2_EPEC=zeros(9,length(set_times))
+        Total_Generation_Technology_node2_EPEC=zeros(Number_of_technologies_thermal_renewables,length(set_times))
 
         #Generation per node
         #Node 3
-        Total_Generation_Technology_node3_EPEC=zeros(9,length(set_times))
+        Total_Generation_Technology_node3_EPEC=zeros(Number_of_technologies_thermal_renewables,length(set_times))
 
 
+        Number_Total_Firms=Number_Firms+1
+        TotalOperatingCost_demandblock_MPEC_Firms=zeros(length(set_times),Number_Total_Firms)
+        Totalrevenue_demandblock_MPEC_Firms=zeros(length(set_times),Number_Total_Firms)
+
+        #=
 
         TotalOperatingCost_demandblock_MPEC_Firm1=zeros(length(set_times))
 
@@ -440,7 +431,7 @@ if status == MOI.INFEASIBLE_OR_UNBOUNDED
         Totalrevenue_demandblock_MPEC_Firm2=zeros(length(set_times))
 
         Totalrevenue_demandblock_MPEC_Firm3=zeros(length(set_times))
-
+        =#
 
         U_complementarity_1_MPEC=zeros(length(set_thermalgenerators),length(set_times),length(set_scenarios))
         U_complementarity_2_MPEC=zeros(length(set_thermalgenerators),length(set_times),length(set_scenarios))
@@ -634,7 +625,30 @@ if status == MOI.INFEASIBLE_OR_UNBOUNDED
         println("Total Operating Cost:", TotalOperatingCost_EPEC)
 
         println("Total Cost:", TotalCost_MPEC)
+        
+        #Note: Both operating cost and profits might different among solvers, but the total system cost should be the same.
+        #Number_Total_Firms: It considers both strategic investors and competitive firms
+        Number_Total_Firms=Number_Firms+1
+        TotalOperatingCost_MPEC_Firms=zeros(Number_Total_Firms)
+        Totalrevenue_MPEC_Firms=zeros(Number_Total_Firms)
+        
+        for firm in 1: Number_Total_Firms
 
+        global TotalOperatingCost_MPEC_Firms[firm]=sum(sum(sum((sum(varcost_thermal[e]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==firm)
+        +sum(varcost_wind[w]*p_G_w_value_MPEC[w,t,s]  for w in set_winds if tech_wind[w,ownership]==firm))*γ[s]*Ns_H[t] for s in set_scenarios) for t in set_times))
+
+        println("Total Operating Cost, Firm $firm:", TotalOperatingCost_MPEC_Firms[firm])
+
+        global Totalrevenue_MPEC_Firms[firm]= sum(sum(sum((sum(Electricity_prices_MPEC[MapG[e][2],t,s]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==firm)
+        +sum(Electricity_prices_MPEC[MapW[w][2],t,s]*p_G_w_value_MPEC[w,t,s] for w in set_winds if tech_wind[w,ownership]==firm)
+        +sum(Spinning_prices_MPEC[t,s]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==firm))*γ[s]*Ns_H[t] for s in set_scenarios) for t in set_times))
+
+        println("Total Revenue, Firm $firm:", Totalrevenue_MPEC_Firms[firm])
+
+        end
+
+        println("MPEC Objective Function: ", objective_value(m))
+        #=
         TotalOperatingCost_MPEC_Firm1=sum(sum(sum((sum(varcost_thermal[e]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==1)
                                                    +sum(varcost_wind[w]*p_G_w_value_MPEC[w,t,s]  for w in set_winds if tech_wind[w,ownership]==1))*γ[s]*Ns_H[t] for s in set_scenarios) for t in set_times))
 
@@ -651,7 +665,6 @@ if status == MOI.INFEASIBLE_OR_UNBOUNDED
                                                    +sum(varcost_wind[w]*p_G_w_value_MPEC[w,t,s]  for w in set_winds if tech_wind[w,ownership]==3))*γ[s]*Ns_H[t] for s in set_scenarios) for t in set_times))
 
         println("Total Operating Cost, Firm 3:", TotalOperatingCost_MPEC_Firm3)
-
 
         Totalrevenue_MPEC_Firm1= sum(sum(sum((sum(Electricity_prices_MPEC[MapG[e][2],t,s]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==1)
                                              +sum(Electricity_prices_MPEC[MapW[w][2],t,s]*p_G_w_value_MPEC[w,t,s] for w in set_winds if tech_wind[w,ownership]==1)
@@ -676,36 +689,50 @@ if status == MOI.INFEASIBLE_OR_UNBOUNDED
                                              +sum(Spinning_prices_MPEC[t,s]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==3))*γ[s]*Ns_H[t] for s in set_scenarios) for t in set_times))
 
         println("Total Revenue, Firm 3:", Totalrevenue_MPEC_Firm3)
+        =#
 
-        Total_Investments_Technology_EPEC=zeros(7)
-        Total_Investments_Technology_Firm1_EPEC=zeros(7)
-        Total_Investments_Technology_Firm2_EPEC=zeros(7)
+        Total_Investments_Technology_EPEC=zeros(Number_of_investment_options_thermal_renewables)
+        Total_Investments_Technology_Firms_EPEC=zeros(Number_of_investment_options_thermal_renewables,Number_Firms)
+        
 
+        #Total_Investments_Technology_Firm1_EPEC=zeros(7)
+        #Total_Investments_Technology_Firm2_EPEC=zeros(7)
+        
+        #These numbers do not change because we still have 5 thermal technologies and 2 renewable technologies
+        
         for i in set_opt_thermalgenerators_numbertechnologies
         Total_Investments_Technology_EPEC[i]=sum(x_e_value_MPEC[e] for e in set_thermalgenerators if tech_thermal[e,Technology]== i)
-        Total_Investments_Technology_Firm1_EPEC[i]=sum(x_e_value_MPEC[e] for e in set_thermalgenerators if tech_thermal[e,ownership]==1 && tech_thermal[e,Technology]== i)
-        Total_Investments_Technology_Firm2_EPEC[i]=sum(x_e_value_MPEC[e] for e in set_thermalgenerators if tech_thermal[e,ownership]==2 && tech_thermal[e,Technology]== i)
+        for firm in 1:Number_Firms
+        Total_Investments_Technology_Firms_EPEC[i,firm]=sum(x_e_value_MPEC[e] for e in set_thermalgenerators if tech_thermal[e,ownership]==firm && tech_thermal[e,Technology]== i)
+        #Total_Investments_Technology_Firm1_EPEC[i]=sum(x_e_value_MPEC[e] for e in set_thermalgenerators if tech_thermal[e,ownership]==1 && tech_thermal[e,Technology]== i)
+        #Total_Investments_Technology_Firm2_EPEC[i]=sum(x_e_value_MPEC[e] for e in set_thermalgenerators if tech_thermal[e,ownership]==2 && tech_thermal[e,Technology]== i)
+        end
         end
 
         global j=6
+
+        
         for i in set_opt_winds_numbertechnologies
         Total_Investments_Technology_EPEC[j]=sum(x_w_value_MPEC[w] for w in set_winds if tech_wind[w,Technology]== i)
-        Total_Investments_Technology_Firm1_EPEC[j]=sum(x_w_value_MPEC[w] for w in set_winds if tech_wind[w,ownership]==1 && tech_wind[w,Technology]== i)
-        Total_Investments_Technology_Firm2_EPEC[j]=sum(x_w_value_MPEC[w] for w in set_winds if tech_wind[w,ownership]==2 && tech_wind[w,Technology]== i)
+        for firm in 1:Number_Firms
+        Total_Investments_Technology_Firms_EPEC[j,firm]=sum(x_w_value_MPEC[w] for w in set_winds if tech_wind[w,ownership]==firm && tech_wind[w,Technology]== i) 
+        #Total_Investments_Technology_Firm1_EPEC[j]=sum(x_w_value_MPEC[w] for w in set_winds if tech_wind[w,ownership]==1 && tech_wind[w,Technology]== i)
+        #Total_Investments_Technology_Firm2_EPEC[j]=sum(x_w_value_MPEC[w] for w in set_winds if tech_wind[w,ownership]==2 && tech_wind[w,Technology]== i)
+        end
         global j=j+1
         end
 
-        Total_Generation_Technology_EPEC=zeros(9,length(set_times))
-        Total_Generation_Technology_Existing_EPEC=zeros(9,length(set_times))
-        Total_Generation_Technology_Candidate_EPEC=zeros(9,length(set_times))
+        Total_Generation_Technology_EPEC=zeros(Number_of_technologies_thermal_renewables,length(set_times))
+        Total_Generation_Technology_Existing_EPEC=zeros(Number_of_technologies_thermal_renewables,length(set_times))
+        Total_Generation_Technology_Candidate_EPEC=zeros(Number_of_technologies_thermal_renewables,length(set_times))
 
-        Total_Emissions_Technology_Existing_EPEC=zeros(9,length(set_times))
-        Total_Emissions_Technology_Candidate_EPEC=zeros(9,length(set_times))
+        Total_Emissions_Technology_Existing_EPEC=zeros(Number_of_technologies_thermal_renewables,length(set_times))
+        Total_Emissions_Technology_Candidate_EPEC=zeros(Number_of_technologies_thermal_renewables,length(set_times))
 
-        Total_Emissions_Technology_Existing_Cummulative_EPEC=zeros(9)
-        Total_Emissions_Technology_Candidate_Cummulative_EPEC=zeros(9)
+        Total_Emissions_Technology_Existing_Cummulative_EPEC=zeros(Number_of_technologies_thermal_renewables)
+        Total_Emissions_Technology_Candidate_Cummulative_EPEC=zeros(Number_of_technologies_thermal_renewables)
 
-        for i in 1:7
+        for i in 1:Number_of_thermal_technologies_existing_new
         for t in set_times
         Total_Generation_Technology_EPEC[i,t]=sum(p_G_e_value_MPEC[e,t,1] for e in set_thermalgenerators if tech_thermal[e,Technology]==i;init=0)
         Total_Generation_Technology_Existing_EPEC[i,t]=sum(p_G_e_value_MPEC[e,t,1] for e in set_thermalgenerators if tech_thermal[e,capacity_existingunits]>0 && tech_thermal[e,Technology]==i;init=0)
@@ -719,9 +746,12 @@ if status == MOI.INFEASIBLE_OR_UNBOUNDED
 
         end
         end
+        
+
+        #Change this if we add other Renewable Technology Type
 
         global j=1
-        for i in 8:9
+        for i in Number_of_thermal_technologies_existing_new+1:Number_of_thermal_technologies_existing_new+Number_of_thermal_renew_existing_new
         for t in set_times
         Total_Generation_Technology_EPEC[i,t]=sum(p_G_w_value_MPEC[w,t,1] for w in set_winds if tech_wind[w,Technology]==j;init=0)
         Total_Generation_Technology_Existing_EPEC[i,t]=sum(p_G_w_value_MPEC[w,t,1] for w in set_winds if tech_wind[w,capacity_existingunits]>0 && tech_wind[w,Technology]==j;init=0)
@@ -733,16 +763,16 @@ if status == MOI.INFEASIBLE_OR_UNBOUNDED
 
         #Generation per node
         #Node 1
-        Total_Generation_Technology_node1_EPEC=zeros(9,length(set_times))
+        Total_Generation_Technology_node1_EPEC=zeros(Number_of_technologies_thermal_renewables,length(set_times))
 
-        for i in 1:7
+        for i in 1:Number_of_thermal_technologies_existing_new
         for t in set_times
         Total_Generation_Technology_node1_EPEC[i,t]=sum(p_G_e_value_node1_MPEC[e,t,1] for e in set_thermalgenerators if tech_thermal[e,Technology]==i;init=0)
         end
         end
 
         global j=1
-        for i in 8:9
+        for i in Number_of_thermal_technologies_existing_new+1:Number_of_thermal_technologies_existing_new+Number_of_thermal_renew_existing_new
         for t in set_times
         Total_Generation_Technology_node1_EPEC[i,t]=sum(p_G_w_value_node1_MPEC[w,t,1] for w in set_winds if tech_wind[w,Technology]==j;init=0)
         end
@@ -751,16 +781,16 @@ if status == MOI.INFEASIBLE_OR_UNBOUNDED
 
         #Generation per node
         #Node 2
-        Total_Generation_Technology_node2_EPEC=zeros(9,length(set_times))
+        Total_Generation_Technology_node2_EPEC=zeros(Number_of_technologies_thermal_renewables,length(set_times))
 
-        for i in 1:7
+        for i in 1:Number_of_thermal_technologies_existing_new
         for t in set_times
         Total_Generation_Technology_node2_EPEC[i,t]=sum(p_G_e_value_node2_MPEC[e,t,1] for e in set_thermalgenerators if tech_thermal[e,Technology]==i;init=0)
         end
         end
 
         global j=1
-        for i in 8:9
+        for i in Number_of_thermal_technologies_existing_new+1:Number_of_thermal_technologies_existing_new+Number_of_thermal_renew_existing_new
         for t in set_times
         Total_Generation_Technology_node2_EPEC[i,t]=sum(p_G_w_value_node2_MPEC[w,t,1] for w in set_winds if tech_wind[w,Technology]==j;init=0)
         end
@@ -769,21 +799,42 @@ if status == MOI.INFEASIBLE_OR_UNBOUNDED
 
         #Generation per node
         #Node 3
-        Total_Generation_Technology_node3_EPEC=zeros(9,length(set_times))
+        Total_Generation_Technology_node3_EPEC=zeros(Number_of_technologies_thermal_renewables,length(set_times))
 
-        for i in 1:7
+        for i in 1:Number_of_thermal_technologies_existing_new
         for t in set_times
         Total_Generation_Technology_node3_EPEC[i,t]=sum(p_G_e_value_node3_MPEC[e,t,1] for e in set_thermalgenerators if tech_thermal[e,Technology]==i;init=0)
         end
         end
 
         global j=1
-        for i in 8:9
+        for i in Number_of_thermal_technologies_existing_new+1:Number_of_thermal_technologies_existing_new+Number_of_thermal_renew_existing_new
         for t in set_times
         Total_Generation_Technology_node3_EPEC[i,t]=sum(p_G_w_value_node3_MPEC[w,t,1] for w in set_winds if tech_wind[w,Technology]==j;init=0)
         end
         global j=j+1
         end
+
+        Number_Total_Firms=Number_Firms+1
+        TotalOperatingCost_demandblock_MPEC_Firms=zeros(length(set_times),Number_Total_Firms)
+        Totalrevenue_demandblock_MPEC_Firms=zeros(length(set_times),Number_Total_Firms)
+
+        for firm in 1: Number_Total_Firms
+
+        for t in set_times
+            
+        TotalOperatingCost_demandblock_MPEC_Firms[t,firm]=sum(sum((sum(varcost_thermal[e]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==firm)
+                                                       +sum(varcost_wind[w]*p_G_w_value_MPEC[w,t,s]  for w in set_winds if tech_wind[w,ownership]==firm))*γ[s]*Ns_H[t] for s in set_scenarios))
+        
+        Totalrevenue_demandblock_MPEC_Firms[t,firm]= sum(sum((sum(Electricity_prices_MPEC[MapG[e][2],t,s]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==firm)
+                                                       +sum(Electricity_prices_MPEC[MapW[w][2],t,s]*p_G_w_value_MPEC[w,t,s] for w in set_winds if tech_wind[w,ownership]==firm)
+                                                       +sum(Spinning_prices_MPEC[t,s]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==firm))*γ[s]*Ns_H[t] for s in set_scenarios))
+          
+        end
+
+        end
+
+        #=
 
         TotalOperatingCost_demandblock_MPEC_Firm1=zeros(length(set_times))
 
@@ -806,7 +857,7 @@ if status == MOI.INFEASIBLE_OR_UNBOUNDED
                                                    +sum(varcost_wind[w]*p_G_w_value_MPEC[w,t,s]  for w in set_winds if tech_wind[w,ownership]==3))*γ[s]*Ns_H[t] for s in set_scenarios))
         end
 
-
+      
         Totalrevenue_demandblock_MPEC_Firm1=zeros(length(set_times))
 
         for t in set_times
@@ -831,6 +882,7 @@ if status == MOI.INFEASIBLE_OR_UNBOUNDED
                                              +sum(Spinning_prices_MPEC[t,s]*p_G_e_value_MPEC[e,t,s] for e in set_thermalgenerators if tech_thermal[e,ownership]==3))*γ[s]*Ns_H[t] for s in set_scenarios))
         end
 
+      =#
 
         U_complementarity_1_MPEC=zeros(length(set_thermalgenerators),length(set_times),length(set_scenarios))
         U_complementarity_2_MPEC=zeros(length(set_thermalgenerators),length(set_times),length(set_scenarios))
@@ -895,6 +947,5 @@ if status == MOI.INFEASIBLE_OR_UNBOUNDED
 
 
 
-return (profit_det_MPEC,x_w_value_MPEC,x_e_value_MPEC,Totalrevenue_MPEC_Firm1,TotalOperatingCost_MPEC_Firm1,Totalrevenue_MPEC_Firm2,TotalOperatingCost_MPEC_Firm2,Totalrevenue_MPEC_Firm3,TotalOperatingCost_MPEC_Firm3, Electricity_prices_MPEC, Spinning_prices_MPEC, υ_SR_value_MPEC,p_G_e_value_MPEC, p_G_w_value_MPEC, p_G_e_value_node1_MPEC, p_G_e_value_node2_MPEC, p_G_e_value_node3_MPEC, p_G_w_value_node1_MPEC, p_G_w_value_node2_MPEC, p_G_w_value_node3_MPEC, Electricity_prices_MPEC, TotalCost_MPEC,TotalEmissions_MPEC,Totalrevenue_demandblock_MPEC_Firm1, TotalOperatingCost_demandblock_MPEC_Firm1,Totalrevenue_demandblock_MPEC_Firm2, TotalOperatingCost_demandblock_MPEC_Firm2, Totalrevenue_demandblock_MPEC_Firm3, TotalOperatingCost_demandblock_MPEC_Firm3, TotalCapCost_EPEC, TotalFixedCost_EPEC, TotalEmissionsCost_EPEC, TotalOperatingCost_EPEC,TotalCurtailmentcost_EPEC, Total_Investments_Technology_Firm1_EPEC,Total_Investments_Technology_Firm2_EPEC,Total_Investments_Technology_EPEC,Total_Generation_Technology_EPEC,Total_Generation_Technology_Existing_EPEC,Total_Generation_Technology_Candidate_EPEC, Total_Generation_Technology_node1_EPEC, Total_Generation_Technology_node2_EPEC, Total_Generation_Technology_node3_EPEC,Total_Emissions_Technology_Existing_EPEC,Total_Emissions_Technology_Candidate_EPEC,Total_Emissions_Technology_Existing_Cummulative_EPEC,Total_Emissions_Technology_Candidate_Cummulative_EPEC)
-
+return (profit_det_MPEC,x_w_value_MPEC,x_e_value_MPEC,Electricity_prices_MPEC, Spinning_prices_MPEC, υ_SR_value_MPEC, p_G_e_value_MPEC, p_G_w_value_MPEC, p_G_e_value_node1_MPEC, p_G_e_value_node2_MPEC, p_G_e_value_node3_MPEC, p_G_w_value_node1_MPEC, p_G_w_value_node2_MPEC, p_G_w_value_node3_MPEC, Electricity_prices_MPEC, TotalCost_MPEC,TotalEmissions_MPEC, TotalCapCost_EPEC, TotalFixedCost_EPEC, TotalEmissionsCost_EPEC, TotalOperatingCost_EPEC,TotalCurtailmentcost_EPEC, Total_Investments_Technology_Firms_EPEC,Total_Investments_Technology_EPEC,Total_Generation_Technology_EPEC,Total_Generation_Technology_Existing_EPEC,Total_Generation_Technology_Candidate_EPEC, Total_Generation_Technology_node1_EPEC, Total_Generation_Technology_node2_EPEC, Total_Generation_Technology_node3_EPEC,Total_Emissions_Technology_Existing_EPEC,Total_Emissions_Technology_Candidate_EPEC,Total_Emissions_Technology_Existing_Cummulative_EPEC,Total_Emissions_Technology_Candidate_Cummulative_EPEC,TotalOperatingCost_MPEC_Firms,Totalrevenue_MPEC_Firms,TotalOperatingCost_demandblock_MPEC_Firms,Totalrevenue_demandblock_MPEC_Firms)
 end

@@ -14,7 +14,7 @@ m=Model(optimizer)
 #Absolute MIP gap tolerance
 #set_optimizer_attribute(m, "MIPGapAbs", 1e-15)
 #Relative MIP gap tolerance
-#set_optimizer_attribute(m, "MIPGap", 0.005)
+set_optimizer_attribute(m, "MIPGap", 0.005)
 #set_optimizer_attribute(m, "MIPFocus", 3)
 #set_optimizer_attribute(m, "Method", 3)
 #Default value 0.0002
@@ -25,7 +25,7 @@ m=Model(optimizer)
 #Absolute MIP gap tolerance
 #set_optimizer_attribute(m, "CPX_PARAM_EPAGAP", 1e-15)
 #Relative MIP gap tolerance
-set_optimizer_attribute(m, "CPX_PARAM_EPGAP", 0.005)
+#set_optimizer_attribute(m, "CPX_PARAM_EPGAP", 0.005)
 #set_optimizer_attribute(m, "CPX_PARAM_MIPEMPHASIS", 2)
 #set_optimizer_attribute(m, "CPX_PARAM_LPMETHOD", 6)
 #Default value 10e-6
