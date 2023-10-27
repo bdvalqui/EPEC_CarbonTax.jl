@@ -94,8 +94,6 @@ Pkg.add(name="CPLEX", version=" 1.0.0")
 Pkg.build("CPLEX")
 =#
 
-#Step 5: Copy results_startingpoints folder from "src" folder in the "test" folder.
-
 #====================#
 
 #Profits_Objective_Function_par,Total_Investments_Technology_EPEC_par,Nash_Equilibrium_Indicator_bin
