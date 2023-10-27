@@ -1,0 +1,1 @@
+Results from the model considering starting point 4.

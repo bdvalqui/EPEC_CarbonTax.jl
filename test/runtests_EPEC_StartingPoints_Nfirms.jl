@@ -70,30 +70,34 @@ println("Profits: $Profits_Objective_Function")
 
 #(equilibrium_investments_sol)=Plots_CapacityMix_All_Solutions(equilibrium_investments,Number_StartingPoints,Profits_Objective_Function,equilibrium_indicators,scenario,"results_startingpoints/$scenario")
 
+#=
+Steps to run the model:
+
 #Steps:
 
-#Step 1: cd in ..."test" folder 
-#cd("C:\\Users\\...\\test")
+#Step 1: cd in ..."test" folder. Type the following in Julia REPL: 
 
-#Step 2: Activate enviroment
+cd("C:\\Users\\...\\test")
 
-#press ]
-#activate .
+#Step 2: Activate enviroment. In Julia REPL:
 
-#Step 3: Install the package in the current enviroment 
+press ]
+activate .
 
-#Go to package manager mode
-#dev ...\EPEC_CarbonTax.jl
+#Step 3: Install the package in the current enviroment. Go to package manager mode.
 
-#Step 4: Install CPLEX
+dev ...\EPEC_CarbonTax.jl
 
-#=
+#Step 4: Install CPLEX. Type the following in Julia REPL:
+
 ENV["CPLEX_STUDIO_BINARIES"] = "C:\\GAMS\\40"
 import Pkg
 Pkg.add(name="CPLEX", version=" 1.0.0")
 Pkg.build("CPLEX")
-=#
 
-#====================#
+#Step 5: in Julia REPL type:
+
+include("runtests_EPEC_StartingPoints_Nfirms")
++#
 
 #Profits_Objective_Function_par,Total_Investments_Technology_EPEC_par,Nash_Equilibrium_Indicator_bin
