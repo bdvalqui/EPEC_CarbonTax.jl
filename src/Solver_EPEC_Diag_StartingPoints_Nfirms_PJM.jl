@@ -434,7 +434,7 @@ global Total_Revenue_Cost_demandblock_EPEC_Plot[t,2]=(Total_Revenue_Cost_demandb
 end
 
 #===============================================================================#
-(data_prices_CP_res,data_prices_EPEC_res)=Plots_Prices_startpoints(data_prices_CP,data_prices_EPEC,set_times,Τ,start_point,scenario)
+#(data_prices_CP_res,data_prices_EPEC_res)=Plots_Prices_startpoints(data_prices_CP,data_prices_EPEC,set_times,Τ,start_point,scenario)
 
 #Modify this function to make this flexible for N firms, if neccessary. 
 #(Total_Investments_Technology_CP_res,Total_Investments_Technology_EPEC_res)=Plots_CapacityMix_startpoints(Total_Investments_Technology_CP,Total_Investments_Technology_EPEC_par,Total_Investments_Technology_Firm1_EPEC_par,Total_Investments_Technology_Firm2_EPEC_par,Τ,start_point,scenario)

@@ -6,8 +6,8 @@ using CSV
 using DataFrames
 using Distributed
 using SharedArrays
-using PyPlot
-using PyCall
+#using PyPlot
+#using PyCall
 import MathOptInterface: AbstractOptimizer
 
 #Macros
@@ -43,14 +43,14 @@ include("loadinputs_CentralPlanner.jl")
 include("loadinputs_CentralPlanner_scenario_PJM.jl")
 include("loadinputs_CentralPlanner_scenario.jl")
 include("loadinputs.jl")
-include("Plots_Prices.jl")
-include("Plots_Prices_startpoints.jl")
-include("Plots_CapacityMix.jl")
-include("Plots_CapacityMix_startpoints.jl")
-include("Plots_Generation.jl")
-include("Plots_Generation_startpoints.jl")
-include("Plots_Rev_Ope.jl")
-include("Plots_Rev_Ope_startpoints.jl")
+#include("Plots_Prices.jl")
+#include("Plots_Prices_startpoints.jl")
+#include("Plots_CapacityMix.jl")
+#include("Plots_CapacityMix_startpoints.jl")
+#include("Plots_Generation.jl")
+#include("Plots_Generation_startpoints.jl")
+#include("Plots_Rev_Ope.jl")
+#include("Plots_Rev_Ope_startpoints.jl")
 include("Investment_OPF_MPEC_Reaction.jl")
 
 #Starting Points
