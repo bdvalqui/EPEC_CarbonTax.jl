@@ -195,7 +195,7 @@ Number_Total_Firms == 11
         γ[s]=a
         end
     
-        p_lambda_upper_par=CSV.File(folder *"/upper_bound_price_PJM.csv") |> Tables.matrix
+        p_lambda_upper_par=CSV.File(folder *"/upper_bound_price_Nfirms.csv") |> Tables.matrix
     
     
         p_Carbprice_par=CSV.File(folder *"/carbontax_scenarios.csv") |> Tables.matrix

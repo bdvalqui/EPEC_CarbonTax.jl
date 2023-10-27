@@ -72,7 +72,6 @@ m=Model(optimizer)
 
 @constraint(m, constraint13[e in set_opt_thermalgenerators,t in set_times,s in set_scenarios], υ_SR_opt[e,t,s] <=x_e[e]*tech_thermal_opt[e,RamUP]/tech_thermal_opt[e,capacity_per_unit])
 
-###Added in Fall 2023
 #Additional constraints to ensure that Nuclear units are always on
 
 set_nuclear=[5,11]

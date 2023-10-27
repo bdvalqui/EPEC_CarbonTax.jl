@@ -336,23 +336,23 @@ global data_prices_CP=Dual_constraint10[:,:,1]
 
 CSV.write(folder *"/Results_revenue_cost_CP$Τ.csv", df_revenue_cost_CP)
 CSV.write(folder *"/Results_prices_CP$Τ.csv", df_CP_prices)
-CSV.write(folder *"/Results_prices_spinning_CP$Τ.csv", df_CP_spinning_prices)
-CSV.write(folder *"/Results_reserves_spinning_CP$Τ.csv", df_CP_spinning_reserves)
+#CSV.write(folder *"/Results_prices_spinning_CP$Τ.csv", df_CP_spinning_prices)
+#CSV.write(folder *"/Results_reserves_spinning_CP$Τ.csv", df_CP_spinning_reserves)
 CSV.write(folder *"/Results_thermalgeneration_CP$Τ.csv", df_CP_thermalgeneration)
-CSV.write(folder *"/Results_thermalgeneration_node1_CP$Τ.csv", df_node1_CP_thermalgeneration)
-CSV.write(folder *"/Results_thermalgeneration_node2_CP$Τ.csv", df_node2_CP_thermalgeneration)
-CSV.write(folder *"/Results_thermalgeneration_node3_CP$Τ.csv", df_node3_CP_thermalgeneration)
+#CSV.write(folder *"/Results_thermalgeneration_node1_CP$Τ.csv", df_node1_CP_thermalgeneration)
+#CSV.write(folder *"/Results_thermalgeneration_node2_CP$Τ.csv", df_node2_CP_thermalgeneration)
+#CSV.write(folder *"/Results_thermalgeneration_node3_CP$Τ.csv", df_node3_CP_thermalgeneration)
 CSV.write(folder *"/Results_windgeneration_CP$Τ.csv", df_CP_windgeneration)
-CSV.write(folder *"/Results_windgeneration_node1_CP$Τ.csv", df_node1_CP_windgeneration)
-CSV.write(folder *"/Results_windgeneration_node2_CP$Τ.csv", df_node2_CP_windgeneration)
-CSV.write(folder *"/Results_windgeneration_node3_CP$Τ.csv", df_node3_CP_windgeneration)
+#CSV.write(folder *"/Results_windgeneration_node1_CP$Τ.csv", df_node1_CP_windgeneration)
+#CSV.write(folder *"/Results_windgeneration_node2_CP$Τ.csv", df_node2_CP_windgeneration)
+#CSV.write(folder *"/Results_windgeneration_node3_CP$Τ.csv", df_node3_CP_windgeneration)
 CSV.write(folder *"/Results_thermalinvestments_CP$Τ.csv", df_CP_thermalinvestments)
 CSV.write(folder *"/Results_windinvestments_CP$Τ.csv", df_CP_windinvestments)
 
-CSV.write(folder *"/Results_emissions_CP$Τ.csv", df_CP_thermalemissions)
+#CSV.write(folder *"/Results_emissions_CP$Τ.csv", df_CP_thermalemissions)
 CSV.write(folder *"/Results_emissions_Candidate_CP$Τ.csv", df_CP_thermalemissions_Candidate)
 CSV.write(folder *"/Results_emissions_Existing_CP$Τ.csv", df_CP_thermalemissions_Existing)
-CSV.write(folder *"/Results_emissions_Cummulative_CP$Τ.csv", df_CP_Cummulative_Emissions)
+#CSV.write(folder *"/Results_emissions_Cummulative_CP$Τ.csv", df_CP_Cummulative_Emissions)
 
 global TotalCost_Emissions[1]=syscost_det
 global TotalCost_Emissions[2]=TotalEmissions
@@ -392,37 +392,35 @@ df_EPEC_totalinvestments=DataFrame(Total_Investments_Technology_EPEC_par',:auto)
 
 df_EPEC_totalinvestments_Firms=DataFrame(Total_Investments_Technology_Firms_EPEC_par,:auto)
 
-CSV.write(folder *"/Results_thermalinvestments_EPEC$Τ.csv", df_EPEC_thermalinvestments)
-CSV.write(folder *"/Results_windinvestments_EPEC$Τ.csv", df_EPEC_windinvestments)
 
 CSV.write(folder *"/Results_revenue_cost_EPEC$Τ.csv", df_revenue_cost_EPEC)
 CSV.write(folder *"/Results_prices_EPEC$Τ.csv", df_EPEC_prices)
-CSV.write(folder *"/Results_spinning_prices_EPEC$Τ.csv", df_EPEC_spinning_prices)
-CSV.write(folder *"/Results_spinning_reserves_EPEC$Τ.csv", df_EPEC_spinning_reserves)
+#CSV.write(folder *"/Results_spinning_prices_EPEC$Τ.csv", df_EPEC_spinning_prices)
+#CSV.write(folder *"/Results_spinning_reserves_EPEC$Τ.csv", df_EPEC_spinning_reserves)
 CSV.write(folder *"/Results_thermalgeneration_EPEC$Τ.csv", df_EPEC_thermalgeneration)
-CSV.write(folder *"/Results_thermalgeneration_node1_EPEC$Τ.csv", df_node1_EPEC_thermalgeneration)
-CSV.write(folder *"/Results_thermalgeneration_node2_EPEC$Τ.csv", df_node2_EPEC_thermalgeneration)
-CSV.write(folder *"/Results_thermalgeneration_node3_EPEC$Τ.csv", df_node3_EPEC_thermalgeneration)
+#CSV.write(folder *"/Results_thermalgeneration_node1_EPEC$Τ.csv", df_node1_EPEC_thermalgeneration)
+#CSV.write(folder *"/Results_thermalgeneration_node2_EPEC$Τ.csv", df_node2_EPEC_thermalgeneration)
+#CSV.write(folder *"/Results_thermalgeneration_node3_EPEC$Τ.csv", df_node3_EPEC_thermalgeneration)
 CSV.write(folder *"/Results_windgeneration_EPEC$Τ.csv", df_EPEC_windgeneration)
-CSV.write(folder *"/Results_windgeneration_node1_EPEC$Τ.csv", df_node1_EPEC_windgeneration)
-CSV.write(folder *"/Results_windgeneration_node2_EPEC$Τ.csv", df_node2_EPEC_windgeneration)
-CSV.write(folder *"/Results_windgeneration_node3_EPEC$Τ.csv", df_node3_EPEC_windgeneration)
+#CSV.write(folder *"/Results_windgeneration_node1_EPEC$Τ.csv", df_node1_EPEC_windgeneration)
+#CSV.write(folder *"/Results_windgeneration_node2_EPEC$Τ.csv", df_node2_EPEC_windgeneration)
+#CSV.write(folder *"/Results_windgeneration_node3_EPEC$Τ.csv", df_node3_EPEC_windgeneration)
 CSV.write(folder *"/Results_thermalinvestments_EPEC$Τ.csv", df_EPEC_thermalinvestments)
 CSV.write(folder *"/Results_windinvestments_EPEC$Τ.csv", df_EPEC_windinvestments)
 
 CSV.write(folder *"/Results_Total_Revenue_Cost_demandblock_EPEC$Τ.csv", df_Total_Revenue_Cost_demandblock_EPEC)
 
-CSV.write(folder *"/Results_Total_Investments_Firms_EPEC$Τ.csv", df_Total_Investments_Technology_Firms_EPEC)
+#CSV.write(folder *"/Results_Total_Investments_Firms_EPEC$Τ.csv", df_Total_Investments_Technology_Firms_EPEC)
 
 #CSV.write(folder *"/Results_Total_Investments_Firm2_EPEC$Τ.csv", df_Total_Investments_Technology_Firm2_EPEC)
 
 CSV.write(folder *"/Results_emissions_Candidate_EPEC$Τ.csv", df_EPEC_emissions_Candidate)
 CSV.write(folder *"/Results_emissions_Existing_EPEC$Τ.csv", df_EPEC_emissions_Existing)
-CSV.write(folder *"/Results_emissions_Cummulative_EPEC$Τ.csv", df_EPEC_emissions_Cummulative)
+#CSV.write(folder *"/Results_emissions_Cummulative_EPEC$Τ.csv", df_EPEC_emissions_Cummulative)
 
 CSV.write(folder *"/Results_CP_totalinvestments$Τ.csv", df_CP_totalinvestments)
 CSV.write(folder *"/Results_EPEC_totalinvestments$Τ.csv", df_EPEC_totalinvestments)
-CSV.write(folder *"/Results_EPEC_totalinvestments_Firms$Τ.csv", df_EPEC_totalinvestments_Firms)
+#CSV.write(folder *"/Results_EPEC_totalinvestments_Firms$Τ.csv", df_EPEC_totalinvestments_Firms)
 
 #Revenue Post-processing
 #===============================================================================#

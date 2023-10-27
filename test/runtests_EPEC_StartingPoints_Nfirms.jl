@@ -1,9 +1,6 @@
-
-
-
 using EPEC_CarbonTax
 using Test
-using Gurobi
+#using Gurobi
 #using GLPK
 using CPLEX
 
@@ -16,7 +13,7 @@ println("*****************EPEC Solution*****************")
 Number_StartingPoints=20
 #start_points=[4,]
 #start_points=[2,3,6,7]
-start_points=[1,2,3,4,5,6,7,8,9,10]
+start_points=[1,2]
 #start_points=[6,7]
 #start_point=2
 
@@ -40,9 +37,9 @@ equilibrium_indicators=1000*ones(Number_StartingPoints)
 Total_Investments_Technology_Firm1_EPEC_par_iter_dummy1_par=zeros(7,Number_StartingPoints)
 Total_Investments_Technology_Firm1_EPEC_par_iter_diff_par=zeros(7,Number_StartingPoints)
 
-for aaa in start_points
+for i in start_points
 
-start_point=aaa
+start_point=i
 #for scenario_ownership in set_ownership
 #for start_point in 1:Number_StartingPoints
 
@@ -71,10 +68,12 @@ end
 
 println("Nash Equilibrium Indicator: $equilibrium_indicators")
 
+println("Profits: $Profits_Objective_Function")
+
 #end
 
 #(equilibrium_investments_sol)=Plots_CapacityMix_All_Solutions(equilibrium_investments,Number_StartingPoints,Profits_Objective_Function,equilibrium_indicators,scenario,"results_startingpoints/$scenario")
 
-#cd("C:\\Users\\braya\\Desktop\\EPEC_April_25_test\\EPEC_CarbonTax.jl\\test")
+#cd("C:\\Users\\pbva002\\Desktop\\Model_Test_1\\EPEC_CarbonTax.jl\\test")
 
 #Profits_Objective_Function_par,Total_Investments_Technology_EPEC_par,Nash_Equilibrium_Indicator_bin

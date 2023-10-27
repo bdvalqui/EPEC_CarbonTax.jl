@@ -25,7 +25,7 @@ m=Model(optimizer)
 #Absolute MIP gap tolerance
 #set_optimizer_attribute(m, "CPX_PARAM_EPAGAP", 1e-15)
 #Relative MIP gap tolerance
-set_optimizer_attribute(m, "CPX_PARAM_EPGAP", 0.005)
+set_optimizer_attribute(m, "CPX_PARAM_EPGAP", 0.001)
 #set_optimizer_attribute(m, "CPX_PARAM_MIPEMPHASIS", 2)
 #set_optimizer_attribute(m, "CPX_PARAM_LPMETHOD", 6)
 #Default value 10e-6
@@ -244,6 +244,12 @@ end
            -μ_G[e,t,s]-λ_SR[t,s]-μ_SR[e,t,s]-ψ_SR[e,t,s] == 0)
 
 @constraint(m, constraint18[t in set_times,s in set_scenarios], sum(υ_SR[e,t,s] for e in set_thermalgenerators) == Υ_SR[t])
+
+#Additional constraints to ensure that Nuclear units are always on
+
+set_nuclear=[5, 11, 17, 23, 29, 35, 41, 47, 53, 59, 65]
+
+@constraint(m, constraint19[e in set_nuclear,t in set_times,s in set_scenarios], p_G_e[e,t,s]== tech_thermal[e,capacity_existingunits])
 
 #Additional constraints to ensure that the investments are distributed across 2 buses.
 #=
