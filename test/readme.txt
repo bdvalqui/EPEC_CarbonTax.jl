@@ -24,4 +24,4 @@ Pkg.build("CPLEX")
 
 #Step 5: in Julia REPL type:
 
-include("runtests_EPEC_StartingPoints_Nfirms")
+include("runtests_EPEC_StartingPoints_Nfirms.jl")
