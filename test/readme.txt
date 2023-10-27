@@ -1,5 +1,9 @@
 Steps to run the model:
 
+runtests_EPEC_StartingPoints_Nfirms.jl: this file runs the CP and EPEC models for 
+a given tax level. The EPEC model will be run considering different starting points. 
+
+
 #Steps:
 
 #Step 1: cd in ..."test" folder. Type the following in Julia REPL: 
