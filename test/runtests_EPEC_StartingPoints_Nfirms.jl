@@ -98,6 +98,6 @@ Pkg.build("CPLEX")
 #Step 5: in Julia REPL type:
 
 include("runtests_EPEC_StartingPoints_Nfirms")
-+#
+=#
 
 #Profits_Objective_Function_par,Total_Investments_Technology_EPEC_par,Nash_Equilibrium_Indicator_bin

@@ -1,7 +1,7 @@
 *****************OPF Solution*****************
 
-Objective System Cost: 5.3521640550093254e10
+Objective System Cost: 2.6014681508679295e10
 
-Wind Investments: [0.0, 0.0, 7121.153846153874, 0.0]
+Wind Investments: [0.0, 0.0, 0.0, 4030.690444145356]
 
-Thermal Investments: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 67089.58076923076]
+Thermal Investments: [0.0, 0.0, 0.0, 0.0, 31731.242038223416, 0.0, 0.0, 0.0, 0.0, 0.0]

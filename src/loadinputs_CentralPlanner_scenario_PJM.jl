@@ -31,7 +31,8 @@ function loadinputs_CentralPlanner_scenario_PJM(scenario_tax,Trans_Cap,folder::S
 
     #demand_PJM_2050.csv based on demand_PJM.csv with annual load growth of 0.01 and 33 years in the future. PJM data is from 2017.
 
-    p_D_rowdata=CSV.File(folder *"/demand_PJM_2050.csv") |> Tables.matrix
+    #p_D_rowdata=CSV.File(folder *"/demand_PJM_2050.csv") |> Tables.matrix
+    p_D_rowdata=CSV.File(folder *"/demand_ERCOT_2050.csv") |> Tables.matrix
     p_D=p_D_rowdata'
 
     p_D_MW=p_D*max_demand
@@ -58,13 +59,16 @@ function loadinputs_CentralPlanner_scenario_PJM(scenario_tax,Trans_Cap,folder::S
     Τ=[p_Carbprice_par[scenario_tax]]
     p_lambda_upper=[p_lambda_upper_par[scenario_tax]]
 
-    wind_rowdata= CSV.File(folder *"/wind_existing_PJM.csv") |> Tables.matrix
+    #wind_rowdata= CSV.File(folder *"/wind_existing_PJM.csv") |> Tables.matrix
+    wind_rowdata= CSV.File(folder *"/wind_existing_ERCOT.csv") |> Tables.matrix
     wind=wind_rowdata'
 
-    wind_opt_rowdata= CSV.File(folder *"/wind_options_PJM.csv") |> Tables.matrix
+    #wind_opt_rowdata= CSV.File(folder *"/wind_options_PJM.csv") |> Tables.matrix
+    wind_opt_rowdata= CSV.File(folder *"/wind_options_ERCOT.csv") |> Tables.matrix
     wind_opt=wind_opt_rowdata'
 
-    Ns_H= CSV.File(folder *"/weights_PJM.csv") |> Tables.matrix
+    #Ns_H= CSV.File(folder *"/weights_PJM.csv") |> Tables.matrix
+    Ns_H= CSV.File(folder *"/weights_ERCOT.csv") |> Tables.matrix
 
 
 
@@ -114,26 +118,6 @@ function loadinputs_CentralPlanner_scenario_PJM(scenario_tax,Trans_Cap,folder::S
     nodes_th=2
     nodes_rn=2
 
-    #Nuclear and Coal in this case
-
-    #=
-    #Original PJM Capacity 
-    tech_thermal=[600		4.40		0		10000000		1		53284/2		39695		0.0955		10.78		2.10		75		90		6
-                  500		2.20		0		10000000		1		53896/2		12863		0.0531		7.93		3.3		  55		425		4
-                  100		4.50		0		10000000		1		10067/2		11395		0.0531		13.92		3.6		  55		600		3
-                  350		2.50		0		10000000		1		34242/2		20767		0.0531		12.01		2.64		55		425		7
-                  1500	2.30		0		10000000		1		34509/2		118988		0		    10.46		0.66		60		0		  8
-                  350		4.50		0		10000000		1		7954/2		11659		0.0741		17.05		3.18		55		600		9
-                  600		4.40		0		10000000		1		53284/2		39695		0.0955		10.78		2.10		75		90		6
-                  500		2.20		0		10000000		1		53896/2		12863		0.0531		7.93		3.3		  55		425		4
-                  100		4.50		0		10000000		1		10067/2		11395		0.0531		13.92		3.6		  55		600		3
-                  350		2.50		0		10000000		1		34242/2		20767		0.0531		12.01		2.64		55		425		7
-                  1500	2.30		0		10000000		1		34509/2		118988		0		    10.46		0.66		60		0		  8
-                  350		4.50		0		10000000		1		7954/2		11659		0.0741		17.05		3.18		55		600		9]
-     =#
-     #Retirements scenario PJM Capacity 
-    #Order=Coal, CC, CT, ST, Nuclear, Oil
-     #Ret Scenario3
      #Retirement Parameter
      #CC
      R_c=1
@@ -141,29 +125,6 @@ function loadinputs_CentralPlanner_scenario_PJM(scenario_tax,Trans_Cap,folder::S
      R_t=1
      #Nuclear
      R_n=1
-
-    #=
-
-     #Ret Scenario2
-     #Retirement Parameter
-     #CC
-     R_c=0.8
-     #Coal, Steam Turbine and Oil
-     R_t=1
-     #Nuclear
-     R_n=1
-
-    #Ret Scenario1 
-     #Retirement Parameter
-     #CC
-     R_c=0.6
-     #Coal, Steam Turbine and Oil
-     R_t=1
-     #Nuclear
-     R_n=1
-
-    =#
-
 
     #Indices for set_tech
     capacity_per_unit=1
@@ -181,6 +142,11 @@ function loadinputs_CentralPlanner_scenario_PJM(scenario_tax,Trans_Cap,folder::S
     Technology=13
     WACC=0.08
 
+#Order=Coal, CCGT, CT, Gas Steam Turbine, Nuclear, Oil
+
+#=
+#====================================Existing Capacity PJM====================================#
+
     tech_thermal=[600		4.40		0		10000000		1		(53284/2)*R_t		39695		0.0955		10.78		2.10		75		90		6
                   500		2.20		0		10000000		1		(53896/2)*R_c		12863		0.0531		7.93		3.3		  55		425		4
                   100		4.50		0		10000000		1		10067/2		      11395		0.0531		13.92		3.6		  55		600		3
@@ -193,11 +159,27 @@ function loadinputs_CentralPlanner_scenario_PJM(scenario_tax,Trans_Cap,folder::S
                   350		2.50		0		10000000		1		(34242/2)*R_t		20767		0.0531		12.01		2.64		55		425		7
                   1500	2.30		0		10000000		1		(34509/2)*R_n		118988		0		    10.46		0.66		60		0		  8
                   350		4.50		0		10000000		1		(7954/2)*R_t		11659		0.0741		17.05		3.18		55		600		9]
+=#
+#====================================Existing Capacity ERCOT====================================#
+
+    tech_thermal=[600		4.40		0		10000000		1		(0/2)*R_t		      39695		0.0955		10.78		2.10		75		90		6
+                  500		2.20		0		10000000		1		(42648.1/2)*R_c		12863		0.0531		7.93		3.3		  55		425		4
+                  100		4.50		0		10000000		1		 10523.6/2		    11395		0.0531		13.92		3.6		  55		600		3
+                  350		2.50		0		10000000		1		(24665.8/2)*R_t		20767		0.0531		12.01		2.64		55		425		7
+                  1500	2.30		0		10000000		1		(5120/2)*R_n		  118988		0		    10.46		0.66		60		0		  8
+                  350		4.50		0		10000000		1		(1334.7/2)*R_t		11659		0.0741		17.05		3.18		55		600		9
+                  600		4.40		0		10000000		1		(0/2)*R_t		      39695		0.0955		10.78		2.10		75		90		6
+                  500		2.20		0		10000000		1		(42648.1/2)*R_c		12863		0.0531		7.93		3.3		  55		425		4
+                  100		4.50		0		10000000		1		 10523.6/2		    11395		0.0531		13.92		3.6		  55		600		3
+                  350		2.50		0		10000000		1		(24665.8/2)*R_t		20767		0.0531		12.01		2.64		55		425		7
+                  1500	2.30		0		10000000		1		(5120/2)*R_n		  118988		0		    10.46		0.66		60		0		  8
+                  350		4.50		0		10000000		1		(1334.7/2)*R_t		11659		0.0741		17.05		3.18		55		600		9]
+
+
 
   Coal=[1,7] 
   CC=[2,8] 
   CT=[3,9]  
-  #CT=[3,10]
   ST=[4,10]  
   Oil=[6,12]
 
@@ -232,7 +214,7 @@ function loadinputs_CentralPlanner_scenario_PJM(scenario_tax,Trans_Cap,folder::S
     tech_thermal[i,HeatRate]=17.41
   end
 
-
+#=====================Candidate Technologies: Thermal Generators====================================#
     tech_thermal_opt=[   650         6.9        5299096        10000000            1              0               53114        0.0096            9.751         2.01        75   96     1
                          650         10.7       6830748        10000000            1              0               58242        0.0096            12.507        2.01        75   96     2
                          65          4.5        982962         10000000            1              0               11395        0.0531            9.5145        2.81        55   600    3
@@ -244,13 +226,32 @@ function loadinputs_CentralPlanner_scenario_PJM(scenario_tax,Trans_Cap,folder::S
                          440         2.2        1088328        10000000            1              0               12863        0.0531            6.4005        2.81        55   425    4
                          440         5.7        2778138        10000000            1              0               26994        0.0053             7.525        2.81        55   425    5]
 
+
+
+
+# Order: Wind, Solar, Hydro
+
+#=
+#====================================Existing Capacity PJM====================================#
     tech_wind=[   300		0		1604886		10000000		1		10704/2		43205		0		0		0		30		0		1
                   300		0		1599902		10000000		1		6464/2		18760		0		0		0		30		0		2
                   300		0		1599902		10000000		1		8381/2		11944		0		0		0		30		0		3
                   300		0		1604886		10000000		1		10704/2		43205		0		0		0		30		0		1
                   300		0		1599902		10000000		1		6464/2		18760		0		0		0		30		0		2
                   300		0		1599902		10000000		1		8381/2		11944		0		0		0		30		0		3]
-                  
+=#
+#====================================Existing Capacity ERCOT====================================#
+
+
+    tech_wind=[   300		0		1604886		10000000		1		37854.2/2		43205		0		0		0		30		0		1
+                  300		0		1599902		10000000		1		14230.2/2		18760		0		0		0		30		0		2
+                  300		0		1599902		10000000		1		536.7/2		  11944		0		0		0		30		0		3
+                  300		0		1604886		10000000		1		37854.2/2		43205		0		0		0		30		0		1
+                  300		0		1599902		10000000		1		14230.2/2		18760		0		0		0		30		0		2
+                  300		0		1599902		10000000		1		536.7/2		  11944		0		0		0		30		0		3]
+
+
+#=====================Candidate Technologies: Renewables====================================#
     tech_wind_opt=[300         0.0              1604886        10000000             1             0                43205        0                    0          0.00        30    0  1
                    300         0.0              1599902        10000000             1             0                18760        0                    0          0.00        30    0  2
                    300         0.0              1604886        10000000             1             0                43205        0                    0          0.00        30    0  1

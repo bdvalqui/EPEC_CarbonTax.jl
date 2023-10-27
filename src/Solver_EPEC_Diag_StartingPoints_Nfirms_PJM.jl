@@ -342,12 +342,12 @@ CSV.write(folder *"/Results_thermalgeneration_CP$Τ.csv", df_CP_thermalgeneratio
 #CSV.write(folder *"/Results_thermalgeneration_node1_CP$Τ.csv", df_node1_CP_thermalgeneration)
 #CSV.write(folder *"/Results_thermalgeneration_node2_CP$Τ.csv", df_node2_CP_thermalgeneration)
 #CSV.write(folder *"/Results_thermalgeneration_node3_CP$Τ.csv", df_node3_CP_thermalgeneration)
-CSV.write(folder *"/Results_windgeneration_CP$Τ.csv", df_CP_windgeneration)
+CSV.write(folder *"/Results_renewablegeneration_CP$Τ.csv", df_CP_windgeneration)
 #CSV.write(folder *"/Results_windgeneration_node1_CP$Τ.csv", df_node1_CP_windgeneration)
 #CSV.write(folder *"/Results_windgeneration_node2_CP$Τ.csv", df_node2_CP_windgeneration)
 #CSV.write(folder *"/Results_windgeneration_node3_CP$Τ.csv", df_node3_CP_windgeneration)
 CSV.write(folder *"/Results_thermalinvestments_CP$Τ.csv", df_CP_thermalinvestments)
-CSV.write(folder *"/Results_windinvestments_CP$Τ.csv", df_CP_windinvestments)
+CSV.write(folder *"/Results_renewableinvestments_CP$Τ.csv", df_CP_windinvestments)
 
 #CSV.write(folder *"/Results_emissions_CP$Τ.csv", df_CP_thermalemissions)
 CSV.write(folder *"/Results_emissions_Candidate_CP$Τ.csv", df_CP_thermalemissions_Candidate)
@@ -369,7 +369,7 @@ end
 
 df_Total_Revenue_Cost_demandblock_CP = DataFrame(Total_Revenue_Cost_demandblock_CP,:auto)
 
-CSV.write(folder *"/Results_Total_Revenue_Cost_demandblock_CP$Τ.csv", df_Total_Revenue_Cost_demandblock_CP)
+#CSV.write(folder *"/Results_Total_Revenue_Cost_demandblock_CP$Τ.csv", df_Total_Revenue_Cost_demandblock_CP)
 
 global Cost_Detail[1,1]=TotalCapCost
 global Cost_Detail[2,1]=TotalFixedCost
@@ -401,14 +401,14 @@ CSV.write(folder *"/Results_thermalgeneration_EPEC$Τ.csv", df_EPEC_thermalgener
 #CSV.write(folder *"/Results_thermalgeneration_node1_EPEC$Τ.csv", df_node1_EPEC_thermalgeneration)
 #CSV.write(folder *"/Results_thermalgeneration_node2_EPEC$Τ.csv", df_node2_EPEC_thermalgeneration)
 #CSV.write(folder *"/Results_thermalgeneration_node3_EPEC$Τ.csv", df_node3_EPEC_thermalgeneration)
-CSV.write(folder *"/Results_windgeneration_EPEC$Τ.csv", df_EPEC_windgeneration)
+CSV.write(folder *"/Results_renewablegeneration_EPEC$Τ.csv", df_EPEC_windgeneration)
 #CSV.write(folder *"/Results_windgeneration_node1_EPEC$Τ.csv", df_node1_EPEC_windgeneration)
 #CSV.write(folder *"/Results_windgeneration_node2_EPEC$Τ.csv", df_node2_EPEC_windgeneration)
 #CSV.write(folder *"/Results_windgeneration_node3_EPEC$Τ.csv", df_node3_EPEC_windgeneration)
 CSV.write(folder *"/Results_thermalinvestments_EPEC$Τ.csv", df_EPEC_thermalinvestments)
-CSV.write(folder *"/Results_windinvestments_EPEC$Τ.csv", df_EPEC_windinvestments)
+CSV.write(folder *"/Results_renewableinvestments_EPEC$Τ.csv", df_EPEC_windinvestments)
 
-CSV.write(folder *"/Results_Total_Revenue_Cost_demandblock_EPEC$Τ.csv", df_Total_Revenue_Cost_demandblock_EPEC)
+#CSV.write(folder *"/Results_Total_Revenue_Cost_demandblock_EPEC$Τ.csv", df_Total_Revenue_Cost_demandblock_EPEC)
 
 #CSV.write(folder *"/Results_Total_Investments_Firms_EPEC$Τ.csv", df_Total_Investments_Technology_Firms_EPEC)
 
@@ -443,7 +443,7 @@ end
 (Total_Generation_Technology_CP_res)=Plots_Generation_startpoints(Total_Generation_Technology_CP,Total_Generation_Technology_Existing_CP,Total_Generation_Technology_Candidate_CP, Total_Generation_Technology_node1_CP, Total_Generation_Technology_node2_CP, Total_Generation_Technology_node3_CP,Total_Generation_Technology_EPEC_par,Total_Generation_Technology_Existing_EPEC_par,Total_Generation_Technology_Candidate_EPEC_par, Total_Generation_Technology_node1_EPEC_par, Total_Generation_Technology_node2_EPEC_par, Total_Generation_Technology_node3_EPEC_par,set_times,Τ,Total_Emissions_Technology_CP,Total_Emissions_Technology_Candidate_CP,Total_Emissions_Technology_Existing_CP,Total_Emissions_Technology_Existing_EPEC_par,Total_Emissions_Technology_Candidate_EPEC_par,start_point,scenario)
 =#
 
-(Total_Revenue_Cost_demandblock_CP_res)=Plots_Rev_Ope_startpoints(Total_Revenue_Cost_demandblock_CP,Total_Revenue_Cost_demandblock_EPEC,set_times,Τ,start_point,scenario)
+#(Total_Revenue_Cost_demandblock_CP_res)=Plots_Rev_Ope_startpoints(Total_Revenue_Cost_demandblock_CP,Total_Revenue_Cost_demandblock_EPEC,set_times,Τ,start_point,scenario)
 
 #=
 (Total_Investments_Technology_CP_res,Total_Investments_Technology_EPEC_res,Total_Revenue_Cost_demandblock_EPEC_res)=Tables_Capacity_Generation_Emissions(Total_Investments_Technology_CP,Total_Investments_Technology_EPEC_par,Total_Generation_Technology_CP,Total_Generation_Technology_Existing_CP,Total_Generation_Technology_Candidate_CP,Total_Generation_Technology_EPEC_par,Total_Generation_Technology_Existing_EPEC_par,Total_Generation_Technology_Candidate_EPEC_par,Total_Emissions_Technology_CP,Total_Emissions_Technology_Candidate_CP,Total_Emissions_Technology_Existing_CP,Total_Emissions_Technology_Existing_EPEC_par,Total_Emissions_Technology_Candidate_EPEC_par,data_prices_CP,data_prices_EPEC,Total_Revenue_Cost_demandblock_CP,Total_Revenue_Cost_demandblock_EPEC_Plot,set_times,Τ,start_point,Cost_Detail,scenario)
