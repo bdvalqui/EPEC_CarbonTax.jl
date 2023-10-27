@@ -1,7 +1,7 @@
 *****************Central Planner Solution*****************
 
-Objective System Cost: 5.880891154673873e10
+Objective System Cost: 5.352164055009326e10
 
-Wind Investments: [0.0, 0.0, 0.0, 0.0]
+Wind Investments: [0.0, 0.0, 7121.153846153874, 0.0]
 
-Thermal Investments: [0.0, 0.0, 0.0, 0.0, 75674.16, 0.0, 0.0, 0.0, 0.0, 0.0]
+Thermal Investments: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 67089.58076923076]

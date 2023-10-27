@@ -11,11 +11,7 @@ println("*****************EPEC Solution*****************")
 
 #Number of Starting Points (Maximum 20 starting points; otherwise modify raw data in "data" folder)
 Number_StartingPoints=20
-#start_points=[4,]
-#start_points=[2,3,6,7]
-start_points=[1,2]
-#start_points=[6,7]
-#start_point=2
+start_points=[1,2,3,4,5]
 
 #Number of Strategic Investors
 Number_Firms=10
@@ -74,6 +70,30 @@ println("Profits: $Profits_Objective_Function")
 
 #(equilibrium_investments_sol)=Plots_CapacityMix_All_Solutions(equilibrium_investments,Number_StartingPoints,Profits_Objective_Function,equilibrium_indicators,scenario,"results_startingpoints/$scenario")
 
-#cd("C:\\Users\\pbva002\\Desktop\\Model_Test_1\\EPEC_CarbonTax.jl\\test")
+#Steps:
+
+#Step 1: cd in ..."test" folder 
+#cd("C:\\Users\\...\\test")
+
+#Step 2: Activate enviroment
+
+#press ]
+#activate .
+
+#Step 3: Install the package in the current enviroment 
+
+#Go to package manager mode
+#dev ...\EPEC_CarbonTax.jl
+
+#Step 4: Install CPLEX
+
+#=
+ENV["CPLEX_STUDIO_BINARIES"] = "C:\\GAMS\\40"
+import Pkg
+Pkg.add(name="CPLEX", version=" 1.0.0")
+Pkg.build("CPLEX")
+=#
+
+#====================#
 
 #Profits_Objective_Function_par,Total_Investments_Technology_EPEC_par,Nash_Equilibrium_Indicator_bin
